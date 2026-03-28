@@ -4,13 +4,14 @@ generator client {
 
 datasource db {
   provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
 model Letter {
-  id             String   @id @default(uuid())
-  title          String
-  sender         String?
-  status         String   @default("PENDING")
-  analysisResult String?
-  createdAt      DateTime @default(now())
+  id                String   @id @default(uuid())
+  title             String
+  sender            String?
+  status            String   @default("PENDING")
+  analysisResult    String?
+  createdAt         DateTime @default(now())
 }
