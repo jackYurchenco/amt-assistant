@@ -1,8 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { PrismaService } from "@amt-assistant/prisma";
-import { Letter, LetterStatus } from "@amt-assistant/letters";
 import { ILetterRepository } from "../domain/letter.repository.interface";
-
+import { Letter, LetterStatus } from "../domain/letter.entity";
 
 @Injectable()
 export class PrismaLetterRepository implements ILetterRepository {

@@ -1,7 +1,8 @@
 import { Inject, Injectable } from "@nestjs/common";
 import { ILetterRepository } from "../../domain/letter.repository.interface";
-import { CreateLetterDto, Letter, LetterStatus } from "@amt-assistant/letters";
 import { v4 as uuidv4 } from "uuid";
+import { CreateLetterDto } from "./dto/create-letter.dto";
+import { Letter, LetterStatus } from "../../domain/letter.entity";
 
 
 @Injectable()
