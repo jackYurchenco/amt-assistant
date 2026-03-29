@@ -1,17 +1,14 @@
 import { CreateLetterUseCase } from "./create-letter.use-case";
 import { ILetterRepository } from "../../domain/letter.repository.interface";
+import { mock, MockProxy } from "jest-mock-extended";
 
 describe('CreateLetterUseCase', () => {
   let useCase: CreateLetterUseCase;
-  let mockRepository: jest.Mocked<ILetterRepository>;
+  let mockRepository: MockProxy<ILetterRepository>;
 
   beforeEach(() => {
-    mockRepository = {
-      save: jest.fn().mockResolvedValue(undefined),
-      findById: jest.fn().mockResolvedValue(undefined),
-      findAll: jest.fn().mockResolvedValue(undefined),
-    }
-
+    mockRepository = mock<ILetterRepository>();
+    mockRepository.save.mockResolvedValue(undefined as any);
     useCase = new CreateLetterUseCase(mockRepository);
   });
 
