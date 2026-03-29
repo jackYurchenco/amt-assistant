@@ -9,23 +9,22 @@ import { AppModule } from './app/app.module';
 import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
 
 async function bootstrap() {
+  const globalPrefix = 'api/v1';
   const app = await NestFactory.create(AppModule);
+  const port = process.env.PORT || 3000;
+
+  app.setGlobalPrefix(globalPrefix);
+  app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
 
   const config = new DocumentBuilder()
     .setTitle('AMT Assistant API')
     .setDescription('The AMT Assistant project API description')
     .setVersion('1.0')
     .addTag('letters')
-    .addServer('/api/v1')
     .build();
   const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('api/docs', app, document);
+  SwaggerModule.setup(`${globalPrefix}/docs`, app, document);
 
-  const globalPrefix = 'api/v1';
-  const port = process.env.PORT || 3000;
-
-  app.setGlobalPrefix(globalPrefix);
-  app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
   await app.listen(port);
 
   Logger.log(
