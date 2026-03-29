@@ -8,7 +8,7 @@ describe('CreateLetterUseCase', () => {
 
   beforeEach(() => {
     mockRepository = mock<ILetterRepository>();
-    mockRepository.save.mockResolvedValue(undefined as any);
+    mockRepository.save.mockResolvedValue(undefined);
     useCase = new CreateLetterUseCase(mockRepository);
   });
 
