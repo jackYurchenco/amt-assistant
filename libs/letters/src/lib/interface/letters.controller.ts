@@ -1,6 +1,8 @@
 import { Body, Controller, Post } from "@nestjs/common";
-import { CreateLetterDto, CreateLetterUseCase } from "@amt-assistant/letters";
+import { CreateLetterUseCase } from "../application/create-letter/create-letter.use-case";
 import { ApiOperation, ApiResponse } from "@nestjs/swagger";
+import { CreateLetterDto } from "./dto/create-letter.dto";
+import { CreateLetterCommand } from "../application/create-letter/create-letter.comman";
 
 @Controller('letters')
 export class LettersController {
@@ -17,6 +19,11 @@ export class LettersController {
     description: 'Invalid input data.'
   })
   async create(@Body() createLetterDto: CreateLetterDto) {
-    return await this.createLetterUseCase.execute(createLetterDto);
+    const command = new CreateLetterCommand(
+      createLetterDto.title,
+      createLetterDto.sender
+    )
+
+    return await this.createLetterUseCase.execute(command);
   }
 }

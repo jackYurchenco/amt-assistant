@@ -1,6 +1,5 @@
 import { Module } from '@nestjs/common';
 import { PrismaModule } from "@amt-assistant/prisma";
-import { LettersController } from "./letters/letters.controller";
 import { LettersModule } from "@amt-assistant/letters";
 
 @Module({
@@ -8,7 +7,7 @@ import { LettersModule } from "@amt-assistant/letters";
     PrismaModule,
     LettersModule
   ],
-  controllers: [LettersController],
+  controllers: [],
   providers: [],
 })
 export class AppModule {}
