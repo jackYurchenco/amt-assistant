@@ -19,8 +19,10 @@ export class LettersController {
     description: 'Invalid input data.'
   })
   async create(@Body() createLetterDto: CreateLetterDto) {
+    const userId = 'userId' //TODO get userId from Auth
     const command = new CreateLetterCommand(
       createLetterDto.title,
+      userId,
       createLetterDto.sender
     )
 

@@ -15,6 +15,7 @@ export class CreateLetterUseCase {
   async execute(command: CreateLetterCommand): Promise<Letter> {
     const letter = new Letter(
       uuidv4(),
+      command.userId,
       command.title,
       LetterStatus.PENDING,
       new Date(),

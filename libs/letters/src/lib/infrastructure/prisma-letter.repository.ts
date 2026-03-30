@@ -23,6 +23,7 @@ export class PrismaLetterRepository implements ILetterRepository {
         sender: letter.sender,
         analysisResult: letter.analysisResult ?? null,
         createdAt: letter.createdAt,
+        userId: letter.userId,
       },
     });
   }
@@ -36,6 +37,7 @@ export class PrismaLetterRepository implements ILetterRepository {
 
     return new Letter(
       raw.id,
+      raw.userId,
       raw.title,
       raw.status as LetterStatus,
       raw.createdAt,
@@ -50,6 +52,7 @@ export class PrismaLetterRepository implements ILetterRepository {
       (raw) =>
         new Letter(
           raw.id,
+          raw.userId,
           raw.title,
           raw.status as LetterStatus,
           raw.createdAt,

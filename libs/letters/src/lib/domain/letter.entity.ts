@@ -8,6 +8,7 @@ export enum LetterStatus {
 export class Letter {
   constructor(
     public readonly id: string,
+    public readonly userId: string,
     public title: string,
     public status: LetterStatus,
     public readonly createdAt: Date,
