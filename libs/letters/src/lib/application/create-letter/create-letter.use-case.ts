@@ -1,7 +1,6 @@
 import { Inject, Injectable } from "@nestjs/common";
 import { ILetterRepository } from "../../domain/letter.repository.interface";
-import { v4 as uuidv4 } from "uuid";
-import { Letter, LetterStatus } from "../../domain/letter.entity";
+import { Letter } from "../../domain/letter.entity";
 import { CreateLetterCommand } from "./create-letter.comman";
 
 
@@ -13,15 +12,12 @@ export class CreateLetterUseCase {
   ) {}
 
   async execute(command: CreateLetterCommand): Promise<Letter> {
-    const letter = new Letter(
-      uuidv4(),
-      command.userId,
-      command.title,
-      LetterStatus.PENDING,
-      new Date(),
-      command.sender || null,
-      null
-    )
+
+    const letter = Letter.create({
+      userId: command.userId,
+      title: command.title,
+    });
+
     await this.letterRepository.save(letter);
 
     return letter;

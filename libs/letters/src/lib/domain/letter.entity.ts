@@ -1,3 +1,5 @@
+import { v4 as uuidv4 } from "uuid";
+
 export enum LetterStatus {
   PENDING = 'PENDING',
   PROCESSING = 'PROCESSING',
@@ -6,22 +8,56 @@ export enum LetterStatus {
 }
 
 export class Letter {
-  constructor(
+  private constructor(
     public readonly id: string,
     public readonly userId: string,
     public title: string,
     public status: LetterStatus,
     public readonly createdAt: Date,
+    public readonly updatedAt: Date,
     public sender?: string | null,
     public analysisResult?: string | null,
   ) {
+    if (!userId) throw new Error('Letter must belong to a user');
+    if (!title) throw new Error('Letter title cannot be empty');
   }
 
-  completeAnalysis(result: string): void {
-    if (!result) {
-      throw new Error('Analysis result cannot be empty');
-    }
-    this.analysisResult = result;
-    this.status = LetterStatus.COMPLETED;
+  static create(props: {
+    userId: string;
+    title: string
+  }): Letter {
+    const now = new Date();
+    return new Letter(
+      uuidv4(),
+      props.userId,
+      props.title,
+      LetterStatus.PENDING,
+      now,
+      now,
+      null,
+      null
+    )
+  }
+
+  static restore(props: {
+    id: string;
+    userId: string;
+    title: string;
+    status: LetterStatus;
+    createdAt: Date;
+    updatedAt: Date;
+    sender?: string | null;
+    analysisResult?: string | null;
+  }){
+    return new Letter(
+      props.id,
+      props.userId,
+      props.title,
+      props.status,
+      props.createdAt,
+      props.updatedAt,
+      props.sender,
+      props.analysisResult
+    );
   }
 }

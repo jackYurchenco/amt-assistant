@@ -35,30 +35,32 @@ export class PrismaLetterRepository implements ILetterRepository {
 
     if (!raw) return null;
 
-    return new Letter(
-      raw.id,
-      raw.userId,
-      raw.title,
-      raw.status as LetterStatus,
-      raw.createdAt,
-      raw.sender,
-      raw.analysisResult,
-    );
+    return Letter.restore({
+      id: raw.id,
+      userId: raw.userId,
+      title: raw.title,
+      status: raw.status as LetterStatus,
+      createdAt: raw.createdAt,
+      updatedAt: raw.updatedAt,
+      sender: raw.sender,
+      analysisResult: raw.analysisResult,
+    });
   }
 
   async findAll(): Promise<Array<Letter>> {
     const records = await this.prismaService.letter.findMany();
     return records.map(
       (raw) =>
-        new Letter(
-          raw.id,
-          raw.userId,
-          raw.title,
-          raw.status as LetterStatus,
-          raw.createdAt,
-          raw.sender,
-          raw.analysisResult,
-        ),
+        Letter.restore({
+          id: raw.id,
+          userId: raw.userId,
+          title: raw.title,
+          status: raw.status as LetterStatus,
+          createdAt: raw.createdAt,
+          updatedAt: raw.updatedAt,
+          sender: raw.sender,
+          analysisResult: raw.analysisResult,
+        })
     );
   }
 }
