@@ -17,7 +17,8 @@
     "paths": {
       "@amt-assistant/letters": ["libs/letters/src/index.ts"],
       "@amt-assistant/prisma": ["libs/shared/prisma/src/index.ts"],
-      "@amt-assistant/auth": ["libs/auth/src/index.ts"]
+      "@amt-assistant/auth": ["libs/auth/src/index.ts"],
+      "@amt-assistant/users": ["libs/users/src/index.ts"]
     },
     "strict": true,
     "noUnusedLocals": true,
