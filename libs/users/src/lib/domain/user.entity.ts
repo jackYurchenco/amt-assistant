@@ -7,6 +7,8 @@ export class User {
     public readonly passwordHash: string,
     public readonly createdAt: Date,
     public readonly updatedAt: Date,
+    public readonly firstName?: string | null,
+    public readonly lastName?: string | null,
   ) {
     if (!email.includes('@')) {
       throw new Error('Invalid email format');
@@ -14,14 +16,17 @@ export class User {
   }
   static create(props: {
     email: string,
-    passwordHash: string
+    passwordHash: string,
   }): User {
+    const now = new Date();
     return new User(
       uuidv4(),
       props.email,
       props.passwordHash,
-      new Date(),
-      new Date()
+      now,
+      now,
+      null,
+      null,
     );
   }
 
@@ -31,13 +36,17 @@ export class User {
     passwordHash: string;
     createdAt: Date;
     updatedAt: Date
+    firstName: string | null,
+    lastName: string | null,
   }): User {
     return new User(
       props.id,
       props.email,
       props.passwordHash,
       props.createdAt,
-      props.updatedAt
+      props.updatedAt,
+      props.firstName,
+      props.lastName,
     );
   }
 }
