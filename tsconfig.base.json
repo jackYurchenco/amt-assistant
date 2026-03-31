@@ -16,7 +16,8 @@
     "baseUrl": ".",
     "paths": {
       "@amt-assistant/letters": ["libs/letters/src/index.ts"],
-      "@amt-assistant/prisma": ["libs/shared/prisma/src/index.ts"]
+      "@amt-assistant/prisma": ["libs/shared/prisma/src/index.ts"],
+      "@amt-assistant/auth": ["libs/auth/src/index.ts"]
     },
     "strict": true,
     "noUnusedLocals": true,
@@ -29,7 +30,7 @@
     "noPropertyAccessFromIndexSignature": true,
     "noImplicitOverride": true,
     "noErrorTruncation": true,
-    "exactOptionalPropertyTypes": true,
+    "exactOptionalPropertyTypes": true
   },
   "exclude": ["node_modules", "tmp"]
 }
