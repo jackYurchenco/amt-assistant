@@ -11,12 +11,12 @@ export class Letter {
   private constructor(
     public readonly id: string,
     public readonly userId: string,
-    public title: string,
-    public status: LetterStatus,
+    public readonly title: string,
+    public readonly status: LetterStatus,
     public readonly createdAt: Date,
     public readonly updatedAt: Date,
-    public sender?: string | null,
-    public analysisResult?: string | null,
+    public readonly sender?: string | null,
+    public readonly analysisResult?: string | null,
   ) {
     if (!userId) throw new Error('Letter must belong to a user');
     if (!title) throw new Error('Letter title cannot be empty');
