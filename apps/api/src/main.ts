@@ -12,7 +12,7 @@ import { PrismaClientExceptionFilter } from "@amt-assistant/prisma";
 async function bootstrap() {
   const globalPrefix = 'api/v1';
   const app = await NestFactory.create(AppModule);
-  const port = process.env.PORT || 3000;
+  const port = process.env['PORT'] || 3000;
   const { httpAdapter } = app.get(HttpAdapterHost);
 
   app.useGlobalFilters(new PrismaClientExceptionFilter(httpAdapter));
