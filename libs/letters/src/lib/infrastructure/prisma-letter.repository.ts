@@ -13,14 +13,14 @@ export class PrismaLetterRepository implements ILetterRepository {
       update: {
         title: letter.title,
         status: letter.status,
-        sender: letter.sender,
+        sender: letter.sender ?? null,
         analysisResult: letter.analysisResult ?? null,
       },
       create: {
         id: letter.id,
         title: letter.title,
         status: letter.status,
-        sender: letter.sender,
+        sender: letter.sender ?? null,
         analysisResult: letter.analysisResult ?? null,
         createdAt: letter.createdAt,
         userId: letter.userId,
