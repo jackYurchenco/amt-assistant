@@ -6,7 +6,7 @@ import { Letter } from "../../domain/letter.entity";
 @Injectable()
 export class GetLetterUseCase {
   constructor(
-    @Inject('ILetterRepository')
+    @Inject(ILetterRepository)
     private readonly letterRepository: ILetterRepository
   ) {}
 

@@ -3,6 +3,7 @@ import { PrismaModule } from "@amt-assistant/prisma";
 import { CreateLetterUseCase } from "./application/create-letter/create-letter.use-case";
 import { PrismaLetterRepository } from "./infrastructure/prisma-letter.repository";
 import { LettersController } from "./interface/letters.controller";
+import { ILetterRepository } from "./domain/letter.repository.interface";
 
 
 @Module({
@@ -11,7 +12,7 @@ import { LettersController } from "./interface/letters.controller";
   providers: [
     CreateLetterUseCase,
     {
-      provide: 'ILetterRepository',
+      provide: ILetterRepository,
       useClass: PrismaLetterRepository,
     }
   ],

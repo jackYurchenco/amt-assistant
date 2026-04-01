@@ -6,7 +6,7 @@ import { GetLettersByUserIdQuery } from "./get-letters-by-user-id.query";
 @Injectable()
 export class GetLettersByUserIdUseCase {
   constructor(
-    @Inject('ILetterRepository')
+    @Inject(ILetterRepository)
     private readonly letterRepository: ILetterRepository
   ) {}
 

@@ -7,7 +7,7 @@ import { CreateLetterCommand } from "./create-letter.command";
 @Injectable()
 export class CreateLetterUseCase {
   constructor(
-    @Inject('ILetterRepository')
+    @Inject(ILetterRepository)
     private readonly letterRepository: ILetterRepository
   ) {}
 
