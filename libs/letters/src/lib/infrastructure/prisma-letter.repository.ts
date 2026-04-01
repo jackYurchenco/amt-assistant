@@ -47,8 +47,11 @@ export class PrismaLetterRepository implements ILetterRepository {
     });
   }
 
-  async findAll(): Promise<Array<Letter>> {
-    const records = await this.prismaService.letter.findMany();
+  async findByUserId(userId: string): Promise<Array<Letter>> {
+    const records = await this.prismaService.letter.findMany({
+      where: { userId },
+      orderBy: { createdAt: 'desc' },
+    });
     return records.map(
       (raw) =>
         Letter.restore({
