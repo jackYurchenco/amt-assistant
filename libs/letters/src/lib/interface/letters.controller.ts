@@ -1,4 +1,4 @@
-import { BadRequestException, Body, Controller, Get, NotFoundException, Param, Post, Query } from "@nestjs/common";
+import { Body, Controller, Get, NotFoundException, Param, Post, Query } from "@nestjs/common";
 import { CreateLetterUseCase } from "../application/create-letter/create-letter.use-case";
 import { ApiOperation, ApiResponse } from "@nestjs/swagger";
 import { CreateLetterDto } from "./dto/create-letter.dto";
@@ -35,14 +35,8 @@ export class LettersController {
       mockUserId,
       dto.sender
     )
-
-    try {
-      return await this.createLetterUseCase.execute(command);
-    } catch (error) {
-      throw new BadRequestException(error, 'Failed to create letter');
-    }
+    return await this.createLetterUseCase.execute(command);
   }
-
 
   @Get(':id')
   @ApiOperation({ summary: 'Get a specific letter by ID' })
