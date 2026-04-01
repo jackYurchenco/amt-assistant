@@ -1,22 +1,25 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { IsNotEmpty, IsString, MinLength } from "class-validator";
+import { IsNotEmpty, IsOptional, IsString, MaxLength, MinLength } from "class-validator";
 
 
 export class CreateLetterDto {
   @ApiProperty({
-    example: "Rechnung für Strom",
-    description: "The subject or title of the letter"
+    example: 'Rechnung für Strom',
+    description: 'The subject or title of the letter',
   })
   @IsString()
   @IsNotEmpty()
   @MinLength(3)
-  title!: string;
+  @MaxLength(100)
+  readonly title!: string;
 
   @ApiProperty({
-    example: "Stadtwerke Coburg",
-    description: "The person or organization who sent the letter"
+    example: 'Stadtwerke Coburg',
+    description: 'The person or organization who sent the letter',
+    required: false,
   })
   @IsString()
+  @IsOptional()
   @IsNotEmpty()
-  sender?: string;
+  readonly sender?: string;
 }
