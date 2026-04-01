@@ -2,7 +2,7 @@ import { Body, Controller, Post } from "@nestjs/common";
 import { CreateLetterUseCase } from "../application/create-letter/create-letter.use-case";
 import { ApiOperation, ApiResponse } from "@nestjs/swagger";
 import { CreateLetterDto } from "./dto/create-letter.dto";
-import { CreateLetterCommand } from "../application/create-letter/create-letter.comman";
+import { CreateLetterCommand } from "../application/create-letter/create-letter.command";
 
 @Controller('letters')
 export class LettersController {

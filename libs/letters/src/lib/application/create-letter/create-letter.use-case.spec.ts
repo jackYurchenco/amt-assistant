@@ -1,7 +1,7 @@
 import { CreateLetterUseCase } from "./create-letter.use-case";
 import { ILetterRepository } from "../../domain/letter.repository.interface";
 import { mock, MockProxy } from "jest-mock-extended";
-import { CreateLetterCommand } from "./create-letter.comman";
+import { CreateLetterCommand } from "./create-letter.command";
 
 describe('CreateLetterUseCase', () => {
   let useCase: CreateLetterUseCase;

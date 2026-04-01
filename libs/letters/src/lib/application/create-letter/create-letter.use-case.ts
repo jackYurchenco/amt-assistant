@@ -1,7 +1,7 @@
 import { Inject, Injectable } from "@nestjs/common";
 import { ILetterRepository } from "../../domain/letter.repository.interface";
 import { Letter } from "../../domain/letter.entity";
-import { CreateLetterCommand } from "./create-letter.comman";
+import { CreateLetterCommand } from "./create-letter.command";
 
 
 @Injectable()
