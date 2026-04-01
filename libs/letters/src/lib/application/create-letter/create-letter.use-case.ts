@@ -11,11 +11,12 @@ export class CreateLetterUseCase {
     private readonly letterRepository: ILetterRepository
   ) {}
 
-  async execute(command: CreateLetterCommand): Promise<Letter> {
+  async execute(command: CreateLetterCommand) {
 
     const letter = Letter.create({
       userId: command.userId,
       title: command.title,
+      sender: command.sender ?? null
     });
 
     await this.letterRepository.save(letter);

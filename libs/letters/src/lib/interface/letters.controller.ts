@@ -1,4 +1,4 @@
-import { Body, Controller, Get, NotFoundException, Param, Post } from "@nestjs/common";
+import { BadRequestException, Body, Controller, Get, NotFoundException, Param, Post } from "@nestjs/common";
 import { CreateLetterUseCase } from "../application/create-letter/create-letter.use-case";
 import { ApiOperation, ApiResponse } from "@nestjs/swagger";
 import { CreateLetterDto } from "./dto/create-letter.dto";
@@ -23,15 +23,20 @@ export class LettersController {
     status: 400,
     description: 'Invalid input data.'
   })
-  async create(@Body() createLetterDto: CreateLetterDto) {
-    const userId = 'userId' //TODO get userId from Auth
+  async create(@Body() dto: CreateLetterDto) {
+    const mockUserId = '550e8400-e29b-41d4-a716-446655440000';
+
     const command = new CreateLetterCommand(
-      createLetterDto.title,
-      userId,
-      createLetterDto.sender
+      dto.title,
+      mockUserId,
+      dto.sender
     )
 
-    return await this.createLetterUseCase.execute(command);
+    try {
+      return await this.createLetterUseCase.execute(command);
+    } catch (error) {
+      throw new BadRequestException(error, 'Failed to create letter');
+    }
   }
 
 

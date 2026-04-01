@@ -24,7 +24,8 @@ export class Letter {
 
   static create(props: {
     userId: string;
-    title: string
+    title: string;
+    sender?: string | null;
   }): Letter {
     const now = new Date();
     return new Letter(
@@ -34,7 +35,7 @@ export class Letter {
       LetterStatus.PENDING,
       now,
       now,
-      null,
+      props.sender,
       null
     )
   }

@@ -8,7 +8,7 @@ export class PrismaLetterRepository implements ILetterRepository {
   constructor(private readonly prismaService: PrismaService) {}
 
   async save(letter: Letter): Promise<void> {
-    await this.prismaService.letter.upsert({
+     await this.prismaService.letter.upsert({
       where: { id: letter.id },
       update: {
         title: letter.title,
