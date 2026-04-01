@@ -47,7 +47,7 @@ export class PrismaLetterRepository implements ILetterRepository {
     });
   }
 
-  async findByUserId(userId: string): Promise<Array<Letter>> {
+  async findByUserId(userId: string): Promise<Letter[]> {
     const records = await this.prismaService.letter.findMany({
       where: { userId },
       orderBy: { createdAt: 'desc' },

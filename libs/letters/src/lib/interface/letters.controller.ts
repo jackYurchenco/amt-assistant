@@ -65,7 +65,7 @@ export class LettersController {
     description: 'List of letters retrieved successfully.',
     type: [Letter]
   })
-  async findByUser(@Query() dto: GetLettersByUserIdDto): Promise<Array<Letter>> {
+  async findByUser(@Query() dto: GetLettersByUserIdDto): Promise<Letter[]> {
     return this.getLettersByUserIdUseCase.execute({ userId: dto.userId });
   }
 }

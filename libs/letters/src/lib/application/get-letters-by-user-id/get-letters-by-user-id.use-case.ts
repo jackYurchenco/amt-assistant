@@ -10,7 +10,7 @@ export class GetLettersByUserIdUseCase {
     private readonly letterRepository: ILetterRepository
   ) {}
 
-  async execute(query: GetLettersByUserIdQuery): Promise<Array<Letter>> {
+  async execute(query: GetLettersByUserIdQuery): Promise<Letter[]> {
     return this.letterRepository.findByUserId(query.userId);
   }
 }

@@ -5,5 +5,5 @@ export const ILetterRepository = Symbol('ILetterRepository');
 export interface ILetterRepository {
   save(letter: Letter): Promise<void>;
   findById(id: string): Promise<Letter | null>;
-  findByUserId(userId: string): Promise<Array<Letter>>;
+  findByUserId(userId: string): Promise<Letter[]>;
 }
