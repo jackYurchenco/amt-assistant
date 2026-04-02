@@ -13,7 +13,6 @@ import { GetAllUsersUseCase } from "./application/get-all-users/get-all-users.us
     },
     GetUserByIdUseCase,
     GetAllUsersUseCase
-  ],
-  exports: [GetUserByIdUseCase, GetAllUsersUseCase],
+  ]
 })
 export class UsersModule {}
