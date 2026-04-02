@@ -1,5 +1,7 @@
 import { User } from "./user.entity";
 
+export const IUserRepository = Symbol('IUserRepository');
+
 export interface IUserRepository {
   save(user: User): Promise<void>;
   findById(id: string): Promise<User | null>;
