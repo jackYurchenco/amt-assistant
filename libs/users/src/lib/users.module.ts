@@ -5,8 +5,10 @@ import { GetUserByIdUseCase } from "./application/get-user-by-id/get-user-by-id.
 import { GetAllUsersUseCase } from "./application/get-all-users/get-all-users.use-case";
 import { CreateUserUseCase } from "./application/create-user/create-user.use-case";
 import { UsersController } from "./interface/users.controller";
+import { PrismaModule } from '@amt-assistant/prisma';
 
 @Module({
+  imports: [PrismaModule],
   controllers: [UsersController],
   providers: [
     {
