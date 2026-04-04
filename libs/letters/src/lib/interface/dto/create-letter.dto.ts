@@ -1,8 +1,8 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { IsNotEmpty, IsOptional, IsString, MaxLength, MinLength } from "class-validator";
+import { ICreateLetter } from '@amt-assistant/contracts';
 
-
-export class CreateLetterDto {
+export class CreateLetterDto implements ICreateLetter {
   @ApiProperty({
     example: 'Rechnung für Strom',
     description: 'The subject or title of the letter',
