@@ -19,12 +19,6 @@ export class PrismaClientExceptionFilter extends BaseExceptionFilter {
           message: 'A record with this data already exists.',
         });
         break;
-      case 'P2003':
-        response.status(HttpStatus.BAD_REQUEST).json({
-          statusCode: HttpStatus.BAD_REQUEST,
-          message: 'Data integrity violation: the associated record (User) was not found',
-        });
-        break;
       default:
         super.catch(exception, host);
         break;
