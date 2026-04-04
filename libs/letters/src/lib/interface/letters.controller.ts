@@ -1,4 +1,4 @@
-import { Body, Controller, Get, NotFoundException, Param, Post, Query } from "@nestjs/common";
+import { Body, Controller, Get, Param, Post, Query } from "@nestjs/common";
 import { CreateLetterUseCase } from "../application/create-letter/create-letter.use-case";
 import { ApiOperation, ApiResponse } from "@nestjs/swagger";
 import { CreateLetterDto } from "./dto/create-letter.dto";
@@ -43,13 +43,7 @@ export class LettersController {
   @ApiResponse({ status: 200, description: 'Letter found successfully' })
   @ApiResponse({ status: 404, description: 'Letter not found' })
   async findOne(@Param() dto: GetLetterDto): Promise<Letter> {
-    const letter = await this.getLetterByIdUseCase.execute({ id: dto.id });
-
-    if (!letter) {
-      throw new NotFoundException(`Letter with ID ${dto.id} not found`);
-    }
-
-    return letter;
+    return await this.getLetterByIdUseCase.execute({ id: dto.id });
   }
 
   @Get()
