@@ -4,7 +4,7 @@ import { ApiOperation, ApiResponse } from "@nestjs/swagger";
 import { CreateLetterDto } from "./dto/create-letter.dto";
 import { CreateLetterCommand } from "../application/create-letter/create-letter.command";
 import { GetLetterDto } from "./dto/get-letter.dto";
-import { GetLetterUseCase } from "../application/get-letter/get-letter.use-case";
+import { GetLetterByIdUseCase } from "../application/get-letter-by-id/get-letter-by-id.use-case";
 import { GetLettersByUserIdDto } from "./dto/get-letters-by-user-id.dto";
 import { GetLettersByUserIdUseCase } from "../application/get-letters-by-user-id/get-letters-by-user-id.use-case";
 import { Letter } from "../domain/letter.entity";
@@ -13,7 +13,7 @@ import { Letter } from "../domain/letter.entity";
 export class LettersController {
   constructor(
     private readonly createLetterUseCase: CreateLetterUseCase,
-    private readonly getLetterUseCase: GetLetterUseCase,
+    private readonly getLetterByIdUseCase: GetLetterByIdUseCase,
     private readonly getLettersByUserIdUseCase: GetLettersByUserIdUseCase,
   ) {}
 
@@ -43,7 +43,7 @@ export class LettersController {
   @ApiResponse({ status: 200, description: 'Letter found successfully' })
   @ApiResponse({ status: 404, description: 'Letter not found' })
   async findOne(@Param() dto: GetLetterDto): Promise<Letter> {
-    const letter = await this.getLetterUseCase.execute({ id: dto.id });
+    const letter = await this.getLetterByIdUseCase.execute({ id: dto.id });
 
     if (!letter) {
       throw new NotFoundException(`Letter with ID ${dto.id} not found`);

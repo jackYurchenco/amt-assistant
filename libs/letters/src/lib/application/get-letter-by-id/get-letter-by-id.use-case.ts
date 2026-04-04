@@ -1,16 +1,16 @@
 import { Inject, Injectable } from "@nestjs/common";
 import { ILetterRepository } from "../../domain/letter.repository.interface";
-import { GetLetterQuery } from "./get-letter.query";
+import { GetLetterByIdQuery } from "./get-letter-by-id.query";
 import { Letter } from "../../domain/letter.entity";
 
 @Injectable()
-export class GetLetterUseCase {
+export class GetLetterByIdUseCase {
   constructor(
     @Inject(ILetterRepository)
     private readonly letterRepository: ILetterRepository
   ) {}
 
-  async execute(query: GetLetterQuery): Promise<Letter | null> {
+  async execute(query: GetLetterByIdQuery): Promise<Letter | null> {
     return this.letterRepository.findById(query.id);
   }
 }

@@ -1,3 +1,3 @@
-export class GetLetterQuery {
+export class GetLetterByIdQuery {
   constructor(public readonly id: string) {}
 }

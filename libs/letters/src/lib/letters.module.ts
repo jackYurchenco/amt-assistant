@@ -4,7 +4,7 @@ import { CreateLetterUseCase } from "./application/create-letter/create-letter.u
 import { PrismaLetterRepository } from "./infrastructure/prisma-letter.repository";
 import { LettersController } from "./interface/letters.controller";
 import { ILetterRepository } from "./domain/letter.repository.interface";
-import { GetLetterUseCase } from "./application/get-letter/get-letter.use-case";
+import { GetLetterByIdUseCase } from "./application/get-letter-by-id/get-letter-by-id.use-case";
 import { GetLettersByUserIdUseCase } from "./application/get-letters-by-user-id/get-letters-by-user-id.use-case";
 
 
@@ -13,7 +13,7 @@ import { GetLettersByUserIdUseCase } from "./application/get-letters-by-user-id/
   controllers: [LettersController],
   providers: [
     CreateLetterUseCase,
-    GetLetterUseCase,
+    GetLetterByIdUseCase,
     GetLettersByUserIdUseCase,
     {
       provide: ILetterRepository,
