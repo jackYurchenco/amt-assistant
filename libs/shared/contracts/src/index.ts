@@ -1,2 +1,3 @@
-export * from './lib/contracts';
-export * from './lib/create-letter.interface';
+export * from './lib/letter/create-letter.interface';
+export * from './lib/letter/letter.interface';
+export * from './lib/letter/letter-status.enum';
