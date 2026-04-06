@@ -1,11 +1,5 @@
 import { v4 as uuidv4 } from "uuid";
-
-export enum LetterStatus {
-  PENDING = 'PENDING',
-  PROCESSING = 'PROCESSING',
-  COMPLETED = 'COMPLETED',
-  FAILED = 'FAILED',
-}
+import { LetterStatus } from '@amt-assistant/contracts';
 
 export class Letter {
   private constructor(

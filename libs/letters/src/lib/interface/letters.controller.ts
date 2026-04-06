@@ -8,6 +8,8 @@ import { GetLetterByIdUseCase } from "../application/get-letter-by-id/get-letter
 import { GetLettersByUserIdDto } from "./dto/get-letters-by-user-id.dto";
 import { GetLettersByUserIdUseCase } from "../application/get-letters-by-user-id/get-letters-by-user-id.use-case";
 import { Letter } from "../domain/letter.entity";
+import { LetterResponseDto } from './dto/letter-response.dto';
+import { ILetter } from '@amt-assistant/contracts';
 
 @Controller('letters')
 export class LettersController {
@@ -27,7 +29,7 @@ export class LettersController {
     status: 400,
     description: 'Invalid input data.'
   })
-  async create(@Body() dto: CreateLetterDto): Promise<Letter> {
+  async create(@Body() dto: CreateLetterDto): Promise<ILetter> {
     const mockUserId = '550e8400-e29b-41d4-a716-446655440000';
 
     const command = new CreateLetterCommand(
@@ -35,15 +37,19 @@ export class LettersController {
       mockUserId,
       dto.sender
     )
-    return await this.createLetterUseCase.execute(command);
+    const letter: Letter = await this.createLetterUseCase.execute(command);
+
+    return LetterResponseDto.fromEntity(letter);
   }
 
   @Get(':id')
   @ApiOperation({ summary: 'Get a specific letter by ID' })
   @ApiResponse({ status: 200, description: 'Letter found successfully' })
   @ApiResponse({ status: 404, description: 'Letter not found' })
-  async findOne(@Param() dto: GetLetterByIdDto): Promise<Letter> {
-    return await this.getLetterByIdUseCase.execute({ id: dto.id });
+  async findOne(@Param() dto: GetLetterByIdDto): Promise<ILetter> {
+    const letter: Letter = await this.getLetterByIdUseCase.execute({ id: dto.id });
+
+    return  LetterResponseDto.fromEntity(letter);
   }
 
   @Get()
@@ -53,7 +59,9 @@ export class LettersController {
     description: 'List of letters retrieved successfully.',
     type: [Letter]
   })
-  async findByUser(@Query() dto: GetLettersByUserIdDto): Promise<Letter[]> {
-    return this.getLettersByUserIdUseCase.execute({ userId: dto.userId });
+  async findByUser(@Query() dto: GetLettersByUserIdDto): Promise<ILetter[]> {
+    const letters:Letter[] = await this.getLettersByUserIdUseCase.execute({ userId: dto.userId });
+
+    return letters.map(letter => LetterResponseDto.fromEntity(letter));
   }
 }
