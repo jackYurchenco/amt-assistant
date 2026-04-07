@@ -6,3 +6,4 @@ export * from './lib/letter/get-letters-by-user-id.interface'
 
 export * from './lib/user/create-user.interface';
 export * from './lib/user/user.interface';
+export * from './lib/user/get-user-by-id.interface';
