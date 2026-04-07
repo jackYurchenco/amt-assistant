@@ -7,6 +7,8 @@ import { CreateUserDto } from "./dto/create-user.dto";
 import { CreateUserCommand } from "../application/create-user/create-user.command";
 import { GetUserByIdDto } from './dto/get-user-by-id.dto';
 import { User } from '../domain/user.entity';
+import { IUser } from '@amt-assistant/contracts';
+import { UserResponseDto } from './dto/user-response.dto';
 
 @ApiTags('users')
 @Controller('users')
@@ -27,12 +29,13 @@ export class UsersController {
     status: 400,
     description: 'Invalid input data.'
   })
-  async create(@Body() dto: CreateUserDto): Promise<User> {
+  async create(@Body() dto: CreateUserDto): Promise<IUser> {
     const command = new CreateUserCommand(
       dto.email,
       dto.passwordHash
     );
-    return await this.createUserUseCase.execute(command);
+    const user: User = await this.createUserUseCase.execute(command);
+    return UserResponseDto.fromEntity(user);
   }
 
   @Get()
@@ -42,8 +45,9 @@ export class UsersController {
     description: 'The users have been successfully retrieved.',
     type: [User]
   })
-  async findAll(): Promise<User[]> {
-    return await this.getAllUsersUseCase.execute();
+  async findAll(): Promise<IUser[]> {
+    const users: User[] = await this.getAllUsersUseCase.execute();
+    return users.map(user => UserResponseDto.fromEntity(user));
   }
 
   @Get(':id')
@@ -56,13 +60,13 @@ export class UsersController {
     status: 404,
     description: 'User not found.'
   })
-  async findOne(@Param() dto: GetUserByIdDto): Promise<User> {
+  async findOne(@Param() dto: GetUserByIdDto): Promise<IUser> {
     const user = await this.getUserByIdUseCase.execute({ id : dto.id });
 
     if (!user) {
       throw new NotFoundException(`User with ID ${dto.id} not found`);
     }
 
-    return user;
+    return UserResponseDto.fromEntity(user);
   }
 }

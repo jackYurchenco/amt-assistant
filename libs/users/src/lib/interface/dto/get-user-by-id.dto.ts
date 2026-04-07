@@ -1,7 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsUUID } from 'class-validator';
+import { IGetUserById } from '@amt-assistant/contracts';
 
-export class GetUserByIdDto {
+export class GetUserByIdDto implements IGetUserById {
   @ApiProperty({
     description: 'The unique identifier of the user',
     format: 'uuid',

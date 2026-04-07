@@ -1,7 +1,8 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { IsEmail, IsNotEmpty, IsString, MinLength } from "class-validator";
+import { ICreateUser } from '@amt-assistant/contracts';
 
-export class CreateUserDto {
+export class CreateUserDto implements ICreateUser {
   @ApiProperty({ example: 'user@example.com', description: 'The email of the user' })
   @IsEmail()
   @IsNotEmpty()
