@@ -47,6 +47,24 @@ export class PrismaUserRepository implements IUserRepository {
     });
   }
 
+  async findByEmail(email:string): Promise<User | null> {
+    const raw = await this.prismaService.user.findUnique({
+      where: { email },
+    });
+
+    if (!raw) return null;
+
+    return User.restore({
+      id: raw.id,
+      email: raw.email,
+      passwordHash: raw.passwordHash,
+      createdAt: raw.createdAt,
+      updatedAt: raw.updatedAt,
+      firstName: raw.firstName,
+      lastName: raw.lastName,
+    });
+  }
+
   async findAll(): Promise<User[]> {
     const records = await this.prismaService.user.findMany();
     return records.map(
