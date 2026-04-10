@@ -1,0 +1,9 @@
+{
+  "name": "util-crypto",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/shared/util-crypto/src",
+  "projectType": "library",
+  "tags": [],
+  "// targets": "to see all targets run: nx show project util-crypto --web",
+  "targets": {}
+}
