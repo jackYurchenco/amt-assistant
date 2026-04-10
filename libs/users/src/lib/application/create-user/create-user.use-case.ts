@@ -1,14 +1,11 @@
 import { User } from "../../domain/user.entity";
-import { Inject, Injectable } from "@nestjs/common";
-import { IUserRepository } from "../../domain/user.repository.interface";
+import { Injectable } from "@nestjs/common";
 import { CreateUserCommand } from "./create-user.command";
+import { UserRepository } from '../../domain/user.repository';
 
 @Injectable()
 export class CreateUserUseCase {
-  constructor(
-    @Inject(IUserRepository)
-    private readonly userRepository: IUserRepository
-  ) {}
+  constructor(private readonly userRepository: UserRepository) {}
 
   async execute(command: CreateUserCommand) {
 
