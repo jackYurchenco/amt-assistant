@@ -1,15 +1,12 @@
-import { Inject, Injectable } from "@nestjs/common";
-import { ILetterRepository } from "../../domain/letter.repository.interface";
+import { Injectable } from "@nestjs/common";
 import { Letter } from "../../domain/letter.entity";
 import { CreateLetterCommand } from "./create-letter.command";
+import { LetterRepository } from '../../domain/letter.repository';
 
 
 @Injectable()
 export class CreateLetterUseCase {
-  constructor(
-    @Inject(ILetterRepository)
-    private readonly letterRepository: ILetterRepository
-  ) {}
+  constructor(private readonly letterRepository: LetterRepository) {}
 
   async execute(command: CreateLetterCommand) {
 

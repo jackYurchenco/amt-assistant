@@ -1,14 +1,11 @@
-import { Inject, Injectable, NotFoundException } from "@nestjs/common";
-import { ILetterRepository } from "../../domain/letter.repository.interface";
+import { Injectable, NotFoundException } from "@nestjs/common";
 import { GetLetterByIdQuery } from "./get-letter-by-id.query";
 import { Letter } from "../../domain/letter.entity";
+import { LetterRepository } from '../../domain/letter.repository';
 
 @Injectable()
 export class GetLetterByIdUseCase {
-  constructor(
-    @Inject(ILetterRepository)
-    private readonly letterRepository: ILetterRepository
-  ) {}
+  constructor(private readonly letterRepository: LetterRepository) {}
 
   async execute(query: GetLetterByIdQuery): Promise<Letter> {
     const letter = await this.letterRepository.findById(query.id);

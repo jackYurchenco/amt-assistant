@@ -3,9 +3,9 @@ import { PrismaModule } from "@amt-assistant/prisma";
 import { CreateLetterUseCase } from "./application/create-letter/create-letter.use-case";
 import { PrismaLetterRepository } from "./infrastructure/prisma-letter.repository";
 import { LettersController } from "./interface/letters.controller";
-import { ILetterRepository } from "./domain/letter.repository.interface";
 import { GetLetterByIdUseCase } from "./application/get-letter-by-id/get-letter-by-id.use-case";
 import { GetLettersByUserIdUseCase } from "./application/get-letters-by-user-id/get-letters-by-user-id.use-case";
+import { LetterRepository } from './domain/letter.repository';
 
 
 @Module({
@@ -16,7 +16,7 @@ import { GetLettersByUserIdUseCase } from "./application/get-letters-by-user-id/
     GetLetterByIdUseCase,
     GetLettersByUserIdUseCase,
     {
-      provide: ILetterRepository,
+      provide: LetterRepository,
       useClass: PrismaLetterRepository,
     }
   ]

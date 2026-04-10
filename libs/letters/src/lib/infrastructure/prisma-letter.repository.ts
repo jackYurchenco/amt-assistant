@@ -1,12 +1,12 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from "@amt-assistant/prisma";
-import { ILetterRepository } from "../domain/letter.repository.interface";
 import { Letter } from "../domain/letter.entity";
 import { Prisma } from '@prisma/client'
 import { LetterStatus } from '@amt-assistant/contracts';
+import { LetterRepository } from '../domain/letter.repository';
 
 @Injectable()
-export class PrismaLetterRepository implements ILetterRepository {
+export class PrismaLetterRepository implements LetterRepository {
   constructor(private readonly prismaService: PrismaService) {}
 
   async save(letter: Letter): Promise<void> {
