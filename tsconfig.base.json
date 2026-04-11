@@ -20,7 +20,8 @@
       "@amt-assistant/auth": ["libs/auth/src/index.ts"],
       "@amt-assistant/users": ["libs/users/src/index.ts"],
       "@amt-assistant/contracts": ["libs/shared/contracts/src/index.ts"],
-      "@amt-assistant/util-crypto": ["libs/shared/util-crypto/src/index.ts"]
+      "@amt-assistant/util-crypto": ["libs/shared/util-crypto/src/index.ts"],
+      "@amt-assistant/util-token": ["libs/shared/util-token/src/index.ts"]
     },
     "strict": true,
     "noUnusedLocals": true,
