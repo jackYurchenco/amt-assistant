@@ -7,9 +7,13 @@ import { UsersController } from "./interface/users.controller";
 import { PrismaModule } from '@amt-assistant/prisma';
 import { UserRepository } from './domain/user.repository';
 import { GetUserByEmailUseCase } from './application/get-user-by-email/get-user-by-email.use-case';
+import { UtilCryptoModule } from '@amt-assistant/util-crypto';
 
 @Module({
-  imports: [PrismaModule],
+  imports: [
+    PrismaModule,
+    UtilCryptoModule
+  ],
   controllers: [UsersController],
   providers: [
     {
