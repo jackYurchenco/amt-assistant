@@ -1,8 +1,7 @@
+import { IUser } from '../user/user.interface';
+
 export interface ILoginResponse {
   accessToken: string;
   refreshToken: string;
-  user: {
-    id: string;
-    email: string;
-  };
+  user: Pick<IUser, 'id' | 'email'>;
 }

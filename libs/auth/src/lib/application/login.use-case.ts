@@ -3,6 +3,7 @@ import { LoginCommand } from './login.command';
 import { InternalServerErrorException, UnauthorizedException } from '@nestjs/common';
 import { HasherService } from '@amt-assistant/util-crypto';
 import { IAuthTokens, TokenService } from '@amt-assistant/util-token';
+import { ILoginResponse } from '@amt-assistant/contracts';
 
 export class LoginUseCase {
   constructor(
@@ -11,7 +12,7 @@ export class LoginUseCase {
     private readonly tokenService: TokenService
   ) {}
 
-  async execute(command: LoginCommand) {
+  async execute(command: LoginCommand): Promise<ILoginResponse> {
     const user = await this.getUserByEmailUseCase.execute({ email: command.email });
 
     if (!user) {
