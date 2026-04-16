@@ -8,7 +8,9 @@ import { UtilTokenModule } from '@amt-assistant/util-token';
     UtilCryptoModule,
     UtilTokenModule
   ],
-  controllers: [AuthController],
+  controllers: [
+    AuthController
+  ],
   providers: [],
   exports: [],
 })
