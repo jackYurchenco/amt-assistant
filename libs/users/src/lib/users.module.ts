@@ -20,6 +20,10 @@ import { GetUserByEmailUseCase } from './application/get-user-by-email/get-user-
     GetUserByIdUseCase,
     GetAllUsersUseCase,
     CreateUserUseCase
+  ],
+  exports: [
+    UserRepository,
+    GetUserByEmailUseCase
   ]
 })
 export class UsersModule {}
