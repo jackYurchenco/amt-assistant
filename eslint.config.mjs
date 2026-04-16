@@ -39,7 +39,7 @@ export default [
     // Override or add rules here
     rules: {
       '@typescript-eslint/no-explicit-any': 'warn',
-      '@typescript-eslint/explicit-function-return-type': 'warn',
+      '@typescript-eslint/explicit-function-return-type': 'error',
       '@typescript-eslint/no-unused-vars': 'warn',
       '@typescript-eslint/no-shadow': 'warn',
       'no-console': 'warn',

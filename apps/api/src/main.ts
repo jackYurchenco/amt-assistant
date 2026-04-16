@@ -8,7 +8,7 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app/app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
-async function bootstrap() {
+async function bootstrap(): Promise<void> {
   const globalPrefix = 'api/v1';
   const app = await NestFactory.create(AppModule);
   const port = process.env['PORT'] || 3000;

@@ -43,7 +43,7 @@ export class Letter {
     updatedAt: Date;
     sender?: string | null;
     analysisResult?: string | null;
-  }){
+  }): Letter {
     return new Letter(
       props.id,
       props.userId,

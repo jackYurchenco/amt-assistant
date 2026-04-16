@@ -7,7 +7,7 @@ import { LetterRepository } from '../../domain/letter.repository';
 export class CreateLetterUseCase {
   constructor(private readonly letterRepository: LetterRepository) {}
 
-  async execute(command: CreateLetterCommand) {
+  async execute(command: CreateLetterCommand): Promise<Letter> {
 
     const letter = Letter.create({
       userId: command.userId,

@@ -8,7 +8,7 @@ export class PrismaClientExceptionFilter extends BaseExceptionFilter {
   constructor(httpAdapterHost: HttpAdapterHost) {
     super(httpAdapterHost.httpAdapter);
   }
-  override catch(exception: Prisma.PrismaClientKnownRequestError, host: ArgumentsHost) {
+  override catch(exception: Prisma.PrismaClientKnownRequestError, host: ArgumentsHost): void {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse<Response>();
 
