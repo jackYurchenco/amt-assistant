@@ -1,23 +1,25 @@
 import { Body, Controller, Post } from '@nestjs/common';
-import { ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { ILoginResponse } from '@amt-assistant/contracts';
 import { LoginDto } from './dto/login.dto';
 import { LoginUseCase } from '../application/login.use-case';
 import { LoginResponseDto } from './dto/login-response.dto';
 
 @Controller('auth')
+@ApiTags('auth')
 export class AuthController {
   constructor(private readonly loginUseCase: LoginUseCase) {}
 
   @Post('login')
-  @ApiOperation({ summary: 'Create a new letter' })
+  @ApiOperation({ summary: 'User authentication' })
   @ApiResponse({
     status: 201,
-    description: 'The letter has been successfully created.'
+    description: 'User successfully logged in.',
+    type: LoginResponseDto
   })
   @ApiResponse({
-    status: 400,
-    description: 'Invalid input data.'
+    status: 401,
+    description: 'Invalid credentials.'
   })
   async login(@Body() dto: LoginDto): Promise<ILoginResponse> {
 
