@@ -1,6 +1,6 @@
-import { CreateLetterUseCase } from "./create-letter.use-case";
-import { mock, MockProxy } from "jest-mock-extended";
-import { CreateLetterCommand } from "./create-letter.command";
+import { CreateLetterUseCase } from './create-letter.use-case';
+import { mock, MockProxy } from 'jest-mock-extended';
+import { CreateLetterCommand } from './create-letter.command';
 import { LetterRepository } from '../../domain/letter.repository';
 
 describe('CreateLetterUseCase', () => {
@@ -15,9 +15,9 @@ describe('CreateLetterUseCase', () => {
 
   it('should successfully create a letter and call repository.save', async () => {
     const command = new CreateLetterCommand(
-      "Test Letter",
-      "Test UserID",
-      "Test Sender"
+      'Test Letter',
+      'Test UserID',
+      'Test Sender',
     );
     const result = await useCase.execute(command);
 

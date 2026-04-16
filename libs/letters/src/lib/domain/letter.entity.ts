@@ -1,4 +1,4 @@
-import { v4 as uuidv4 } from "uuid";
+import { v4 as uuidv4 } from 'uuid';
 import { LetterStatus } from '@amt-assistant/contracts';
 
 export class Letter {
@@ -12,8 +12,8 @@ export class Letter {
     public readonly sender?: string | null,
     public readonly analysisResult?: string | null,
   ) {
-    if (!userId) throw new Error('Letter must belong to a user');
-    if (!title) throw new Error('Letter title cannot be empty');
+    if (!userId) {throw new Error('Letter must belong to a user');}
+    if (!title) {throw new Error('Letter title cannot be empty');}
   }
 
   static create(props: {
@@ -30,8 +30,8 @@ export class Letter {
       now,
       now,
       props.sender,
-      null
-    )
+      null,
+    );
   }
 
   static restore(props: {
@@ -52,7 +52,7 @@ export class Letter {
       props.createdAt,
       props.updatedAt,
       props.sender,
-      props.analysisResult
+      props.analysisResult,
     );
   }
 }

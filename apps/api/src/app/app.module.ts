@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
-import { PrismaModule } from "@amt-assistant/prisma";
-import { LettersModule } from "@amt-assistant/letters";
-import { UsersModule } from "@amt-assistant/users";
+import { PrismaModule } from '@amt-assistant/prisma';
+import { LettersModule } from '@amt-assistant/letters';
+import { UsersModule } from '@amt-assistant/users';
 import { AuthModule } from '@amt-assistant/auth';
 
 @Module({
@@ -9,7 +9,7 @@ import { AuthModule } from '@amt-assistant/auth';
     PrismaModule,
     AuthModule,
     LettersModule,
-    UsersModule
+    UsersModule,
   ],
   controllers: [],
   providers: [],

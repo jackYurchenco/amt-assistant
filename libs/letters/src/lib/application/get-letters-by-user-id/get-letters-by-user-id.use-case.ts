@@ -1,6 +1,6 @@
-import { Injectable } from "@nestjs/common";
-import { Letter } from "../../domain/letter.entity";
-import { GetLettersByUserIdQuery } from "./get-letters-by-user-id.query";
+import { Injectable } from '@nestjs/common';
+import { Letter } from '../../domain/letter.entity';
+import { GetLettersByUserIdQuery } from './get-letters-by-user-id.query';
 import { LetterRepository } from '../../domain/letter.repository';
 
 @Injectable()

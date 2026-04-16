@@ -15,11 +15,11 @@ export class AuthController {
   @ApiResponse({
     status: 201,
     description: 'User successfully logged in.',
-    type: LoginResponseDto
+    type: LoginResponseDto,
   })
   @ApiResponse({
     status: 401,
-    description: 'Invalid credentials.'
+    description: 'Invalid credentials.',
   })
   async login(@Body() dto: LoginDto): Promise<ILoginResponse> {
 

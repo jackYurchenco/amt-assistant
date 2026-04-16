@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
-import { PrismaService } from "./prisma.service";
-import { APP_FILTER } from "@nestjs/core";
-import { PrismaClientExceptionFilter } from "./prisma-client-exception.filter";
+import { PrismaService } from './prisma.service';
+import { APP_FILTER } from '@nestjs/core';
+import { PrismaClientExceptionFilter } from './prisma-client-exception.filter';
 
 @Module({
   controllers: [],

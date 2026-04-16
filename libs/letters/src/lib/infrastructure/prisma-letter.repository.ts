@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { PrismaService } from "@amt-assistant/prisma";
-import { Letter } from "../domain/letter.entity";
-import { Prisma } from '@prisma/client'
+import { PrismaService } from '@amt-assistant/prisma';
+import { Letter } from '../domain/letter.entity';
+import { Prisma } from '@prisma/client';
 import { LetterStatus } from '@amt-assistant/contracts';
 import { LetterRepository } from '../domain/letter.repository';
 
@@ -45,7 +45,7 @@ export class PrismaLetterRepository implements LetterRepository {
       where: { id },
     });
 
-    if (!raw) return null;
+    if (!raw) {return null;}
 
     return Letter.restore({
       id: raw.id,
@@ -75,7 +75,7 @@ export class PrismaLetterRepository implements LetterRepository {
           updatedAt: raw.updatedAt,
           sender: raw.sender,
           analysisResult: raw.analysisResult,
-        })
+        }),
     );
   }
 }

@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
-import { PrismaUserRepository } from "./infrastructure/prisma-user.repository";
-import { GetUserByIdUseCase } from "./application/get-user-by-id/get-user-by-id.use-case";
-import { GetAllUsersUseCase } from "./application/get-all-users/get-all-users.use-case";
-import { CreateUserUseCase } from "./application/create-user/create-user.use-case";
-import { UsersController } from "./interface/users.controller";
+import { PrismaUserRepository } from './infrastructure/prisma-user.repository';
+import { GetUserByIdUseCase } from './application/get-user-by-id/get-user-by-id.use-case';
+import { GetAllUsersUseCase } from './application/get-all-users/get-all-users.use-case';
+import { CreateUserUseCase } from './application/create-user/create-user.use-case';
+import { UsersController } from './interface/users.controller';
 import { PrismaModule } from '@amt-assistant/prisma';
 import { UserRepository } from './domain/user.repository';
 import { GetUserByEmailUseCase } from './application/get-user-by-email/get-user-by-email.use-case';
@@ -12,7 +12,7 @@ import { UtilCryptoModule } from '@amt-assistant/util-crypto';
 @Module({
   imports: [
     PrismaModule,
-    UtilCryptoModule
+    UtilCryptoModule,
   ],
   controllers: [UsersController],
   providers: [
@@ -23,11 +23,11 @@ import { UtilCryptoModule } from '@amt-assistant/util-crypto';
     GetUserByEmailUseCase,
     GetUserByIdUseCase,
     GetAllUsersUseCase,
-    CreateUserUseCase
+    CreateUserUseCase,
   ],
   exports: [
     UserRepository,
-    GetUserByEmailUseCase
-  ]
+    GetUserByEmailUseCase,
+  ],
 })
 export class UsersModule {}

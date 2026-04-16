@@ -1,11 +1,11 @@
-import { ApiProperty } from "@nestjs/swagger";
-import { IsNotEmpty, IsUUID } from "class-validator";
+import { ApiProperty } from '@nestjs/swagger';
+import { IsNotEmpty, IsUUID } from 'class-validator';
 import { IGetLetterByIdInterface } from '@amt-assistant/contracts';
 
 export class GetLetterByIdDto implements IGetLetterByIdInterface {
   @ApiProperty({
-    example: "550e8400-e29b-41d4-a716-446655440000",
-    description: "The unique identifier of the letter"
+    example: '550e8400-e29b-41d4-a716-446655440000',
+    description: 'The unique identifier of the letter',
   })
   @IsUUID(4)
   @IsNotEmpty()

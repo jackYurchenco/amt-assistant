@@ -1,6 +1,6 @@
-import { Injectable } from "@nestjs/common";
-import { PrismaService } from "@amt-assistant/prisma";
-import { User } from "../domain/user.entity";
+import { Injectable } from '@nestjs/common';
+import { PrismaService } from '@amt-assistant/prisma';
+import { User } from '../domain/user.entity';
 import { UserRepository } from '../domain/user.repository';
 
 @Injectable()
@@ -34,7 +34,7 @@ export class PrismaUserRepository implements UserRepository {
       where: { id },
     });
 
-    if (!raw) return null;
+    if (!raw) {return null;}
 
     return User.restore({
       id: raw.id,
@@ -52,7 +52,7 @@ export class PrismaUserRepository implements UserRepository {
       where: { email },
     });
 
-    if (!raw) return null;
+    if (!raw) {return null;}
 
     return User.restore({
       id: raw.id,
@@ -77,7 +77,7 @@ export class PrismaUserRepository implements UserRepository {
           updatedAt: raw.updatedAt,
           firstName: raw.firstName,
           lastName: raw.lastName,
-        })
+        }),
     );
   }
 }

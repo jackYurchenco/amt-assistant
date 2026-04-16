@@ -1,4 +1,4 @@
-import { Letter } from "./letter.entity";
+import { Letter } from './letter.entity';
 
 export abstract class LetterRepository {
   abstract save(letter: Letter): Promise<void>;

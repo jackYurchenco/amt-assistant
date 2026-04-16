@@ -1,6 +1,6 @@
-import { Injectable, NotFoundException } from "@nestjs/common";
-import { GetLetterByIdQuery } from "./get-letter-by-id.query";
-import { Letter } from "../../domain/letter.entity";
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { GetLetterByIdQuery } from './get-letter-by-id.query';
+import { Letter } from '../../domain/letter.entity';
 import { LetterRepository } from '../../domain/letter.repository';
 
 @Injectable()

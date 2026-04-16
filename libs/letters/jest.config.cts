@@ -7,5 +7,5 @@ module.exports = {
   },
   moduleFileExtensions: ['ts', 'js', 'html'],
   coverageDirectory: '../../coverage/libs/letters',
-  transformIgnorePatterns: ["node_modules/(?!(uuid)/)"]
+  transformIgnorePatterns: ['node_modules/(?!(uuid)/)'],
 };

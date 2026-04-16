@@ -12,7 +12,7 @@ import { UsersModule } from '@amt-assistant/users';
     UtilTokenModule,
   ],
   controllers: [
-    AuthController
+    AuthController,
   ],
   providers: [
     LoginUseCase,

@@ -1,13 +1,13 @@
-import { Body, Controller, Get, Param, Post, Query } from "@nestjs/common";
-import { CreateLetterUseCase } from "../application/create-letter/create-letter.use-case";
-import { ApiOperation, ApiResponse } from "@nestjs/swagger";
-import { CreateLetterDto } from "./dto/create-letter.dto";
-import { CreateLetterCommand } from "../application/create-letter/create-letter.command";
-import { GetLetterByIdDto } from "./dto/get-letter-by-id.dto";
-import { GetLetterByIdUseCase } from "../application/get-letter-by-id/get-letter-by-id.use-case";
-import { GetLettersByUserIdDto } from "./dto/get-letters-by-user-id.dto";
-import { GetLettersByUserIdUseCase } from "../application/get-letters-by-user-id/get-letters-by-user-id.use-case";
-import { Letter } from "../domain/letter.entity";
+import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
+import { CreateLetterUseCase } from '../application/create-letter/create-letter.use-case';
+import { ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { CreateLetterDto } from './dto/create-letter.dto';
+import { CreateLetterCommand } from '../application/create-letter/create-letter.command';
+import { GetLetterByIdDto } from './dto/get-letter-by-id.dto';
+import { GetLetterByIdUseCase } from '../application/get-letter-by-id/get-letter-by-id.use-case';
+import { GetLettersByUserIdDto } from './dto/get-letters-by-user-id.dto';
+import { GetLettersByUserIdUseCase } from '../application/get-letters-by-user-id/get-letters-by-user-id.use-case';
+import { Letter } from '../domain/letter.entity';
 import { LetterResponseDto } from './dto/letter-response.dto';
 import { ILetter } from '@amt-assistant/contracts';
 
@@ -23,11 +23,11 @@ export class LettersController {
   @ApiOperation({ summary: 'Create a new letter' })
   @ApiResponse({
     status: 201,
-    description: 'The letter has been successfully created.'
+    description: 'The letter has been successfully created.',
   })
   @ApiResponse({
     status: 400,
-    description: 'Invalid input data.'
+    description: 'Invalid input data.',
   })
   async create(@Body() dto: CreateLetterDto): Promise<ILetter> {
     const mockUserId = '550e8400-e29b-41d4-a716-446655440000';
@@ -35,8 +35,8 @@ export class LettersController {
     const command = new CreateLetterCommand(
       dto.title,
       mockUserId,
-      dto.sender
-    )
+      dto.sender,
+    );
     const letter: Letter = await this.createLetterUseCase.execute(command);
 
     return LetterResponseDto.fromEntity(letter);
@@ -57,7 +57,7 @@ export class LettersController {
   @ApiResponse({
     status: 200,
     description: 'List of letters retrieved successfully.',
-    type: [Letter]
+    type: [Letter],
   })
   async findByUser(@Query() dto: GetLettersByUserIdDto): Promise<ILetter[]> {
     const letters:Letter[] = await this.getLettersByUserIdUseCase.execute({ userId: dto.userId });

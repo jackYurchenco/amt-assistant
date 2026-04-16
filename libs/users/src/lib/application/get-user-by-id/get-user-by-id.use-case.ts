@@ -1,6 +1,6 @@
-import { Injectable } from "@nestjs/common";
-import { GetUserByIdQuery } from "./get-user-by-id.query";
-import { User } from "../../domain/user.entity";
+import { Injectable } from '@nestjs/common';
+import { GetUserByIdQuery } from './get-user-by-id.query';
+import { User } from '../../domain/user.entity';
 import { UserRepository } from '../../domain/user.repository';
 
 @Injectable()

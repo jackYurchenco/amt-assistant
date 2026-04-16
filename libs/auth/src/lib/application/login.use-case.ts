@@ -10,7 +10,7 @@ export class LoginUseCase {
   constructor(
     private readonly getUserByEmailUseCase: GetUserByEmailUseCase,
     private readonly hasherService: HasherService,
-    private readonly tokenService: TokenService
+    private readonly tokenService: TokenService,
   ) {}
 
   async execute(command: LoginCommand): Promise<ILoginResponse> {
@@ -22,7 +22,7 @@ export class LoginUseCase {
 
     const isPasswordValid = await this.hasherService.compare(
       command.password,
-      user.passwordHash
+      user.passwordHash,
     );
 
     if (!isPasswordValid) {
@@ -31,8 +31,8 @@ export class LoginUseCase {
 
     const tokens: IAuthTokens = await this.tokenService.generateTokens({
       userId: user.id,
-      email: user.email
-    })
+      email: user.email,
+    });
 
     if (!tokens) {
       throw new InternalServerErrorException('Failed to generate authentication tokens');
@@ -42,8 +42,8 @@ export class LoginUseCase {
       ...tokens,
       user: {
         id: user.id,
-        email: user.email
-      }
+        email: user.email,
+      },
     };
   }
 }

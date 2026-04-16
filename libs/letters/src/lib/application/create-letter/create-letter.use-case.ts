@@ -1,8 +1,7 @@
-import { Injectable } from "@nestjs/common";
-import { Letter } from "../../domain/letter.entity";
-import { CreateLetterCommand } from "./create-letter.command";
+import { Injectable } from '@nestjs/common';
+import { Letter } from '../../domain/letter.entity';
+import { CreateLetterCommand } from './create-letter.command';
 import { LetterRepository } from '../../domain/letter.repository';
-
 
 @Injectable()
 export class CreateLetterUseCase {
@@ -13,7 +12,7 @@ export class CreateLetterUseCase {
     const letter = Letter.create({
       userId: command.userId,
       title: command.title,
-      sender: command.sender ?? null
+      sender: command.sender ?? null,
     });
 
     await this.letterRepository.save(letter);

@@ -18,7 +18,7 @@ export class LoginResponseDto implements ILoginResponse {
 
   @ApiProperty({
     description: 'Authorized user details',
-    type: LoginUserDto
+    type: LoginUserDto,
   })
   user: LoginUserDto;
 
