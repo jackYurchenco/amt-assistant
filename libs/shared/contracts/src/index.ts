@@ -9,3 +9,4 @@ export * from './lib/user/user.interface';
 export * from './lib/user/get-user-by-id.interface';
 
 export * from './lib/auth/login.interface';
+export * from './lib/auth/login-response.interface';
