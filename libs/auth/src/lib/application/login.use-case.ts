@@ -1,10 +1,11 @@
 import { GetUserByEmailUseCase } from '@amt-assistant/users';
 import { LoginCommand } from './login.command';
-import { InternalServerErrorException, UnauthorizedException } from '@nestjs/common';
+import { Injectable, InternalServerErrorException, UnauthorizedException } from '@nestjs/common';
 import { HasherService } from '@amt-assistant/util-crypto';
 import { IAuthTokens, TokenService } from '@amt-assistant/util-token';
 import { ILoginResponse } from '@amt-assistant/contracts';
 
+@Injectable()
 export class LoginUseCase {
   constructor(
     private readonly getUserByEmailUseCase: GetUserByEmailUseCase,
