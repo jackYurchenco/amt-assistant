@@ -6,6 +6,7 @@ import { CreateUserUseCase } from "./application/create-user/create-user.use-cas
 import { UsersController } from "./interface/users.controller";
 import { PrismaModule } from '@amt-assistant/prisma';
 import { UserRepository } from './domain/user.repository';
+import { GetUserByEmailUseCase } from './application/get-user-by-email/get-user-by-email.use-case';
 
 @Module({
   imports: [PrismaModule],
@@ -15,6 +16,7 @@ import { UserRepository } from './domain/user.repository';
       provide: UserRepository,
       useClass: PrismaUserRepository,
     },
+    GetUserByEmailUseCase,
     GetUserByIdUseCase,
     GetAllUsersUseCase,
     CreateUserUseCase
