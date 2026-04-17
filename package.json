@@ -5,7 +5,9 @@
   "scripts": {
     "lint": "nx run-many -t lint",
     "lint:fix": "nx run-many -t lint --fix",
-    "lint:affected": "nx affected -t lint"
+    "lint:affected": "nx affected -t lint",
+    "test": "nx run-many -t test",
+    "test:affected": "nx affected -t test"
   },
   "private": true,
   "devDependencies": {
