@@ -29,21 +29,21 @@ export class LoginUseCase {
       throw new UnauthorizedException('Invalid credentials');
     }
 
-    const tokens: IAuthTokens = await this.tokenService.generateTokens({
-      userId: user.id,
-      email: user.email,
-    });
+    try {
+      const tokens: IAuthTokens = await this.tokenService.generateTokens({
+        userId: user.id,
+        email: user.email,
+      });
 
-    if (!tokens) {
+      return {
+        ...tokens,
+        user: {
+          id: user.id,
+          email: user.email,
+        },
+      };
+    } catch {
       throw new InternalServerErrorException('Failed to generate authentication tokens');
     }
-
-    return {
-      ...tokens,
-      user: {
-        id: user.id,
-        email: user.email,
-      },
-    };
   }
 }
