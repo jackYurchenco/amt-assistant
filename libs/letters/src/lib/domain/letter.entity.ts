@@ -1,10 +1,11 @@
 import { v4 as uuidv4 } from 'uuid';
 import { LetterStatus } from '@amt-assistant/contracts';
+import { UserId } from '@amt-assistant/domain';
 
 export class Letter {
   private constructor(
     public readonly id: string,
-    public readonly userId: string,
+    public readonly userId: UserId,
     public readonly title: string,
     public readonly status: LetterStatus,
     public readonly createdAt: Date,
@@ -12,7 +13,6 @@ export class Letter {
     public readonly sender?: string | null,
     public readonly analysisResult?: string | null,
   ) {
-    if (!userId) {throw new Error('Letter must belong to a user');}
     if (!title) {throw new Error('Letter title cannot be empty');}
   }
 
@@ -24,7 +24,7 @@ export class Letter {
     const now = new Date();
     return new Letter(
       uuidv4(),
-      props.userId,
+      UserId.create(props.userId),
       props.title,
       LetterStatus.PENDING,
       now,
@@ -46,7 +46,7 @@ export class Letter {
   }): Letter {
     return new Letter(
       props.id,
-      props.userId,
+      UserId.create(props.userId),
       props.title,
       props.status,
       props.createdAt,

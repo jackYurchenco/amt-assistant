@@ -26,7 +26,7 @@ export class PrismaLetterRepository implements LetterRepository {
           sender: letter.sender ?? null,
           analysisResult: letter.analysisResult ?? null,
           createdAt: letter.createdAt,
-          userId: letter.userId,
+          userId: letter.userId.getValue(),
         },
       });
     } catch (error) {
