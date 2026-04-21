@@ -13,7 +13,7 @@ export class LetterResponseDto implements ILetter {
 
   private constructor(letter: Letter) {
     this.id = letter.id;
-    this.userId = letter.userId;
+    this.userId = letter.userId.getValue();
     this.title = letter.title;
     this.status = letter.status as unknown as LetterStatus; // Cast to shared enum
     this.createdAt = letter.createdAt;
