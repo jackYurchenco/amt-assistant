@@ -11,7 +11,7 @@ export class UserResponseDto implements IUser {
   lastName?: string | null;
 
   private constructor(user: User) {
-    this.id = user.id;
+    this.id = user.id.getValue();
     this.email = user.email;
     this.passwordHash = user.passwordHash;
     this.createdAt = user.createdAt;
