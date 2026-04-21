@@ -1,8 +1,8 @@
-import { v4 as uuidv4 } from 'uuid';
+import { UserId } from '@amt-assistant/domain';
 
 export class User {
   private constructor(
-    public readonly id: string,
+    public readonly id: UserId,
     public readonly email: string,
     public readonly passwordHash: string,
     public readonly createdAt: Date,
@@ -20,7 +20,7 @@ export class User {
   }): User {
     const now = new Date();
     return new User(
-      uuidv4(),
+      UserId.generate(),
       props.email,
       props.passwordHash,
       now,
@@ -40,7 +40,7 @@ export class User {
     lastName: string | null,
   }): User {
     return new User(
-      props.id,
+      UserId.create(props.id),
       props.email,
       props.passwordHash,
       props.createdAt,
