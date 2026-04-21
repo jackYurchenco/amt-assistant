@@ -9,7 +9,7 @@ export class PrismaUserRepository implements UserRepository {
 
   async save(user: User): Promise<void> {
     await this.prismaService.user.upsert({
-      where: { id: user.id },
+      where: { id: user.id.getValue() },
       update: {
         email: user.email,
         passwordHash: user.passwordHash,
@@ -18,7 +18,7 @@ export class PrismaUserRepository implements UserRepository {
         updatedAt: user.updatedAt,
       },
       create: {
-        id: user.id,
+        id: user.id.getValue(),
         email: user.email,
         passwordHash: user.passwordHash,
         firstName: user.firstName ?? null,
