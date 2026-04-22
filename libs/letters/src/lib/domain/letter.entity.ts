@@ -1,10 +1,9 @@
-import { v4 as uuidv4 } from 'uuid';
 import { LetterStatus } from '@amt-assistant/contracts';
-import { UserId } from '@amt-assistant/domain';
+import { LetterId, UserId } from '@amt-assistant/domain';
 
 export class Letter {
   private constructor(
-    public readonly id: string,
+    public readonly id: LetterId,
     public readonly userId: UserId,
     public readonly title: string,
     public readonly status: LetterStatus,
@@ -23,7 +22,7 @@ export class Letter {
   }): Letter {
     const now = new Date();
     return new Letter(
-      uuidv4(),
+      LetterId.generate(),
       UserId.create(props.userId),
       props.title,
       LetterStatus.PENDING,
@@ -45,7 +44,7 @@ export class Letter {
     analysisResult?: string | null;
   }): Letter {
     return new Letter(
-      props.id,
+      LetterId.create(props.id),
       UserId.create(props.userId),
       props.title,
       props.status,

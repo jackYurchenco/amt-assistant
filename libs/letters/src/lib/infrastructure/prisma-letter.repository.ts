@@ -12,7 +12,7 @@ export class PrismaLetterRepository implements LetterRepository {
   async save(letter: Letter): Promise<void> {
     try {
       await this.prismaService.letter.upsert({
-        where: { id: letter.id },
+        where: { id: letter.id.getValue() },
         update: {
           title: letter.title,
           status: letter.status,
@@ -20,7 +20,7 @@ export class PrismaLetterRepository implements LetterRepository {
           analysisResult: letter.analysisResult ?? null,
         },
         create: {
-          id: letter.id,
+          id: letter.id.getValue(),
           title: letter.title,
           status: letter.status,
           sender: letter.sender ?? null,
