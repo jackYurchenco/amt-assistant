@@ -31,14 +31,14 @@ export class LoginUseCase {
 
     try {
       const tokens: IAuthTokens = await this.tokenService.generateTokens({
-        userId: user.id,
+        userId: user.id.getValue(),
         email: user.email,
       });
 
       return {
         ...tokens,
         user: {
-          id: user.id,
+          id: user.id.getValue(),
           email: user.email,
         },
       };
