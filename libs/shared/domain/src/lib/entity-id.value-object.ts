@@ -1,6 +1,8 @@
 import { v4 as uuidv4, validate } from 'uuid';
 
-export abstract class EntityId {
+export abstract class EntityId<T extends string> {
+  readonly __brand!: T;
+
   protected constructor(protected readonly value: string) {
     this.validate(value);
   }
@@ -23,7 +25,7 @@ export abstract class EntityId {
     return this.value;
   }
 
-  public equals(other: EntityId | null | undefined): boolean {
-    return this.value === other?.getValue();
+  public equals(other: EntityId<T> | null | undefined): boolean {
+    return !!other && this.value === other.getValue();
   }
 }
