@@ -1,29 +1,11 @@
-import { v4 as uuidv4, validate } from 'uuid';
+import { EntityId } from './entity-id.value-object';
 
-export class UserId {
-  private constructor(private readonly value: string) {}
-
+export class UserId extends EntityId {
   static create(id: string): UserId {
-    if (!id) {
-      throw new Error('UserId cannot be empty');
-    }
-
-    if (!validate(id)) {
-      throw new Error(`Invalid UserId format: ${id}. Expected UUID v4.`);
-    }
-
     return new UserId(id);
   }
 
   static generate(): UserId {
-    return new UserId(uuidv4());
-  }
-
-  getValue(): string {
-    return this.value;
-  }
-
-  equals(other: UserId | null | undefined): boolean {
-    return this.value === other?.getValue();
+    return new UserId(this.generateValue());
   }
 }

@@ -1,4 +1,4 @@
-import { validate } from 'uuid';
+import { v4 as uuidv4, validate } from 'uuid';
 
 export abstract class EntityId {
   protected constructor(protected readonly value: string) {
@@ -13,6 +13,10 @@ export abstract class EntityId {
     if (!validate(id)) {
       throw new Error(`Invalid UserId format: ${id}. Expected UUID v4.`);
     }
+  }
+
+  protected static generateValue(): string {
+    return uuidv4();
   }
 
   public getValue(): string {
