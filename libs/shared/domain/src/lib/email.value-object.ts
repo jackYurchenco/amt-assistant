@@ -1,5 +1,9 @@
-export class Email {
-  private constructor(private readonly value: string) {}
+import { BaseValueObject } from './base.value-object';
+
+export class Email extends BaseValueObject<string, 'Email'> {
+  private constructor(value: string) {
+    super(value);
+  }
 
   public static create(email: string): Email {
     if (!email) {
@@ -12,13 +16,5 @@ export class Email {
     }
 
     return new Email(email.toLowerCase().trim());
-  }
-
-  public getValue(): string {
-    return this.value;
-  }
-
-  public equals(other: Email | null | undefined): boolean {
-    return !!other && this.value === other.getValue();
   }
 }

@@ -1,11 +1,15 @@
 import { EntityId } from './entity-id.value-object';
 
 export class LetterId extends EntityId<'LetterId'> {
-  static create(id: string): LetterId {
+  private constructor(id: string) {
+    super(id);
+  }
+
+  public static create(id: string): LetterId {
     return new LetterId(id);
   }
 
-  static generate(): LetterId {
+  public static generate(): LetterId {
     return new LetterId(this.generateValue());
   }
 }
