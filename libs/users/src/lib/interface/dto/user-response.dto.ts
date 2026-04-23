@@ -12,7 +12,7 @@ export class UserResponseDto implements IUser {
 
   private constructor(user: User) {
     this.id = user.id.getValue();
-    this.email = user.email;
+    this.email = user.email.getValue();
     this.passwordHash = user.passwordHash;
     this.createdAt = user.createdAt;
     this.updatedAt = user.updatedAt;
