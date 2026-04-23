@@ -11,7 +11,7 @@ export class PrismaUserRepository implements UserRepository {
     await this.prismaService.user.upsert({
       where: { id: user.id.getValue() },
       update: {
-        email: user.email,
+        email: user.email.getValue(),
         passwordHash: user.passwordHash,
         firstName: user.firstName ?? null,
         lastName: user.lastName ?? null,
@@ -19,7 +19,7 @@ export class PrismaUserRepository implements UserRepository {
       },
       create: {
         id: user.id.getValue(),
-        email: user.email,
+        email: user.email.getValue(),
         passwordHash: user.passwordHash,
         firstName: user.firstName ?? null,
         lastName: user.lastName ?? null,
