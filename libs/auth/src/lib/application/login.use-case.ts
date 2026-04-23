@@ -32,14 +32,14 @@ export class LoginUseCase {
     try {
       const tokens: IAuthTokens = await this.tokenService.generateTokens({
         userId: user.id.getValue(),
-        email: user.email,
+        email: user.email.getValue(),
       });
 
       return {
         ...tokens,
         user: {
           id: user.id.getValue(),
-          email: user.email,
+          email: user.email.getValue(),
         },
       };
     } catch {
