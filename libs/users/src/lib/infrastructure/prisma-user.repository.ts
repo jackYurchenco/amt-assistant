@@ -12,7 +12,7 @@ export class PrismaUserRepository implements UserRepository {
       where: { id: user.id.getValue() },
       update: {
         email: user.email.getValue(),
-        passwordHash: user.passwordHash,
+        passwordHash: user.passwordHash.getValue(),
         firstName: user.firstName ?? null,
         lastName: user.lastName ?? null,
         updatedAt: user.updatedAt,
@@ -20,7 +20,7 @@ export class PrismaUserRepository implements UserRepository {
       create: {
         id: user.id.getValue(),
         email: user.email.getValue(),
-        passwordHash: user.passwordHash,
+        passwordHash: user.passwordHash.getValue(),
         firstName: user.firstName ?? null,
         lastName: user.lastName ?? null,
         createdAt: user.createdAt,
