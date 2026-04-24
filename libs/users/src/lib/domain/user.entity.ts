@@ -1,10 +1,10 @@
-import { Email, UserId } from '@amt-assistant/domain';
+import { Email, PasswordHash, UserId } from '@amt-assistant/domain';
 
 export class User {
   private constructor(
     public readonly id: UserId,
     public readonly email: Email,
-    public readonly passwordHash: string,
+    public readonly passwordHash: PasswordHash,
     public readonly createdAt: Date,
     public readonly updatedAt: Date,
     public readonly firstName?: string | null,
@@ -19,7 +19,7 @@ export class User {
     return new User(
       UserId.generate(),
       Email.create(props.email),
-      props.passwordHash,
+      PasswordHash.create(props.passwordHash),
       now,
       now,
       null,
@@ -39,7 +39,7 @@ export class User {
     return new User(
       UserId.create(props.id),
       Email.create(props.email),
-      props.passwordHash,
+      PasswordHash.create(props.passwordHash),
       props.createdAt,
       props.updatedAt,
       props.firstName,
