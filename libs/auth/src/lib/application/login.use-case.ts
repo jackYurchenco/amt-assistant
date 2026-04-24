@@ -22,7 +22,7 @@ export class LoginUseCase {
 
     const isPasswordValid = await this.hasherService.compare(
       command.password,
-      user.passwordHash,
+      user.passwordHash.getValue(),
     );
 
     if (!isPasswordValid) {
