@@ -32,8 +32,8 @@ describe('GetLetterByIdUseCase', () => {
 
   it('should return a letter when found', async () => {
     const letter = Letter.restore({
-      id: '1',
-      userId: '1',
+      id: '550e8400-e29b-41d4-a716-446655440000',
+      userId: '550e8400-e29b-41d4-a716-446655440001',
       title: 'Test Letter',
       status: LetterStatus.PENDING,
       createdAt: new Date(),

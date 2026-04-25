@@ -32,16 +32,16 @@ describe('GetLettersByUserIdUseCase', () => {
   it('should return an array of letters for a given user ID', async () => {
     const letters = [
       Letter.restore({
-        id: '1',
-        userId: '1',
+        id: '550e8400-e29b-41d4-a716-446655440000',
+        userId: '550e8400-e29b-41d4-a716-446655440001',
         title: 'Test Letter 1',
         status: LetterStatus.PENDING,
         createdAt: new Date(),
         updatedAt: new Date(),
       }),
       Letter.restore({
-        id: '2',
-        userId: '1',
+        id: '550e8400-e29b-41d4-a716-446655440002',
+        userId: '550e8400-e29b-41d4-a716-446655440001',
         title: 'Test Letter 2',
         status: LetterStatus.PENDING,
         createdAt: new Date(),

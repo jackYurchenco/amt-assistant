@@ -15,9 +15,9 @@ describe('CreateLetterUseCase', () => {
 
   it('should successfully create a letter and call repository.save', async () => {
     const command = new CreateLetterCommand(
-      'Test Letter',
-      'Test UserID',
-      'Test Sender',
+      'Title',
+      '550e8400-e29b-41d4-a716-446655440000',
+      'Sender',
     );
     const result = await useCase.execute(command);
 
