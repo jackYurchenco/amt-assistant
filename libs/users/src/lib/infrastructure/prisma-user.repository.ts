@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from '@amt-assistant/prisma';
 import { User } from '../domain/user.entity';
 import { UserRepository } from '../domain/user.repository';
+import { Email, UserId } from '@amt-assistant/domain';
 
 @Injectable()
 export class PrismaUserRepository implements UserRepository {
@@ -29,9 +30,9 @@ export class PrismaUserRepository implements UserRepository {
     });
   }
 
-  async findById(id: string): Promise<User | null> {
+  async findById(id: UserId): Promise<User | null> {
     const raw = await this.prismaService.user.findUnique({
-      where: { id },
+      where: { id: id.getValue() },
     });
 
     if (!raw) {return null;}
@@ -47,9 +48,9 @@ export class PrismaUserRepository implements UserRepository {
     });
   }
 
-  async findByEmail(email:string): Promise<User | null> {
+  async findByEmail(email: Email): Promise<User | null> {
     const raw = await this.prismaService.user.findUnique({
-      where: { email },
+      where: { email: email.getValue() },
     });
 
     if (!raw) {return null;}
