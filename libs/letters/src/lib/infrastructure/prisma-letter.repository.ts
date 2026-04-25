@@ -4,6 +4,7 @@ import { Letter } from '../domain/letter.entity';
 import { Prisma } from '@prisma/client';
 import { LetterStatus } from '@amt-assistant/contracts';
 import { LetterRepository } from '../domain/letter.repository';
+import { LetterId, UserId } from '@amt-assistant/domain';
 
 @Injectable()
 export class PrismaLetterRepository implements LetterRepository {
@@ -40,9 +41,9 @@ export class PrismaLetterRepository implements LetterRepository {
     }
   }
 
-  async findById(id: string): Promise<Letter | null> {
+  async findById(id: LetterId): Promise<Letter | null> {
     const raw = await this.prismaService.letter.findUnique({
-      where: { id },
+      where: { id: id.getValue() },
     });
 
     if (!raw) {return null;}
@@ -59,9 +60,9 @@ export class PrismaLetterRepository implements LetterRepository {
     });
   }
 
-  async findByUserId(userId: string): Promise<Letter[]> {
+  async findByUserId(userId: UserId): Promise<Letter[]> {
     const records = await this.prismaService.letter.findMany({
-      where: { userId },
+      where: { userId: userId.getValue() },
       orderBy: { createdAt: 'desc' },
     });
     return records.map(
