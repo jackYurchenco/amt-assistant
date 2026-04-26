@@ -3,6 +3,7 @@ import { GetLettersByUserIdUseCase } from './get-letters-by-user-id.use-case';
 import { LetterRepository } from '../../domain/letter.repository';
 import { Letter } from '../../domain/letter.entity';
 import { LetterStatus } from '@amt-assistant/contracts';
+import { UserId } from '@amt-assistant/domain';
 
 describe('GetLettersByUserIdUseCase', () => {
   let useCase: GetLettersByUserIdUseCase;
@@ -50,18 +51,22 @@ describe('GetLettersByUserIdUseCase', () => {
     ];
     (letterRepository.findByUserId as jest.Mock).mockResolvedValue(letters);
 
-    const result = await useCase.execute({ userId: '1' });
+    const result = await useCase.execute({ userId: '550e8400-e29b-41d4-a716-446655440002' });
 
     expect(result).toEqual(letters);
-    expect(letterRepository.findByUserId).toHaveBeenCalledWith('1');
+    expect(letterRepository.findByUserId).toHaveBeenCalledWith(
+      UserId.create('550e8400-e29b-41d4-a716-446655440002')
+    );
   });
 
   it('should return an empty array if no letters are found for a given user ID', async () => {
     (letterRepository.findByUserId as jest.Mock).mockResolvedValue([]);
 
-    const result = await useCase.execute({ userId: '1' });
+    const result = await useCase.execute({ userId: '550e8400-e29b-41d4-a716-446655440002' });
 
     expect(result).toEqual([]);
-    expect(letterRepository.findByUserId).toHaveBeenCalledWith('1');
+    expect(letterRepository.findByUserId).toHaveBeenCalledWith(
+      UserId.create('550e8400-e29b-41d4-a716-446655440002')
+    );
   });
 });

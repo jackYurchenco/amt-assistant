@@ -4,6 +4,7 @@ import { LetterRepository } from '../../domain/letter.repository';
 import { Letter } from '../../domain/letter.entity';
 import { NotFoundException } from '@nestjs/common';
 import { LetterStatus } from '@amt-assistant/contracts';
+import { UserId } from '@amt-assistant/domain';
 
 describe('GetLetterByIdUseCase', () => {
   let useCase: GetLetterByIdUseCase;
@@ -41,18 +42,22 @@ describe('GetLetterByIdUseCase', () => {
     });
     (letterRepository.findById as jest.Mock).mockResolvedValue(letter);
 
-    const result = await useCase.execute({ id: '1' });
+    const result = await useCase.execute({ id: '550e8400-e29b-41d4-a716-446655440002' });
 
     expect(result).toEqual(letter);
-    expect(letterRepository.findById).toHaveBeenCalledWith('1');
+    expect(letterRepository.findById).toHaveBeenCalledWith(
+      UserId.create('550e8400-e29b-41d4-a716-446655440002')
+    );
   });
 
   it('should throw a NotFoundException when letter is not found', async () => {
     (letterRepository.findById as jest.Mock).mockResolvedValue(null);
 
-    await expect(useCase.execute({ id: '1' })).rejects.toThrow(
-      new NotFoundException('Letter with ID 1 not found'),
+    await expect(useCase.execute({ id: '550e8400-e29b-41d4-a716-446655440002' })).rejects.toThrow(
+      new NotFoundException('Letter with ID 550e8400-e29b-41d4-a716-446655440002 not found'),
     );
-    expect(letterRepository.findById).toHaveBeenCalledWith('1');
+    expect(letterRepository.findById).toHaveBeenCalledWith(
+      UserId.create('550e8400-e29b-41d4-a716-446655440002')
+    );
   });
 });
