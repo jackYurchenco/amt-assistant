@@ -4,7 +4,7 @@ import { GetUserByEmailUseCase } from '@amt-assistant/users';
 import { HasherService } from '@amt-assistant/util-crypto';
 import { TokenService } from '@amt-assistant/util-token';
 import { UnauthorizedException, InternalServerErrorException } from '@nestjs/common';
-import { Email, PasswordHash, UserId } from '@amt-assistant/domain';
+import { Email, PasswordHash, RawPassword, UserId } from '@amt-assistant/domain';
 
 describe('LoginUseCase', () => {
   let useCase: LoginUseCase;
@@ -51,7 +51,10 @@ describe('LoginUseCase', () => {
     getUserByEmailUseCase.execute.mockResolvedValue(null);
 
     await expect(
-      useCase.execute({ email: Email.create('test@example.com'), password: 'password' }),
+      useCase.execute({
+        email: Email.create('test@example.com'),
+        password: RawPassword.create('password'),
+      }),
     ).rejects.toThrow(UnauthorizedException);
   });
 
@@ -66,7 +69,10 @@ describe('LoginUseCase', () => {
     hasherService.compare.mockResolvedValue(false);
 
     await expect(
-      useCase.execute({ email: Email.create('test@example.com'), password: 'wrongPassword' }),
+      useCase.execute({
+        email: Email.create('test@example.com'),
+        password: RawPassword.create('wrongPassword'),
+      }),
     ).rejects.toThrow(UnauthorizedException);
   });
 
@@ -82,7 +88,10 @@ describe('LoginUseCase', () => {
     tokenService.generateTokens.mockRejectedValue(new Error('JWT Service Down'));
 
     await expect(
-      useCase.execute({ email: Email.create('test@example.com'), password: 'password' }),
+      useCase.execute({
+        email: Email.create('test@example.com'),
+        password: RawPassword.create('password'),
+      }),
     ).rejects.toThrow(InternalServerErrorException);
   });
 
@@ -105,7 +114,7 @@ describe('LoginUseCase', () => {
 
     const result = await useCase.execute({
       email: Email.create('test@example.com'),
-      password: 'password',
+      password: RawPassword.create('password'),
     });
 
     expect(result).toEqual({

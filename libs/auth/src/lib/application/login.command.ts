@@ -1,8 +1,8 @@
-import { Email } from '@amt-assistant/domain';
+import { Email, RawPassword } from '@amt-assistant/domain';
 
 export class LoginCommand {
   constructor(
     public readonly email: Email,
-    public readonly password: string,
+    public readonly password: RawPassword,
   ) {}
 }

@@ -4,7 +4,7 @@ import { LoginUseCase } from '../application/login.use-case';
 import { LoginDto } from './dto/login.dto';
 import { LoginResponseDto } from './dto/login-response.dto';
 import { ILoginResponse } from '@amt-assistant/contracts';
-import { Email } from '@amt-assistant/domain';
+import { Email, RawPassword } from '@amt-assistant/domain';
 
 describe('AuthController', () => {
   let controller: AuthController;
@@ -53,7 +53,7 @@ describe('AuthController', () => {
 
       expect(loginUseCase.execute).toHaveBeenCalledWith({
         email: Email.create(loginDto.email),
-        password: loginDto.password,
+        password: RawPassword.create(loginDto.password),
       });
       expect(loginUseCase.execute).toHaveBeenCalledTimes(1);
 
