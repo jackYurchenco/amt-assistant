@@ -14,7 +14,7 @@ export class CreateUserUseCase {
 
   async execute(command: CreateUserCommand): Promise<User> {
 
-    const hashed: string = await this.hasherService.hash(command.password);
+    const hashed: string = await this.hasherService.hash(command.password.getValue());
 
     const user: User = User.create({
       email: command.email,
