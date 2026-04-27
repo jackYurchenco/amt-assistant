@@ -4,6 +4,7 @@ import { GetUserByEmailUseCase } from '@amt-assistant/users';
 import { HasherService } from '@amt-assistant/util-crypto';
 import { TokenService } from '@amt-assistant/util-token';
 import { UnauthorizedException, InternalServerErrorException } from '@nestjs/common';
+import { Email, PasswordHash, UserId } from '@amt-assistant/domain';
 
 describe('LoginUseCase', () => {
   let useCase: LoginUseCase;
@@ -50,30 +51,30 @@ describe('LoginUseCase', () => {
     getUserByEmailUseCase.execute.mockResolvedValue(null);
 
     await expect(
-      useCase.execute({ email: 'test@example.com', password: 'password' }),
+      useCase.execute({ email: Email.create('test@example.com'), password: 'password' }),
     ).rejects.toThrow(UnauthorizedException);
   });
 
   it('should throw UnauthorizedException if password is invalid', async () => {
     getUserByEmailUseCase.execute.mockResolvedValue({
-      id: '1',
-      email: 'test@example.com',
-      passwordHash: 'hashedPassword',
+      id: UserId.create('550e8400-e29b-41d4-a716-446655440000'),
+      email: Email.create('test@example.com'),
+      passwordHash: PasswordHash.create('hashedPassword'),
       createdAt: new Date(),
       updatedAt: new Date(),
     });
     hasherService.compare.mockResolvedValue(false);
 
     await expect(
-      useCase.execute({ email: 'test@example.com', password: 'wrongPassword' }),
+      useCase.execute({ email: Email.create('test@example.com'), password: 'wrongPassword' }),
     ).rejects.toThrow(UnauthorizedException);
   });
 
   it('should throw InternalServerErrorException if tokens are not generated', async () => {
     getUserByEmailUseCase.execute.mockResolvedValue({
-      id: '1',
-      email: 'test@example.com',
-      passwordHash: 'hashedPassword',
+      id: UserId.create('550e8400-e29b-41d4-a716-446655440000'),
+      email: Email.create('test@example.com'),
+      passwordHash: PasswordHash.create('hashedPassword'),
       createdAt: new Date(),
       updatedAt: new Date(),
     });
@@ -81,15 +82,15 @@ describe('LoginUseCase', () => {
     tokenService.generateTokens.mockRejectedValue(new Error('JWT Service Down'));
 
     await expect(
-      useCase.execute({ email: 'test@example.com', password: 'password' }),
+      useCase.execute({ email: Email.create('test@example.com'), password: 'password' }),
     ).rejects.toThrow(InternalServerErrorException);
   });
 
   it('should return login response on successful login', async () => {
     const user = {
-      id: '1',
-      email: 'test@example.com',
-      passwordHash: 'hashedPassword',
+      id: UserId.create('550e8400-e29b-41d4-a716-446655440000'),
+      email: Email.create('test@example.com'),
+      passwordHash: PasswordHash.create('hashedPassword'),
       createdAt: new Date(),
       updatedAt: new Date(),
     };
@@ -103,15 +104,15 @@ describe('LoginUseCase', () => {
     tokenService.generateTokens.mockResolvedValue(tokens);
 
     const result = await useCase.execute({
-      email: 'test@example.com',
+      email: Email.create('test@example.com'),
       password: 'password',
     });
 
     expect(result).toEqual({
       ...tokens,
       user: {
-        id: user.id,
-        email: user.email,
+        id: user.id.getValue(),
+        email: user.email.getValue(),
       },
     });
   });

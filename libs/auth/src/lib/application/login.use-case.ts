@@ -14,7 +14,7 @@ export class LoginUseCase {
   ) {}
 
   async execute(command: LoginCommand): Promise<ILoginResponse> {
-    const user = await this.getUserByEmailUseCase.execute({ email: command.email });
+    const user = await this.getUserByEmailUseCase.execute({ email: command.email.getValue() });
 
     if (!user) {
       throw new UnauthorizedException('Invalid credentials');
