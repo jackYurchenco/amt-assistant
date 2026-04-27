@@ -1,4 +1,4 @@
 export interface ICreateUser {
   email: string;
-  passwordHash: string;
+  password: string;
 }

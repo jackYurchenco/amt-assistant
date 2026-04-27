@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from '@amt-assistant/prisma';
 import { User } from '../domain/user.entity';
 import { UserRepository } from '../domain/user.repository';
-import { Email, UserId } from '@amt-assistant/domain';
+import { Email, PasswordHash, UserId } from '@amt-assistant/domain';
 
 @Injectable()
 export class PrismaUserRepository implements UserRepository {
@@ -38,9 +38,9 @@ export class PrismaUserRepository implements UserRepository {
     if (!raw) {return null;}
 
     return User.restore({
-      id: raw.id,
-      email: raw.email,
-      passwordHash: raw.passwordHash,
+      id: UserId.create(raw.id),
+      email: Email.create(raw.email),
+      passwordHash: PasswordHash.create(raw.passwordHash),
       createdAt: raw.createdAt,
       updatedAt: raw.updatedAt,
       firstName: raw.firstName,
@@ -56,9 +56,9 @@ export class PrismaUserRepository implements UserRepository {
     if (!raw) {return null;}
 
     return User.restore({
-      id: raw.id,
-      email: raw.email,
-      passwordHash: raw.passwordHash,
+      id: UserId.create(raw.id),
+      email: Email.create(raw.email),
+      passwordHash: PasswordHash.create(raw.passwordHash),
       createdAt: raw.createdAt,
       updatedAt: raw.updatedAt,
       firstName: raw.firstName,
@@ -71,9 +71,9 @@ export class PrismaUserRepository implements UserRepository {
     return records.map(
       (raw) =>
         User.restore({
-          id: raw.id,
-          email: raw.email,
-          passwordHash: raw.passwordHash,
+          id: UserId.create(raw.id),
+          email: Email.create(raw.email),
+          passwordHash: PasswordHash.create(raw.passwordHash),
           createdAt: raw.createdAt,
           updatedAt: raw.updatedAt,
           firstName: raw.firstName,

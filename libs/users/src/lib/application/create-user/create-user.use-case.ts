@@ -3,6 +3,7 @@ import { Injectable } from '@nestjs/common';
 import { CreateUserCommand } from './create-user.command';
 import { UserRepository } from '../../domain/user.repository';
 import { HasherService } from '@amt-assistant/util-crypto';
+import { PasswordHash } from '@amt-assistant/domain';
 
 @Injectable()
 export class CreateUserUseCase {
@@ -13,11 +14,11 @@ export class CreateUserUseCase {
 
   async execute(command: CreateUserCommand): Promise<User> {
 
-    const hashed = await this.hasherService.hash(command.passwordHash);
+    const hashed: string = await this.hasherService.hash(command.password);
 
     const user: User = User.create({
       email: command.email,
-      passwordHash: hashed,
+      passwordHash: PasswordHash.create(hashed),
     });
 
     await this.userRepository.save(user);

@@ -9,6 +9,7 @@ import { GetUserByIdDto } from './dto/get-user-by-id.dto';
 import { User } from '../domain/user.entity';
 import { IUser } from '@amt-assistant/contracts';
 import { UserResponseDto } from './dto/user-response.dto';
+import { Email } from '@amt-assistant/domain';
 
 @Controller('users')
 export class UsersController {
@@ -30,8 +31,8 @@ export class UsersController {
   })
   async create(@Body() dto: CreateUserDto): Promise<IUser> {
     const command = new CreateUserCommand(
-      dto.email,
-      dto.passwordHash,
+      Email.create(dto.email),
+      dto.password,
     );
     const user: User = await this.createUserUseCase.execute(command);
     return UserResponseDto.fromEntity(user);

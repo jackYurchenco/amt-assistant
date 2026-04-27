@@ -12,14 +12,14 @@ export class User {
   ) {
   }
   static create(props: {
-    email: string,
-    passwordHash: string,
+    email: Email,
+    passwordHash: PasswordHash,
   }): User {
     const now = new Date();
     return new User(
       UserId.generate(),
-      Email.create(props.email),
-      PasswordHash.create(props.passwordHash),
+      props.email,
+      props.passwordHash,
       now,
       now,
       null,
@@ -28,18 +28,18 @@ export class User {
   }
 
   static restore(props: {
-    id: string;
-    email: string;
-    passwordHash: string;
+    id: UserId;
+    email: Email;
+    passwordHash: PasswordHash;
     createdAt: Date;
     updatedAt: Date
     firstName: string | null,
     lastName: string | null,
   }): User {
     return new User(
-      UserId.create(props.id),
-      Email.create(props.email),
-      PasswordHash.create(props.passwordHash),
+      props.id,
+      props.email,
+      props.passwordHash,
       props.createdAt,
       props.updatedAt,
       props.firstName,

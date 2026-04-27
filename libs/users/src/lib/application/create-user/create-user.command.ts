@@ -1,6 +1,8 @@
+import { Email } from '@amt-assistant/domain';
+
 export class CreateUserCommand {
   constructor(
-    public readonly email: string,
-    public readonly passwordHash: string,
+    public readonly email: Email,
+    public readonly password: string,
   ) {}
 }
