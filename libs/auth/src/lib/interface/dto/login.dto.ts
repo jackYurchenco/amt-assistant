@@ -9,6 +9,7 @@ export class LoginDto implements ILogin {
     description: 'The email address of the user',
     type: String,
     required: true,
+    format: 'email',
   })
   @IsEmail({}, { message: 'Invalid email format.' })
   @IsNotEmpty({ message: 'The email cannot be empty.' })

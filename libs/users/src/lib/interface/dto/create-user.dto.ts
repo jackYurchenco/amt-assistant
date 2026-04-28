@@ -9,6 +9,7 @@ export class CreateUserDto implements ICreateUser {
     description: 'The email of the user.',
     type: String,
     required: true,
+    format: 'email',
   })
   @IsEmail({}, { message: 'Invalid email format.' })
   @IsNotEmpty({ message: 'The email cannot be empty.' })
