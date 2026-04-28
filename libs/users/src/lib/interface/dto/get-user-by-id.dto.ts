@@ -9,7 +9,7 @@ export class GetUserByIdDto implements IGetUserById {
     example: 'a1b2c3d4-e5f6-7890-1234-567890abcdef',
     required: true,
   })
-  @IsUUID('4')
+  @IsUUID(4)
   @IsString({ message: 'The id must be a string.' })
   @IsNotEmpty({ message: 'The id cannot be empty.' })
   id!: string;
