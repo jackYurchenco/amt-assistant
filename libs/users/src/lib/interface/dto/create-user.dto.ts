@@ -21,11 +21,13 @@ export class CreateUserDto implements ICreateUser {
     description: 'The password of the user.',
     type: String,
     required: true,
+    format: 'password',
+    minLength: 6,
+    maxLength: 64,
   })
   @MaxLength(64, { message: 'The password cannot be longer than 64 characters.' })
   @MinLength(6, { message: 'The password must be at least 6 characters long.' })
   @IsNotEmpty({ message: 'The password cannot be empty.' })
   @IsString({ message: 'Password must be a string.' })
-  @Trim()
   password!: string;
 }
