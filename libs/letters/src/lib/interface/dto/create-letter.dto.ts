@@ -10,8 +10,8 @@ export class CreateLetterDto implements ICreateLetter {
     type: String,
     required: true,
   })
-  @MaxLength(100)
-  @MinLength(3)
+  @MaxLength(100, { message: 'The title cannot be longer than 100 characters.' })
+  @MinLength(3, { message: 'The title must be at least 3 characters long.' })
   @IsNotEmpty({ message: 'The title cannot be empty.'})
   @IsString({ message: 'The title must be a string.' })
   @Trim()
