@@ -14,7 +14,11 @@ async function bootstrap(): Promise<void> {
   const port = process.env['PORT'] || 3000;
 
   app.setGlobalPrefix(globalPrefix);
-  app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
+  app.useGlobalPipes(new ValidationPipe({
+    whitelist: true,
+    transform: true,
+    forbidNonWhitelisted: true,
+  }));
 
   const config = new DocumentBuilder()
     .setTitle('AMT Assistant API')
