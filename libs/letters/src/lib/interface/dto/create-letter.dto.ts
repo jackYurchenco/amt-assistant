@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, IsOptional, IsString, MaxLength, MinLength } from 'class-validator';
 import { ICreateLetter } from '@amt-assistant/contracts';
-import { Transform } from 'class-transformer';
+import { Trim } from '@amt-assistant/util-decorators';
 
 export class CreateLetterDto implements ICreateLetter {
   @ApiProperty({
@@ -9,11 +9,11 @@ export class CreateLetterDto implements ICreateLetter {
     description: 'The subject or title of the letter',
     required: true,
   })
+  @Trim()
   @IsString({ message: 'The title must be a string.' })
-  @IsNotEmpty({ message: 'The title cannot be empty.'})
-  @Transform(({ value }) => (typeof value === 'string' ? value.trim() : value))
   @MinLength(3)
   @MaxLength(100)
+  @IsNotEmpty({ message: 'The title cannot be empty.'})
   readonly title!: string;
 
   @ApiProperty({
@@ -22,8 +22,8 @@ export class CreateLetterDto implements ICreateLetter {
     required: false,
   })
   @IsOptional()
+  @Trim()
   @IsString({ message: 'The sender must be a string.'})
   @IsNotEmpty({ message: 'The sender cannot be empty.'})
-  @Transform(({ value }) => (typeof value === 'string' ? value.trim() : value))
   readonly sender?: string;
 }

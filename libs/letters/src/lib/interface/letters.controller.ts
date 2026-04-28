@@ -37,6 +37,7 @@ export class LettersController {
       mockUserId,
       dto.sender,
     );
+
     const letter: Letter = await this.createLetterUseCase.execute(command);
 
     return LetterResponseDto.fromEntity(letter);
