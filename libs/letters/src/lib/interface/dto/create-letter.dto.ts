@@ -9,11 +9,11 @@ export class CreateLetterDto implements ICreateLetter {
     description: 'The subject or title of the letter',
     required: true,
   })
-  @Trim()
-  @IsString({ message: 'The title must be a string.' })
-  @MinLength(3)
   @MaxLength(100)
+  @MinLength(3)
   @IsNotEmpty({ message: 'The title cannot be empty.'})
+  @IsString({ message: 'The title must be a string.' })
+  @Trim()
   readonly title!: string;
 
   @ApiProperty({
@@ -22,8 +22,8 @@ export class CreateLetterDto implements ICreateLetter {
     required: false,
   })
   @IsOptional()
-  @Trim()
-  @IsString({ message: 'The sender must be a string.'})
   @IsNotEmpty({ message: 'The sender cannot be empty.'})
+  @IsString({ message: 'The sender must be a string.'})
+  @Trim()
   readonly sender?: string;
 }
