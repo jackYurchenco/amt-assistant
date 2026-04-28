@@ -4,7 +4,6 @@ import { User } from '../../domain/user.entity';
 export class UserResponseDto implements IUser {
   readonly id: string;
   readonly email: string;
-  readonly passwordHash: string;
   readonly createdAt: Date;
   readonly updatedAt: Date;
   readonly firstName?: string | null;
@@ -13,7 +12,6 @@ export class UserResponseDto implements IUser {
   private constructor(user: User) {
     this.id = user.id.getValue();
     this.email = user.email.getValue();
-    this.passwordHash = user.passwordHash.getValue();
     this.createdAt = user.createdAt;
     this.updatedAt = user.updatedAt;
     this.firstName = user.firstName ?? null;
