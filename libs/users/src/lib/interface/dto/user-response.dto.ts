@@ -2,13 +2,13 @@ import { IUser } from '@amt-assistant/contracts';
 import { User } from '../../domain/user.entity';
 
 export class UserResponseDto implements IUser {
-  id: string;
-  email: string;
-  passwordHash: string;
-  createdAt: Date;
-  updatedAt: Date;
-  firstName?: string | null;
-  lastName?: string | null;
+  readonly id: string;
+  readonly email: string;
+  readonly passwordHash: string;
+  readonly createdAt: Date;
+  readonly updatedAt: Date;
+  readonly firstName?: string | null;
+  readonly lastName?: string | null;
 
   private constructor(user: User) {
     this.id = user.id.getValue();

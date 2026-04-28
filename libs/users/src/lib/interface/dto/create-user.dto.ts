@@ -15,7 +15,7 @@ export class CreateUserDto implements ICreateUser {
   @IsNotEmpty({ message: 'The email cannot be empty.' })
   @IsString({ message: 'The email must be a string.' })
   @Trim()
-  email!: string;
+  readonly email!: string;
 
   @ApiProperty({
     example: 'password123',
@@ -30,5 +30,5 @@ export class CreateUserDto implements ICreateUser {
   @MinLength(6, { message: 'The password must be at least 6 characters long.' })
   @IsNotEmpty({ message: 'The password cannot be empty.' })
   @IsString({ message: 'Password must be a string.' })
-  password!: string;
+  readonly password!: string;
 }

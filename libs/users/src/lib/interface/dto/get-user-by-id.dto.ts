@@ -15,5 +15,5 @@ export class GetUserByIdDto implements IGetUserById {
   @IsNotEmpty({ message: 'The id cannot be empty.' })
   @IsString({ message: 'The id must be a string.' })
   @Trim()
-  id!: string;
+  readonly id!: string;
 }

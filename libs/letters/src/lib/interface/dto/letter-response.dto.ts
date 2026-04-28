@@ -2,14 +2,14 @@ import { Letter } from '../../domain/letter.entity';
 import { ILetter, LetterStatus } from '@amt-assistant/contracts';
 
 export class LetterResponseDto implements ILetter {
-  id: string;
-  userId: string;
-  title: string;
-  status: LetterStatus;
-  createdAt: Date;
-  updatedAt: Date;
-  sender?: string | null;
-  analysisResult?: string | null;
+  readonly id: string;
+  readonly userId: string;
+  readonly title: string;
+  readonly status: LetterStatus;
+  readonly createdAt: Date;
+  readonly updatedAt: Date;
+  readonly sender?: string | null;
+  readonly analysisResult?: string | null;
 
   private constructor(letter: Letter) {
     this.id = letter.id.getValue();
