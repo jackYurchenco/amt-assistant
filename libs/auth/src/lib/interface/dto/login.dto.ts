@@ -1,7 +1,7 @@
 import { IsEmail, IsNotEmpty, IsString, MaxLength, MinLength } from 'class-validator';
 import { ILogin } from '@amt-assistant/contracts';
 import { ApiProperty } from '@nestjs/swagger';
-import { Trim } from '@amt-assistant/util-decorators';
+import { ToLowerCase, Trim } from '@amt-assistant/util-decorators';
 
 export class LoginDto implements ILogin {
   @ApiProperty({
@@ -13,6 +13,7 @@ export class LoginDto implements ILogin {
   @IsEmail({}, { message: 'Invalid email format.' })
   @IsNotEmpty({ message: 'The email cannot be empty.' })
   @IsString({ message: 'The email must be a string.' })
+  @ToLowerCase()
   @Trim()
   email!: string;
 
