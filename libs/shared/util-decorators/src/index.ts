@@ -1,1 +1,1 @@
-export * from './lib/util-decorators.module';
+export * from './lib/trim.decorator';
