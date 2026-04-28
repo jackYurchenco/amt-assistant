@@ -7,6 +7,7 @@ export class CreateLetterDto implements ICreateLetter {
   @ApiProperty({
     example: 'Rechnung für Strom',
     description: 'The subject or title of the letter',
+    type: String,
     required: true,
   })
   @MaxLength(100)
@@ -19,7 +20,8 @@ export class CreateLetterDto implements ICreateLetter {
   @ApiProperty({
     example: 'Stadtwerke Coburg',
     description: 'The person or organization who sent the letter',
-    required: false,
+    type: String,
+    required: true,
   })
   @IsOptional()
   @IsNotEmpty({ message: 'The sender cannot be empty.'})
