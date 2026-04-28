@@ -9,6 +9,7 @@ export class GetLetterByIdDto implements IGetLetterByIdInterface {
     description: 'The unique identifier of the letter',
     type: String,
     required: true,
+    format: 'uuid',
   })
   @IsUUID(4, { message: 'The id must be a valid UUID v4.' })
   @IsNotEmpty({ message: 'The id cannot be empty.' })

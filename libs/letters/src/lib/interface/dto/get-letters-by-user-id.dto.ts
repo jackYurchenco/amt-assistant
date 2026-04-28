@@ -9,6 +9,7 @@ export class GetLettersByUserIdDto implements IGetLettersByUserIdDto {
     description: 'The unique identifier of the user',
     type: String,
     required: true,
+    format: 'uuid',
   })
   @IsUUID(4, { message: 'The userId must be a valid UUID v4.' })
   @IsNotEmpty({ message: 'The userId cannot be empty.' })
