@@ -2,7 +2,7 @@ import { Body, Controller, Get, NotFoundException, Param, Post } from '@nestjs/c
 import { CreateUserUseCase } from '../application/create-user/create-user.use-case';
 import { GetUserByIdUseCase } from '../application/get-user-by-id/get-user-by-id.use-case';
 import { GetAllUsersUseCase } from '../application/get-all-users/get-all-users.use-case';
-import { ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CreateUserDto } from './dto/create-user.dto';
 import { CreateUserCommand } from '../application/create-user/create-user.command';
 import { GetUserByIdDto } from './dto/get-user-by-id.dto';
@@ -11,6 +11,7 @@ import { IUser } from '@amt-assistant/contracts';
 import { UserResponseDto } from './dto/user-response.dto';
 import { Email, RawPassword } from '@amt-assistant/domain';
 
+@ApiTags('users')
 @Controller('users')
 export class UsersController {
   constructor(
@@ -24,6 +25,7 @@ export class UsersController {
   @ApiResponse({
     status: 201,
     description: 'The user has been successfully created.',
+    type: UserResponseDto,
   })
   @ApiResponse({
     status: 400,
@@ -43,7 +45,7 @@ export class UsersController {
   @ApiResponse({
     status: 200,
     description: 'The users have been successfully retrieved.',
-    type: [User],
+    type: [UserResponseDto],
   })
   async findAll(): Promise<IUser[]> {
     const users: User[] = await this.getAllUsersUseCase.execute();
@@ -55,6 +57,7 @@ export class UsersController {
   @ApiResponse({
     status: 200,
     description: 'The user has been successfully retrieved.',
+    type: UserResponseDto,
   })
   @ApiResponse({
     status: 404,
