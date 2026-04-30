@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
 import { CreateLetterUseCase } from '../application/create-letter/create-letter.use-case';
-import { ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CreateLetterDto } from './dto/create-letter.dto';
 import { CreateLetterCommand } from '../application/create-letter/create-letter.command';
 import { GetLetterByIdDto } from './dto/get-letter-by-id.dto';
@@ -11,6 +11,7 @@ import { Letter } from '../domain/letter.entity';
 import { LetterResponseDto } from './dto/letter-response.dto';
 import { ILetter } from '@amt-assistant/contracts';
 
+@ApiTags('letters')
 @Controller('letters')
 export class LettersController {
   constructor(
@@ -24,12 +25,14 @@ export class LettersController {
   @ApiResponse({
     status: 201,
     description: 'The letter has been successfully created.',
+    type: LetterResponseDto,
   })
   @ApiResponse({
     status: 400,
     description: 'Invalid input data.',
   })
   async create(@Body() dto: CreateLetterDto): Promise<ILetter> {
+    // TODO: Replace with actual user ID from execution context (e.g., JWT)
     const mockUserId = '550e8400-e29b-41d4-a716-446655440000';
 
     const command = new CreateLetterCommand(
@@ -45,12 +48,19 @@ export class LettersController {
 
   @Get(':id')
   @ApiOperation({ summary: 'Get a specific letter by ID' })
-  @ApiResponse({ status: 200, description: 'Letter found successfully' })
-  @ApiResponse({ status: 404, description: 'Letter not found' })
+  @ApiResponse({
+    status: 200,
+    description: 'Letter found successfully',
+    type: LetterResponseDto,
+  })
+  @ApiResponse({
+    status: 404,
+    description: 'Letter not found',
+  })
   async findOne(@Param() dto: GetLetterByIdDto): Promise<ILetter> {
     const letter: Letter = await this.getLetterByIdUseCase.execute({ id: dto.id });
 
-    return  LetterResponseDto.fromEntity(letter);
+    return LetterResponseDto.fromEntity(letter);
   }
 
   @Get()
@@ -58,10 +68,10 @@ export class LettersController {
   @ApiResponse({
     status: 200,
     description: 'List of letters retrieved successfully.',
-    type: [Letter],
+    type: [LetterResponseDto],
   })
   async findByUser(@Query() dto: GetLettersByUserIdDto): Promise<ILetter[]> {
-    const letters:Letter[] = await this.getLettersByUserIdUseCase.execute({ userId: dto.userId });
+    const letters: Letter[] = await this.getLettersByUserIdUseCase.execute({ userId: dto.userId });
 
     return letters.map(letter => LetterResponseDto.fromEntity(letter));
   }
