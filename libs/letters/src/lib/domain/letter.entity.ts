@@ -11,6 +11,7 @@ export class Letter {
     public readonly updatedAt: Date,
     public readonly sender?: string | null,
     public readonly analysisResult?: string | null,
+    public readonly content?: string | null,
   ) {
     if (!title) {throw new Error('Letter title cannot be empty');}
   }
@@ -30,6 +31,7 @@ export class Letter {
       now,
       props.sender,
       null,
+      null,
     );
   }
 
@@ -42,6 +44,7 @@ export class Letter {
     updatedAt: Date;
     sender?: string | null;
     analysisResult?: string | null;
+    content?: string | null;
   }): Letter {
     return new Letter(
       LetterId.create(props.id),
@@ -52,6 +55,7 @@ export class Letter {
       props.updatedAt,
       props.sender,
       props.analysisResult,
+      props.content,
     );
   }
 }
