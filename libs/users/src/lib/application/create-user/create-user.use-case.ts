@@ -1,5 +1,5 @@
 import { User } from '../../domain/user.entity';
-import { Injectable } from '@nestjs/common';
+import { ConflictException, Injectable } from '@nestjs/common';
 import { CreateUserCommand } from './create-user.command';
 import { UserRepository } from '../../domain/user.repository';
 import { HasherService } from '@amt-assistant/util-crypto';
@@ -13,6 +13,11 @@ export class CreateUserUseCase {
   ) {}
 
   async execute(command: CreateUserCommand): Promise<User> {
+    const existingUser = await this.userRepository.findByEmail(command.email);
+
+    if (existingUser) {
+      throw new ConflictException(`User with email ${command.email} already exists`);
+    }
 
     const hashed: string = await this.hasherService.hash(command.password.getValue());
 

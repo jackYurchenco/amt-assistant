@@ -53,7 +53,7 @@ export class PrismaUserRepository implements UserRepository {
       where: { email: email.getValue() },
     });
 
-    if (!raw) {return null;}
+    if (!raw) { return null; }
 
     return User.restore({
       id: UserId.create(raw.id),
