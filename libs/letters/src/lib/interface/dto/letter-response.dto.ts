@@ -54,6 +54,13 @@ export class LetterResponseDto implements ILetter {
   })
   readonly analysisResult?: string | null;
 
+  @ApiPropertyOptional({
+    description: 'Letter content result',
+    example: 'The content of the letter looks polite.',
+    nullable: true,
+  })
+  readonly content?: string | null;
+
   private constructor(letter: Letter) {
     this.id = letter.id.getValue();
     this.userId = letter.userId.getValue();
@@ -63,6 +70,7 @@ export class LetterResponseDto implements ILetter {
     this.updatedAt = letter.updatedAt;
     this.sender = letter.sender ?? null;
     this.analysisResult = letter.analysisResult ?? null;
+    this.content = letter.content ?? null;
   }
 
   static fromEntity(letter: Letter): LetterResponseDto {
