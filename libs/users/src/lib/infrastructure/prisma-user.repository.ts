@@ -1,30 +1,38 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '@amt-assistant/prisma';
 import { User } from '../domain/user.entity';
-import { UserRepository } from '../domain/user.repository';
 import { Email, PasswordHash, UserId } from '@amt-assistant/domain';
+import { UserWriter } from '../domain/ports/user-writer.port';
+import { UserReader } from '../domain/ports/user-reader.port';
+import { UserSearcher } from '../domain/ports/user-searcher.port';
+import { UserChecker } from '../domain/ports/user-checker.port';
 
 @Injectable()
-export class PrismaUserRepository implements UserRepository {
+export class PrismaUserRepository implements UserReader, UserWriter, UserSearcher, UserChecker {
   constructor(private readonly prismaService: PrismaService) {}
 
-  async save(user: User): Promise<void> {
-    await this.prismaService.user.upsert({
-      where: { id: user.id.getValue() },
-      update: {
-        email: user.email.getValue(),
-        passwordHash: user.passwordHash.getValue(),
-        firstName: user.firstName ?? null,
-        lastName: user.lastName ?? null,
-        updatedAt: user.updatedAt,
-      },
-      create: {
+  async create(user: User): Promise<void> {
+    await this.prismaService.user.create({
+      data: {
         id: user.id.getValue(),
         email: user.email.getValue(),
         passwordHash: user.passwordHash.getValue(),
         firstName: user.firstName ?? null,
         lastName: user.lastName ?? null,
         createdAt: user.createdAt,
+        updatedAt: user.updatedAt,
+      },
+    });
+  }
+
+  async update(user: User): Promise<void> {
+    await this.prismaService.user.update({
+      where: { id: user.id.getValue() },
+      data: {
+        email: user.email.getValue(),
+        passwordHash: user.passwordHash.getValue(),
+        firstName: user.firstName ?? null,
+        lastName: user.lastName ?? null,
         updatedAt: user.updatedAt,
       },
     });
@@ -80,5 +88,12 @@ export class PrismaUserRepository implements UserRepository {
           lastName: raw.lastName,
         }),
     );
+  }
+
+  async existsByEmail(email: Email): Promise<boolean> {
+    const count: number = await this.prismaService.user.count({
+      where: { email: email.getValue() },
+    });
+    return Boolean(count);
   }
 }

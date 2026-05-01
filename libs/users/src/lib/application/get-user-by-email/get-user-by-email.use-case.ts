@@ -1,14 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { GetUserByEmailQuery } from './get-user-by-email.query';
-import { UserRepository } from '../../domain/user.repository';
 import { User } from '../../domain/user.entity';
 import { Email } from '@amt-assistant/domain';
+import { UserReader } from '../../domain/ports/user-reader.port';
 
 @Injectable()
 export class GetUserByEmailUseCase {
-  constructor(private readonly userRepository: UserRepository) {}
+  constructor(private readonly userReader: UserReader) {}
 
   async execute(query: GetUserByEmailQuery): Promise<User | null> {
-    return this.userRepository.findByEmail(Email.create(query.email));
+    return this.userReader.findByEmail(Email.create(query.email));
   }
 }

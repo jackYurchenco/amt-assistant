@@ -5,9 +5,12 @@ import { GetAllUsersUseCase } from './application/get-all-users/get-all-users.us
 import { CreateUserUseCase } from './application/create-user/create-user.use-case';
 import { UsersController } from './interface/users.controller';
 import { PrismaModule } from '@amt-assistant/prisma';
-import { UserRepository } from './domain/user.repository';
 import { GetUserByEmailUseCase } from './application/get-user-by-email/get-user-by-email.use-case';
 import { UtilCryptoModule } from '@amt-assistant/util-crypto';
+import { UserSearcher } from './domain/ports/user-searcher.port';
+import { UserWriter } from './domain/ports/user-writer.port';
+import { UserReader } from './domain/ports/user-reader.port';
+import { UserChecker } from './domain/ports/user-checker.port';
 
 @Module({
   imports: [
@@ -16,17 +19,17 @@ import { UtilCryptoModule } from '@amt-assistant/util-crypto';
   ],
   controllers: [UsersController],
   providers: [
-    {
-      provide: UserRepository,
-      useClass: PrismaUserRepository,
-    },
+    PrismaUserRepository,
+    { provide: UserReader, useExisting: PrismaUserRepository },
+    { provide: UserWriter, useExisting: PrismaUserRepository },
+    { provide: UserSearcher, useExisting: PrismaUserRepository },
+    { provide: UserChecker, useExisting: PrismaUserRepository },
     GetUserByEmailUseCase,
     GetUserByIdUseCase,
     GetAllUsersUseCase,
     CreateUserUseCase,
   ],
   exports: [
-    UserRepository,
     GetUserByEmailUseCase,
   ],
 })

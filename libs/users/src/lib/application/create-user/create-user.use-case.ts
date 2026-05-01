@@ -1,22 +1,24 @@
 import { User } from '../../domain/user.entity';
 import { ConflictException, Injectable } from '@nestjs/common';
 import { CreateUserCommand } from './create-user.command';
-import { UserRepository } from '../../domain/user.repository';
 import { HasherService } from '@amt-assistant/util-crypto';
 import { PasswordHash } from '@amt-assistant/domain';
+import { UserChecker } from '../../domain/ports/user-checker.port';
+import { UserWriter } from '../../domain/ports/user-writer.port';
 
 @Injectable()
 export class CreateUserUseCase {
   constructor(
-    private readonly userRepository: UserRepository,
     private readonly hasherService: HasherService,
+    private readonly userChecker: UserChecker,
+    private readonly userWriter: UserWriter,
   ) {}
 
   async execute(command: CreateUserCommand): Promise<User> {
-    const existingUser = await this.userRepository.findByEmail(command.email);
+    const existingUser: boolean = await this.userChecker.existsByEmail(command.email);
 
     if (existingUser) {
-      throw new ConflictException(`User with email ${command.email} already exists`);
+      throw new ConflictException(`User with email ${command.email.getValue()} already exists`);
     }
 
     const hashed: string = await this.hasherService.hash(command.password.getValue());
@@ -26,7 +28,7 @@ export class CreateUserUseCase {
       passwordHash: PasswordHash.create(hashed),
     });
 
-    await this.userRepository.save(user);
+    await this.userWriter.create(user);
 
     return user;
   }
