@@ -19,15 +19,17 @@ export class PrismaLetterRepository implements LetterRepository {
           status: letter.status,
           sender: letter.sender ?? null,
           analysisResult: letter.analysisResult ?? null,
+          content: letter.content ?? null,
         },
         create: {
           id: letter.id.getValue(),
+          userId: letter.userId.getValue(),
           title: letter.title,
           status: letter.status,
+          createdAt: letter.createdAt,
           sender: letter.sender ?? null,
           analysisResult: letter.analysisResult ?? null,
-          createdAt: letter.createdAt,
-          userId: letter.userId.getValue(),
+          content: letter.content ?? null,
         },
       });
     } catch (error) {
@@ -57,6 +59,7 @@ export class PrismaLetterRepository implements LetterRepository {
       updatedAt: raw.updatedAt,
       sender: raw.sender,
       analysisResult: raw.analysisResult,
+      content: raw.content,
     });
   }
 
@@ -76,6 +79,7 @@ export class PrismaLetterRepository implements LetterRepository {
           updatedAt: raw.updatedAt,
           sender: raw.sender,
           analysisResult: raw.analysisResult,
+          content: raw.content,
         }),
     );
   }
