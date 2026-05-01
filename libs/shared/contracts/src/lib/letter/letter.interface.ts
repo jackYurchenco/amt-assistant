@@ -9,4 +9,5 @@ export interface ILetter {
   updatedAt: Date;
   sender?: string | null;
   analysisResult?: string | null;
+  content?: string | null;
 }
