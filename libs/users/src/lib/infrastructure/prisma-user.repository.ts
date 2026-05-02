@@ -17,10 +17,10 @@ export class PrismaUserRepository implements UserReader, UserWriter, UserSearche
         id: user.id.getValue(),
         email: user.email.getValue(),
         passwordHash: user.passwordHash.getValue(),
-        firstName: user.firstName ?? null,
-        lastName: user.lastName ?? null,
         createdAt: user.createdAt,
         updatedAt: user.updatedAt,
+        firstName: user.firstName ?? null,
+        lastName: user.lastName ?? null,
       },
     });
   }
