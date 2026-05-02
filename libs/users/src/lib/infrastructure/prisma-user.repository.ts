@@ -15,6 +15,7 @@ export class PrismaUserRepository implements UserReader, UserWriter, UserSearche
 
   async create(user: User): Promise<void> {
     const data: PrismaUser = UserMapper.toPersistence(user);
+
     await this.prismaService.user.create({ data });
   }
 
@@ -32,8 +33,6 @@ export class PrismaUserRepository implements UserReader, UserWriter, UserSearche
       where: { id: id.getValue() },
     });
 
-    if (!raw) { return null; }
-
     return raw ? UserMapper.toDomain(raw) : null;
   }
 
@@ -42,13 +41,12 @@ export class PrismaUserRepository implements UserReader, UserWriter, UserSearche
       where: { email: email.getValue() },
     });
 
-    if (!raw) { return null; }
-
     return raw ? UserMapper.toDomain(raw) : null;
   }
 
   async findAll(): Promise<Array<User>> {
     const records: Array<PrismaUser> = await this.prismaService.user.findMany();
+
     return records.map((raw: PrismaUser) => UserMapper.toDomain(raw));
   }
 
