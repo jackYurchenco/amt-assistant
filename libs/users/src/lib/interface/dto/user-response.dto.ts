@@ -19,7 +19,7 @@ export class UserResponseDto implements IUser {
 
   @ApiProperty({
     example: '2023-01-01T12:00:00Z',
-    description: 'The creation date of the user'
+    description: 'The creation date of the user',
   })
   readonly createdAt: Date;
 
@@ -32,16 +32,14 @@ export class UserResponseDto implements IUser {
   @ApiPropertyOptional({
     example: 'John',
     description: 'The first name of the user',
-    nullable: true,
   })
-  readonly firstName?: string | null;
+  readonly firstName: string | null;
 
   @ApiPropertyOptional({
     example: 'Doe',
     description: 'The last name of the user',
-    nullable: true,
   })
-  readonly lastName?: string | null;
+  readonly lastName: string | null;
 
   private constructor(user: User) {
     this.id = user.id.getValue();

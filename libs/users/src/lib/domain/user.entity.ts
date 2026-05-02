@@ -7,8 +7,8 @@ export class User {
     public readonly passwordHash: PasswordHash,
     public readonly createdAt: Date,
     public readonly updatedAt: Date,
-    public readonly firstName?: string | null,
-    public readonly lastName?: string | null,
+    public readonly firstName: string | null,
+    public readonly lastName: string | null,
   ) {
   }
   static create(props: {
