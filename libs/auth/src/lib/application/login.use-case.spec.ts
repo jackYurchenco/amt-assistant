@@ -65,6 +65,8 @@ describe('LoginUseCase', () => {
       passwordHash: PasswordHash.create('hashedPassword'),
       createdAt: new Date(),
       updatedAt: new Date(),
+      firstName: null,
+      lastName: null,
     });
     hasherService.compare.mockResolvedValue(false);
 
@@ -83,6 +85,8 @@ describe('LoginUseCase', () => {
       passwordHash: PasswordHash.create('hashedPassword'),
       createdAt: new Date(),
       updatedAt: new Date(),
+      firstName: null,
+      lastName: null,
     });
     hasherService.compare.mockResolvedValue(true);
     tokenService.generateTokens.mockRejectedValue(new Error('JWT Service Down'));
@@ -102,6 +106,8 @@ describe('LoginUseCase', () => {
       passwordHash: PasswordHash.create('hashedPassword'),
       createdAt: new Date(),
       updatedAt: new Date(),
+      firstName: null,
+      lastName: null,
     };
     const tokens = {
       accessToken: 'access',

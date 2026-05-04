@@ -34,9 +34,10 @@ describe('AuthController', () => {
   describe('login', () => {
     it('should call loginUseCase.execute and return formatted response', async () => {
 
-      const loginDto = new LoginDto();
-      loginDto.email = 'test@example.com';
-      loginDto.password = 'password123';
+      const loginDto = {
+        email: 'test@example.com',
+        password: 'password123',
+      } as LoginDto;
 
       const useCaseResponse: ILoginResponse = {
         accessToken: 'access_token_abc',
