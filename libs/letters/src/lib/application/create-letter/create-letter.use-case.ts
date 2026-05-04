@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { Letter } from '../../domain/letter.entity';
 import { CreateLetterCommand } from './create-letter.command';
-import { LetterRepository } from '../../domain/letter.repository';
+import { LetterWriter } from '../../domain/ports/letter-writer.port';
 
 @Injectable()
 export class CreateLetterUseCase {
-  constructor(private readonly letterRepository: LetterRepository) {}
+  constructor(private readonly letterWriter: LetterWriter) {}
 
   async execute(command: CreateLetterCommand): Promise<Letter> {
 
@@ -15,7 +15,7 @@ export class CreateLetterUseCase {
       sender: command.sender ?? null,
     });
 
-    await this.letterRepository.save(letter);
+    await this.letterWriter.create(letter);
 
     return letter;
   }
