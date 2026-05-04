@@ -1,29 +1,17 @@
-import { Test, TestingModule } from '@nestjs/testing';
 import { GetLettersByUserIdUseCase } from './get-letters-by-user-id.use-case';
-import { LetterRepository } from '../../domain/letter.repository';
+import { LetterReader } from '../../domain/ports/letter-reader.port';
 import { Letter } from '../../domain/letter.entity';
 import { LetterStatus } from '@amt-assistant/contracts';
 import { UserId } from '@amt-assistant/domain';
+import { mock, MockProxy } from 'jest-mock-extended';
 
 describe('GetLettersByUserIdUseCase', () => {
   let useCase: GetLettersByUserIdUseCase;
-  let letterRepository: LetterRepository;
+  let mockReader: MockProxy<LetterReader>;
 
-  beforeEach(async () => {
-    const module: TestingModule = await Test.createTestingModule({
-      providers: [
-        GetLettersByUserIdUseCase,
-        {
-          provide: LetterRepository,
-          useValue: {
-            findByUserId: jest.fn(),
-          },
-        },
-      ],
-    }).compile();
-
-    useCase = module.get<GetLettersByUserIdUseCase>(GetLettersByUserIdUseCase);
-    letterRepository = module.get<LetterRepository>(LetterRepository);
+  beforeEach(() => {
+    mockReader = mock<LetterReader>();
+    useCase = new GetLettersByUserIdUseCase(mockReader);
   });
 
   it('should be defined', () => {
@@ -49,24 +37,24 @@ describe('GetLettersByUserIdUseCase', () => {
         updatedAt: new Date(),
       }),
     ];
-    (letterRepository.findByUserId as jest.Mock).mockResolvedValue(letters);
+    mockReader.findByUserId.mockResolvedValue(letters);
 
     const result = await useCase.execute({ userId: '550e8400-e29b-41d4-a716-446655440002' });
 
     expect(result).toEqual(letters);
-    expect(letterRepository.findByUserId).toHaveBeenCalledWith(
-      UserId.create('550e8400-e29b-41d4-a716-446655440002')
+    expect(mockReader.findByUserId).toHaveBeenCalledWith(
+      UserId.create('550e8400-e29b-41d4-a716-446655440002'),
     );
   });
 
   it('should return an empty array if no letters are found for a given user ID', async () => {
-    (letterRepository.findByUserId as jest.Mock).mockResolvedValue([]);
+    mockReader.findByUserId.mockResolvedValue([]);
 
     const result = await useCase.execute({ userId: '550e8400-e29b-41d4-a716-446655440002' });
 
     expect(result).toEqual([]);
-    expect(letterRepository.findByUserId).toHaveBeenCalledWith(
-      UserId.create('550e8400-e29b-41d4-a716-446655440002')
+    expect(mockReader.findByUserId).toHaveBeenCalledWith(
+      UserId.create('550e8400-e29b-41d4-a716-446655440002'),
     );
   });
 });

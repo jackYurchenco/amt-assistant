@@ -1,34 +1,18 @@
-import { Test, TestingModule } from '@nestjs/testing';
 import { GetLetterByIdUseCase } from './get-letter-by-id.use-case';
-import { LetterRepository } from '../../domain/letter.repository';
+import { mock, MockProxy } from 'jest-mock-extended';
+import { LetterReader } from '../../domain/ports/letter-reader.port';
 import { Letter } from '../../domain/letter.entity';
 import { NotFoundException } from '@nestjs/common';
 import { LetterStatus } from '@amt-assistant/contracts';
-import { UserId } from '@amt-assistant/domain';
+import { GetLetterByIdQuery } from './get-letter-by-id.query';
 
 describe('GetLetterByIdUseCase', () => {
   let useCase: GetLetterByIdUseCase;
-  let letterRepository: LetterRepository;
+  let mockReader: MockProxy<LetterReader>;
 
-  beforeEach(async () => {
-    const module: TestingModule = await Test.createTestingModule({
-      providers: [
-        GetLetterByIdUseCase,
-        {
-          provide: LetterRepository,
-          useValue: {
-            findById: jest.fn(),
-          },
-        },
-      ],
-    }).compile();
-
-    useCase = module.get<GetLetterByIdUseCase>(GetLetterByIdUseCase);
-    letterRepository = module.get<LetterRepository>(LetterRepository);
-  });
-
-  it('should be defined', () => {
-    expect(useCase).toBeDefined();
+  beforeEach(() => {
+    mockReader = mock<LetterReader>();
+    useCase = new GetLetterByIdUseCase(mockReader);
   });
 
   it('should return a letter when found', async () => {
@@ -40,24 +24,24 @@ describe('GetLetterByIdUseCase', () => {
       createdAt: new Date(),
       updatedAt: new Date(),
     });
-    (letterRepository.findById as jest.Mock).mockResolvedValue(letter);
+    mockReader.findById.mockResolvedValue(letter);
 
-    const result = await useCase.execute({ id: '550e8400-e29b-41d4-a716-446655440002' });
+    const query = new GetLetterByIdQuery('550e8400-e29b-41d4-a716-446655440000');
+    const result = await useCase.execute(query);
 
+    expect(result).toBeDefined();
     expect(result).toEqual(letter);
-    expect(letterRepository.findById).toHaveBeenCalledWith(
-      UserId.create('550e8400-e29b-41d4-a716-446655440002')
-    );
+    expect(mockReader.findById).toHaveBeenCalled();
   });
 
   it('should throw a NotFoundException when letter is not found', async () => {
-    (letterRepository.findById as jest.Mock).mockResolvedValue(null);
+    mockReader.findById.mockResolvedValue(null);
 
-    await expect(useCase.execute({ id: '550e8400-e29b-41d4-a716-446655440002' })).rejects.toThrow(
+    const query = new GetLetterByIdQuery('550e8400-e29b-41d4-a716-446655440002');
+
+    await expect(useCase.execute(query)).rejects.toThrow(
       new NotFoundException('Letter with ID 550e8400-e29b-41d4-a716-446655440002 not found'),
     );
-    expect(letterRepository.findById).toHaveBeenCalledWith(
-      UserId.create('550e8400-e29b-41d4-a716-446655440002')
-    );
+    expect(mockReader.findById).toHaveBeenCalled();
   });
 });

@@ -1,16 +1,16 @@
 import { CreateLetterUseCase } from './create-letter.use-case';
 import { mock, MockProxy } from 'jest-mock-extended';
 import { CreateLetterCommand } from './create-letter.command';
-import { LetterRepository } from '../../domain/letter.repository';
+import { LetterWriter } from '../../domain/ports/letter-writer.port';
 
 describe('CreateLetterUseCase', () => {
   let useCase: CreateLetterUseCase;
-  let mockRepository: MockProxy<LetterRepository>;
+  let mockWriter: MockProxy<LetterWriter>;
 
   beforeEach(() => {
-    mockRepository = mock<LetterRepository>();
-    mockRepository.save.mockResolvedValue(undefined);
-    useCase = new CreateLetterUseCase(mockRepository);
+    mockWriter = mock<LetterWriter>();
+    mockWriter.create.mockResolvedValue(undefined);
+    useCase = new CreateLetterUseCase(mockWriter);
   });
 
   it('should successfully create a letter and call repository.save', async () => {
@@ -23,6 +23,6 @@ describe('CreateLetterUseCase', () => {
 
     expect(result).toBeDefined();
     expect(result.title).toBe(command.title);
-    expect(mockRepository.save).toHaveBeenCalled();
+    expect(mockWriter.create).toHaveBeenCalled();
   });
 });
