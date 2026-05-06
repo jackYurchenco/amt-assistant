@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
+import { Body, Controller, Get, HttpStatus, Param, Post, Query } from '@nestjs/common';
 import { CreateLetterUseCase } from '../application/create-letter/create-letter.use-case';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CreateLetterDto } from './dto/create-letter.dto';
@@ -23,12 +23,12 @@ export class LettersController {
   @Post()
   @ApiOperation({ summary: 'Create a new letter' })
   @ApiResponse({
-    status: 201,
+    status: HttpStatus.CREATED,
     description: 'The letter has been successfully created.',
     type: LetterResponseDto,
   })
   @ApiResponse({
-    status: 400,
+    status: HttpStatus.BAD_REQUEST,
     description: 'Invalid input data.',
   })
   async create(@Body() dto: CreateLetterDto): Promise<ILetter> {
@@ -49,12 +49,12 @@ export class LettersController {
   @Get(':id')
   @ApiOperation({ summary: 'Get a specific letter by ID' })
   @ApiResponse({
-    status: 200,
+    status: HttpStatus.OK,
     description: 'Letter found successfully',
     type: LetterResponseDto,
   })
   @ApiResponse({
-    status: 404,
+    status: HttpStatus.NOT_FOUND,
     description: 'Letter not found',
   })
   async findOne(@Param() dto: GetLetterByIdDto): Promise<ILetter> {
@@ -66,9 +66,13 @@ export class LettersController {
   @Get()
   @ApiOperation({ summary: 'Get all letters for a specific user' })
   @ApiResponse({
-    status: 200,
+    status: HttpStatus.OK,
     description: 'List of letters retrieved successfully.',
     type: [LetterResponseDto],
+  })
+  @ApiResponse({
+    status: HttpStatus.BAD_REQUEST,
+    description: 'Invalid input data.',
   })
   async findByUser(@Query() dto: GetLettersByUserIdDto): Promise<ILetter[]> {
     const letters: Letter[] = await this.getLettersByUserIdUseCase.execute({ userId: dto.userId });
