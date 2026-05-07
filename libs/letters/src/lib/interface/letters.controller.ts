@@ -10,7 +10,7 @@ import { GetLettersByUserIdUseCase } from '../application/get-letters-by-user-id
 import { Letter } from '../domain/letter.entity';
 import { LetterResponseDto } from './dto/letter-response.dto';
 import { ILetter } from '@amt-assistant/contracts';
-import { UserId } from '@amt-assistant/auth';
+import { AuthenticatedUserId } from '@amt-assistant/util-decorators';
 
 @ApiTags('letters')
 @Controller('letters')
@@ -34,7 +34,7 @@ export class LettersController {
   })
   async create(
     @Body() dto: CreateLetterDto,
-    @UserId() userId: string,
+    @AuthenticatedUserId() userId: string,
   ): Promise<ILetter> {
     const command = new CreateLetterCommand(
       dto.title,
