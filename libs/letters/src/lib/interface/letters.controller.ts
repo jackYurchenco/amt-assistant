@@ -10,6 +10,7 @@ import { GetLettersByUserIdUseCase } from '../application/get-letters-by-user-id
 import { Letter } from '../domain/letter.entity';
 import { LetterResponseDto } from './dto/letter-response.dto';
 import { ILetter } from '@amt-assistant/contracts';
+import { UserId } from '@amt-assistant/auth';
 
 @ApiTags('letters')
 @Controller('letters')
@@ -31,13 +32,13 @@ export class LettersController {
     status: HttpStatus.BAD_REQUEST,
     description: 'Invalid input data.',
   })
-  async create(@Body() dto: CreateLetterDto): Promise<ILetter> {
-    // TODO: Replace with actual user ID from execution context (e.g., JWT)
-    const mockUserId = '550e8400-e29b-41d4-a716-446655440000';
-
+  async create(
+    @Body() dto: CreateLetterDto,
+    @UserId() userId: string,
+  ): Promise<ILetter> {
     const command = new CreateLetterCommand(
       dto.title,
-      mockUserId,
+      userId,
       dto.sender,
     );
 
