@@ -1,4 +1,4 @@
-import { Body, Controller, Get, NotFoundException, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, HttpStatus, NotFoundException, Param, Post } from '@nestjs/common';
 import { CreateUserUseCase } from '../application/create-user/create-user.use-case';
 import { GetUserByIdUseCase } from '../application/get-user-by-id/get-user-by-id.use-case';
 import { GetAllUsersUseCase } from '../application/get-all-users/get-all-users.use-case';
@@ -23,12 +23,12 @@ export class UsersController {
   @Post()
   @ApiOperation({ summary: 'Create a new user' })
   @ApiResponse({
-    status: 201,
+    status: HttpStatus.CREATED,
     description: 'The user has been successfully created.',
     type: UserResponseDto,
   })
   @ApiResponse({
-    status: 400,
+    status: HttpStatus.BAD_REQUEST,
     description: 'Invalid input data.',
   })
   async create(@Body() dto: CreateUserDto): Promise<IUser> {
@@ -43,7 +43,7 @@ export class UsersController {
   @Get()
   @ApiOperation({ summary: 'Get all users' })
   @ApiResponse({
-    status: 200,
+    status: HttpStatus.OK,
     description: 'The users have been successfully retrieved.',
     type: [UserResponseDto],
   })
@@ -55,12 +55,12 @@ export class UsersController {
   @Get(':id')
   @ApiOperation({ summary: 'Get user by id' })
   @ApiResponse({
-    status: 200,
+    status: HttpStatus.OK,
     description: 'The user has been successfully retrieved.',
     type: UserResponseDto,
   })
   @ApiResponse({
-    status: 404,
+    status: HttpStatus.NOT_FOUND,
     description: 'User not found.',
   })
   async findOne(@Param() dto: GetUserByIdDto): Promise<IUser> {
