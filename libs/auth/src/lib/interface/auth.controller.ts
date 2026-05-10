@@ -1,4 +1,4 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Post, HttpStatus } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { ILoginResponse } from '@amt-assistant/contracts';
 import { LoginDto } from './dto/login.dto';
@@ -14,12 +14,12 @@ export class AuthController {
   @Post('login')
   @ApiOperation({ summary: 'User authentication' })
   @ApiResponse({
-    status: 201,
+    status: HttpStatus.CREATED,
     description: 'User successfully logged in.',
     type: LoginResponseDto,
   })
   @ApiResponse({
-    status: 401,
+    status: HttpStatus.UNAUTHORIZED,
     description: 'Invalid credentials.',
   })
   async login(@Body() dto: LoginDto): Promise<ILoginResponse> {
