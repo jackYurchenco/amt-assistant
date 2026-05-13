@@ -1,12 +1,14 @@
 import { GetUserByEmailUseCase } from '@amt-assistant/users';
 import { LoginCommand } from './login.command';
-import { Injectable, InternalServerErrorException, UnauthorizedException } from '@nestjs/common';
+import { Injectable, InternalServerErrorException, UnauthorizedException, Logger } from '@nestjs/common';
 import { HasherService } from '@amt-assistant/util-crypto';
 import { IAuthTokens, TokenService } from '@amt-assistant/util-token';
 import { ILoginResponse } from '@amt-assistant/contracts';
 
 @Injectable()
 export class LoginUseCase {
+  private readonly logger = new Logger(LoginUseCase.name);
+
   constructor(
     private readonly getUserByEmailUseCase: GetUserByEmailUseCase,
     private readonly hasherService: HasherService,
@@ -42,8 +44,9 @@ export class LoginUseCase {
           email: user.email.getValue(),
         },
       };
-    } catch {
-      throw new InternalServerErrorException('Failed to generate authentication tokens');
+    } catch (error) {
+      this.logger.error('Failed to generate authentication tokens', error);
+      throw new InternalServerErrorException('Failed to generate authentication tokens', { cause: error });
     }
   }
 }
