@@ -1,6 +1,6 @@
 import { Body, Controller, Get, HttpStatus, Param, Post, Query } from '@nestjs/common';
 import { CreateLetterUseCase } from '../application/create-letter/create-letter.use-case';
-import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CreateLetterDto } from './dto/create-letter.dto';
 import { CreateLetterCommand } from '../application/create-letter/create-letter.command';
 import { GetLetterByIdDto } from './dto/get-letter-by-id.dto';
@@ -13,6 +13,7 @@ import { ILetter } from '@amt-assistant/contracts';
 import { AuthenticatedUserId } from '@amt-assistant/util-decorators';
 
 @ApiTags('letters')
+@ApiBearerAuth()
 @Controller('letters')
 export class LettersController {
   constructor(

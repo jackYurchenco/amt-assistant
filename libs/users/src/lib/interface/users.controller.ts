@@ -2,7 +2,7 @@ import { Body, Controller, Get, HttpStatus, NotFoundException, Param, Post } fro
 import { CreateUserUseCase } from '../application/create-user/create-user.use-case';
 import { GetUserByIdUseCase } from '../application/get-user-by-id/get-user-by-id.use-case';
 import { GetAllUsersUseCase } from '../application/get-all-users/get-all-users.use-case';
-import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CreateUserDto } from './dto/create-user.dto';
 import { CreateUserCommand } from '../application/create-user/create-user.command';
 import { GetUserByIdDto } from './dto/get-user-by-id.dto';
@@ -12,6 +12,7 @@ import { UserResponseDto } from './dto/user-response.dto';
 import { Email, RawPassword } from '@amt-assistant/domain';
 
 @ApiTags('users')
+@ApiBearerAuth()
 @Controller('users')
 export class UsersController {
   constructor(

@@ -25,6 +25,7 @@ async function bootstrap(): Promise<void> {
     .setDescription('The AMT Assistant project API description')
     .setVersion('1.0')
     .addTag('letters')
+    .addBearerAuth()
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup(`${globalPrefix}/docs`, app, document);
