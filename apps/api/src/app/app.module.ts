@@ -2,7 +2,8 @@ import { Module } from '@nestjs/common';
 import { PrismaModule } from '@amt-assistant/prisma';
 import { LettersModule } from '@amt-assistant/letters';
 import { UsersModule } from '@amt-assistant/users';
-import { AuthModule } from '@amt-assistant/auth';
+import { AuthModule, JwtAuthGuard } from '@amt-assistant/auth';
+import { APP_GUARD } from '@nestjs/core';
 
 @Module({
   imports: [
@@ -12,6 +13,11 @@ import { AuthModule } from '@amt-assistant/auth';
     UsersModule,
   ],
   controllers: [],
-  providers: [],
+  providers: [
+    {
+      provide: APP_GUARD,
+      useClass: JwtAuthGuard,
+    },
+  ],
 })
 export class AppModule {}
