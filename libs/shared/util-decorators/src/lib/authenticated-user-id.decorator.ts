@@ -11,7 +11,7 @@ export interface AuthenticatedRequest extends Request {
 }
 
 export const AuthenticatedUserId = createParamDecorator(
-  (data: unknown, ctx: ExecutionContext): string => {
+  (ctx: ExecutionContext): string => {
     const request = ctx.switchToHttp().getRequest<AuthenticatedRequest>();
 
     const userId = request.user?.id || request.user?.id;

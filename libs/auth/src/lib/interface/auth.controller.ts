@@ -5,12 +5,14 @@ import { LoginDto } from './dto/login.dto';
 import { LoginUseCase } from '../application/login.use-case';
 import { LoginResponseDto } from './dto/login-response.dto';
 import { Email, RawPassword } from '@amt-assistant/domain';
+import { Public } from '@amt-assistant/util-decorators';
 
 @Controller('auth')
 @ApiTags('auth')
 export class AuthController {
   constructor(private readonly loginUseCase: LoginUseCase) {}
 
+  @Public()
   @Post('login')
   @ApiOperation({ summary: 'User authentication' })
   @ApiResponse({
