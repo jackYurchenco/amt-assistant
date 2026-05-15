@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
 import { PrismaModule } from '@amt-assistant/prisma';
 import { LettersModule } from '@amt-assistant/letters';
 import { UsersModule } from '@amt-assistant/users';
@@ -7,6 +8,9 @@ import { APP_GUARD } from '@nestjs/core';
 
 @Module({
   imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
     PrismaModule,
     AuthModule,
     LettersModule,
