@@ -3,6 +3,7 @@ import { AuthGuard } from '@nestjs/passport';
 import { Reflector } from '@nestjs/core';
 import { Observable } from 'rxjs';
 import { IS_PUBLIC_KEY } from '@amt-assistant/util-decorators';
+import { ITokenPayload } from '@amt-assistant/util-token';
 
 @Injectable()
 export class JwtAuthGuard extends AuthGuard('jwt') {
@@ -23,11 +24,12 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
     return super.canActivate(context);
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   override handleRequest(err: any, user: any): any {
     if (err || !user) {
-      throw err || new UnauthorizedException('Користувач не авторизований');
+      throw err || new UnauthorizedException('User is not authorized.');
     }
 
-    return user;
+    return user as ITokenPayload;
   }
 }
