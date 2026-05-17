@@ -1,6 +1,4 @@
-import { IJwtPayloadInterface } from './jwt-payload.interface';
-
-export interface ITokenPayload extends IJwtPayloadInterface {
+export interface ITokenPayload {
   userId: string;
   email: string;
 }
