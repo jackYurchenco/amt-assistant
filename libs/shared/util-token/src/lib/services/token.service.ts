@@ -1,5 +1,5 @@
-import { ITokenPayload } from './token-payload.interface';
-import { IAuthTokens } from './auth-tokens.interface';
+import { ITokenPayload } from '../interfaces/token-payload.interface';
+import { IAuthTokens } from '../interfaces/auth-tokens.interface';
 import { Injectable } from '@nestjs/common';
 
 @Injectable()

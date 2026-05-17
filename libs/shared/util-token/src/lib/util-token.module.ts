@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
-import { TokenService } from './token.service';
-import { JwtTokenService } from './jwt-token.service';
+import { TokenService } from './services/token.service';
+import { JwtTokenService } from './services/jwt-token.service';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 
