@@ -17,6 +17,7 @@ model User {
   updatedAt    DateTime @updatedAt
 
   letters      Letter[]
+  sessions     Session[]
 }
 
 model Letter {
@@ -31,4 +32,14 @@ model Letter {
 
   userId    String
   user      User     @relation(fields: [userId], references: [id])
+}
+
+model Session {
+  id String @id @default(uuid())
+  userId String
+  refreshToken String
+  expiresAt DateTime
+  userAgent String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
