@@ -1,10 +1,10 @@
-import { UserId } from '@amt-assistant/domain';
+import { RefreshToken, SessionId, UserId } from '@amt-assistant/domain';
 
 export class SessionEntity {
   private constructor(
-    public readonly id: string,
+    public readonly id: SessionId,
     public readonly userId: UserId,
-    public readonly refreshToken: string,
+    public readonly refreshToken: RefreshToken,
     public readonly expiresAt: Date,
     public readonly userAgent: string | null,
   ) {}
@@ -16,9 +16,9 @@ export class SessionEntity {
     userAgent?: string | null;
   }): SessionEntity {
     return new SessionEntity(
-      crypto.randomUUID(),
+      SessionId.create(crypto.randomUUID()),
       UserId.create(props.userId),
-      props.refreshToken,
+      RefreshToken.create(props.refreshToken),
       props.expiresAt,
       props.userAgent ?? null,
     );
@@ -32,9 +32,9 @@ export class SessionEntity {
     userAgent: string | null;
   }): SessionEntity {
     return new SessionEntity(
-      props.id,
+      SessionId.create(props.id),
       UserId.create(props.userId),
-      props.refreshToken,
+      RefreshToken.create(props.refreshToken),
       props.expiresAt,
       props.userAgent,
     );
