@@ -1,9 +1,9 @@
 import { Session as PrismaSession } from '@prisma/client';
-import { SessionEntity } from '../../domain/session.entity';
+import { Session } from '../../domain/session.entity';
 
 export class SessionMapper {
-  static toDomain(raw: PrismaSession): SessionEntity {
-    return SessionEntity.restore({
+  static toDomain(raw: PrismaSession): Session {
+    return Session.restore({
       id: raw.id,
       userId: raw.userId,
       refreshToken: raw.refreshToken,
@@ -12,7 +12,7 @@ export class SessionMapper {
     });
   }
 
-  static toPersistence(session: SessionEntity): PrismaSession {
+  static toPersistence(session: Session): PrismaSession {
     return {
       id: session.id.getValue(),
       userId: session.userId.getValue(),

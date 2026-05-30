@@ -1,5 +1,5 @@
-import { SessionEntity } from '../session.entity';
+import { Session } from '../session.entity';
 
 export abstract class SessionWriter {
-  abstract create(session: SessionEntity): Promise<void>;
+  abstract create(session: Session): Promise<void>;
 }

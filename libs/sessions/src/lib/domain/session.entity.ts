@@ -1,6 +1,6 @@
 import { RefreshToken, SessionId, UserId } from '@amt-assistant/domain';
 
-export class SessionEntity {
+export class Session {
   private constructor(
     public readonly id: SessionId,
     public readonly userId: UserId,
@@ -14,8 +14,8 @@ export class SessionEntity {
     refreshToken: string;
     expiresAt: Date;
     userAgent?: string | null;
-  }): SessionEntity {
-    return new SessionEntity(
+  }): Session {
+    return new Session(
       SessionId.create(crypto.randomUUID()),
       UserId.create(props.userId),
       RefreshToken.create(props.refreshToken),
@@ -30,8 +30,8 @@ export class SessionEntity {
     refreshToken: string;
     expiresAt: Date;
     userAgent: string | null;
-  }): SessionEntity {
-    return new SessionEntity(
+  }): Session {
+    return new Session(
       SessionId.create(props.id),
       UserId.create(props.userId),
       RefreshToken.create(props.refreshToken),
