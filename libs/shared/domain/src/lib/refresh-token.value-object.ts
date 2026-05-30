@@ -1,5 +1,9 @@
-export class RefreshToken {
-  private constructor(public readonly value: string) {}
+import { BaseValueObject } from './base.value-object';
+
+export class RefreshToken extends BaseValueObject<string, 'RefreshToken'> {
+  private constructor(value: string) {
+    super(value);
+  }
 
   static create(value: string): RefreshToken {
     if (!value || value.trim().length === 0) {
