@@ -16,7 +16,7 @@ export class SessionMapper {
     return {
       id: session.id.getValue(),
       userId: session.userId.getValue(),
-      // TODO refreshToken: session.refreshToken.getValue(),
+      refreshToken: session.refreshToken.getValue(),
       expiresAt: session.expiresAt,
       userAgent: session.userAgent,
     };
