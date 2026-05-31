@@ -4,13 +4,18 @@ import { SessionRemover } from '../domain/ports/session-remover.port';
 import { SessionReader } from '../domain/ports/session-reader.port';
 import { Session } from '../domain/session.entity';
 import { SessionId, UserId } from '@amt-assistant/domain';
+import { Session as PrismaSession } from '@prisma/client';
+import { SessionMapper } from './mappers/session.mapper';
+import { PrismaService } from '@amt-assistant/prisma';
 
 @Injectable()
 export class PrismaSessionRepository implements SessionWriter, SessionReader, SessionRemover {
-  constructor() {}
+  constructor(private readonly prismaService: PrismaService) {}
 
   async create(session: Session): Promise<void> {
-    // TODO create session
+    const data: PrismaSession = SessionMapper.toPersistence(session);
+
+    await this.prismaService.session.create({ data });
   }
 
   async findById(id: SessionId): Promise<Session | null> {
