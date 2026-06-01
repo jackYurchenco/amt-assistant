@@ -27,8 +27,11 @@ export class PrismaSessionRepository implements SessionWriter, SessionReader, Se
   }
 
   async findByUserId(id: UserId): Promise<Session | null> {
-    // TODO find session by userId
-    return null;
+    const raw: PrismaSession | null = await this.prismaService.session.findFirst({
+      where: { userId: id.getValue() },
+    });
+
+    return raw ? SessionMapper.toDomain(raw) : null;
   }
 
   async remove(id: SessionId): Promise<void> {
