@@ -18,6 +18,12 @@
       "sourceType": "github",
       "skillPath": "skills/solid/SKILL.md",
       "computedHash": "60de610a3c143f79f69552b7da60298bb46c9e8d80ab16c4c111b025823345d1"
+    },
+    "typescript-clean-code": {
+      "source": "bmad-labs/skills",
+      "sourceType": "github",
+      "skillPath": "skills/typescript-clean-code/SKILL.md",
+      "computedHash": "32dd11d590211d7098dfefe206e10acf929d6fcea28151a3994a1823b04df239"
     }
   }
 }
