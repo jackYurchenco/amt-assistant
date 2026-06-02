@@ -35,6 +35,8 @@ export class PrismaSessionRepository implements SessionWriter, SessionReader, Se
   }
 
   async remove(id: SessionId): Promise<void> {
-    // TODO remove session
+    await this.prismaService.session.delete({
+      where: { id: id.getValue() },
+    });
   }
 }
