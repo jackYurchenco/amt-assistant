@@ -8,7 +8,7 @@ import { SessionReader } from '../../domain/ports/session-reader.port';
 export class GetSessionByIdUseCase {
   constructor(private readonly sessionReader: SessionReader) {}
 
-  async execute(query: GetSessionByIdQuery): Promise<Session | null> {
+  async execute(query: GetSessionByIdQuery): Promise<Session> {
     const session = await this.sessionReader.findById(SessionId.create(query.id));
 
     if (!session) {
