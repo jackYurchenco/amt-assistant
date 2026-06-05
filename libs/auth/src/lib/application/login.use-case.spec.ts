@@ -5,7 +5,7 @@ import { AuthUser } from '../domain/auth-user.entity';
 import { HasherService } from '@amt-assistant/util-crypto';
 import { TokenService } from '@amt-assistant/util-token';
 import { UnauthorizedException, InternalServerErrorException } from '@nestjs/common';
-import { Email, PasswordHash, RawPassword, UserId } from '@amt-assistant/domain';
+import { Email, RawPassword } from '@amt-assistant/domain';
 
 describe('LoginUseCase', () => {
   let useCase: LoginUseCase;
