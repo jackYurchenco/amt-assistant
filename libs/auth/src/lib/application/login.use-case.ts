@@ -1,4 +1,4 @@
-import { GetUserByEmailUseCase } from '@amt-assistant/users';
+import { AuthUserReader } from '../domain/ports/auth-user.reader';
 import { LoginCommand } from './login.command';
 import { Injectable, InternalServerErrorException, UnauthorizedException, Logger } from '@nestjs/common';
 import { HasherService } from '@amt-assistant/util-crypto';
@@ -10,13 +10,13 @@ export class LoginUseCase {
   private readonly logger = new Logger(LoginUseCase.name);
 
   constructor(
-    private readonly getUserByEmailUseCase: GetUserByEmailUseCase,
+    private readonly authUserReader: AuthUserReader,
     private readonly hasherService: HasherService,
     private readonly tokenService: TokenService,
   ) {}
 
   async execute(command: LoginCommand): Promise<ILoginResponse> {
-    const user = await this.getUserByEmailUseCase.execute({ email: command.email.getValue() });
+    const user = await this.authUserReader.getUserByEmail(command.email.getValue());
 
     if (!user) {
       throw new UnauthorizedException('Invalid credentials');
