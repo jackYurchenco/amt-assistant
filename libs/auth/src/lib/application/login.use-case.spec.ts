@@ -1,6 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { LoginUseCase } from './login.use-case';
-import { GetUserByEmailUseCase } from '@amt-assistant/users';
+import { AuthUserReader } from '../domain/ports/auth-user.reader';
+import { AuthUser } from '../domain/auth-user.entity';
 import { HasherService } from '@amt-assistant/util-crypto';
 import { TokenService } from '@amt-assistant/util-token';
 import { UnauthorizedException, InternalServerErrorException } from '@nestjs/common';
@@ -8,7 +9,7 @@ import { Email, PasswordHash, RawPassword, UserId } from '@amt-assistant/domain'
 
 describe('LoginUseCase', () => {
   let useCase: LoginUseCase;
-  let getUserByEmailUseCase: jest.Mocked<GetUserByEmailUseCase>;
+  let authUserReader: jest.Mocked<AuthUserReader>;
   let hasherService: jest.Mocked<HasherService>;
   let tokenService: jest.Mocked<TokenService>;
 
@@ -17,9 +18,9 @@ describe('LoginUseCase', () => {
       providers: [
         LoginUseCase,
         {
-          provide: GetUserByEmailUseCase,
+          provide: AuthUserReader,
           useValue: {
-            execute: jest.fn(),
+            getUserByEmail: jest.fn(),
           },
         },
         {
@@ -38,7 +39,7 @@ describe('LoginUseCase', () => {
     }).compile();
 
     useCase = module.get<LoginUseCase>(LoginUseCase);
-    getUserByEmailUseCase = module.get(GetUserByEmailUseCase);
+    authUserReader = module.get(AuthUserReader);
     hasherService = module.get(HasherService);
     tokenService = module.get(TokenService);
   });
@@ -48,7 +49,7 @@ describe('LoginUseCase', () => {
   });
 
   it('should throw UnauthorizedException if user is not found', async () => {
-    getUserByEmailUseCase.execute.mockResolvedValue(null);
+    authUserReader.getUserByEmail.mockResolvedValue(null);
 
     await expect(
       useCase.execute({
@@ -59,15 +60,11 @@ describe('LoginUseCase', () => {
   });
 
   it('should throw UnauthorizedException if password is invalid', async () => {
-    getUserByEmailUseCase.execute.mockResolvedValue({
-      id: UserId.create('550e8400-e29b-41d4-a716-446655440000'),
-      email: Email.create('test@example.com'),
-      passwordHash: PasswordHash.create('hashedPassword'),
-      createdAt: new Date(),
-      updatedAt: new Date(),
-      firstName: null,
-      lastName: null,
-    });
+    authUserReader.getUserByEmail.mockResolvedValue(AuthUser.restore({
+      id: '550e8400-e29b-41d4-a716-446655440000',
+      email: 'test@example.com',
+      passwordHash: 'hashedPassword',
+    }));
     hasherService.compare.mockResolvedValue(false);
 
     await expect(
@@ -79,15 +76,11 @@ describe('LoginUseCase', () => {
   });
 
   it('should throw InternalServerErrorException if tokens are not generated', async () => {
-    getUserByEmailUseCase.execute.mockResolvedValue({
-      id: UserId.create('550e8400-e29b-41d4-a716-446655440000'),
-      email: Email.create('test@example.com'),
-      passwordHash: PasswordHash.create('hashedPassword'),
-      createdAt: new Date(),
-      updatedAt: new Date(),
-      firstName: null,
-      lastName: null,
-    });
+    authUserReader.getUserByEmail.mockResolvedValue(AuthUser.restore({
+      id: '550e8400-e29b-41d4-a716-446655440000',
+      email: 'test@example.com',
+      passwordHash: 'hashedPassword',
+    }));
     hasherService.compare.mockResolvedValue(true);
     tokenService.generateTokens.mockRejectedValue(new Error('JWT Service Down'));
 
@@ -100,21 +93,17 @@ describe('LoginUseCase', () => {
   });
 
   it('should return login response on successful login', async () => {
-    const user = {
-      id: UserId.create('550e8400-e29b-41d4-a716-446655440000'),
-      email: Email.create('test@example.com'),
-      passwordHash: PasswordHash.create('hashedPassword'),
-      createdAt: new Date(),
-      updatedAt: new Date(),
-      firstName: null,
-      lastName: null,
-    };
+    const user = AuthUser.restore({
+      id: '550e8400-e29b-41d4-a716-446655440000',
+      email: 'test@example.com',
+      passwordHash: 'hashedPassword',
+    });
     const tokens = {
       accessToken: 'access',
       refreshToken: 'refresh',
     };
 
-    getUserByEmailUseCase.execute.mockResolvedValue(user);
+    authUserReader.getUserByEmail.mockResolvedValue(user);
     hasherService.compare.mockResolvedValue(true);
     tokenService.generateTokens.mockResolvedValue(tokens);
 
