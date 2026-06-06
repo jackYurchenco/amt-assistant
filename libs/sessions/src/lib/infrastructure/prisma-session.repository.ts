@@ -39,4 +39,10 @@ export class PrismaSessionRepository implements SessionWriter, SessionReader, Se
       where: { id: id.getValue() },
     });
   }
+
+  async removeAllByUserId(id: UserId): Promise<void> {
+    await this.prismaService.session.deleteMany({
+      where: { userId: id.getValue() },
+    });
+  }
 }
