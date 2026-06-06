@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { SessionWriter } from '../domain/ports/session-writer.port';
 import { SessionRemover } from '../domain/ports/session-remover.port';
 import { SessionReader } from '../domain/ports/session-reader.port';
 import { Session } from '../domain/session.entity';
@@ -9,14 +8,8 @@ import { SessionMapper } from './mappers/session.mapper';
 import { PrismaService } from '@amt-assistant/prisma';
 
 @Injectable()
-export class PrismaSessionRepository implements SessionWriter, SessionReader, SessionRemover {
+export class PrismaSessionRepository implements SessionReader, SessionRemover {
   constructor(private readonly prismaService: PrismaService) {}
-
-  async create(session: Session): Promise<void> {
-    const data: PrismaSession = SessionMapper.toPersistence(session);
-
-    await this.prismaService.session.create({ data });
-  }
 
   async findById(id: SessionId): Promise<Session | null> {
     const raw: PrismaSession | null = await this.prismaService.session.findUnique({
