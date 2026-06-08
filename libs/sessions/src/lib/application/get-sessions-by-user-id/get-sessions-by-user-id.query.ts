@@ -1,3 +1,3 @@
-export class GetSessionByUserIdQuery {
+export class GetSessionsByUserIdQuery {
   constructor(public readonly userId: string) {}
 }
