@@ -10,3 +10,6 @@ export * from './lib/user/get-user-by-id.interface';
 
 export * from './lib/auth/login.interface';
 export * from './lib/auth/login-response.interface';
+
+export * from './lib/session/session.interface';
+export * from './lib/session/get-sessions-by-user-id.interface';
