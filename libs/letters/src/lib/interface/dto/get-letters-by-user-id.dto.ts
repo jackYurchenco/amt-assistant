@@ -1,9 +1,9 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, IsString, IsUUID } from 'class-validator';
-import { IGetLettersByUserIdDto } from '@amt-assistant/contracts';
+import { IGetLettersByUserId } from '@amt-assistant/contracts';
 import { Trim } from '@amt-assistant/util-decorators';
 
-export class GetLettersByUserIdDto implements IGetLettersByUserIdDto {
+export class GetLettersByUserIdDto implements IGetLettersByUserId {
   @ApiProperty({
     example: '550e8400-e29b-41d4-a716-446655440000',
     description: 'The unique identifier of the user',
