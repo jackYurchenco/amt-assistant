@@ -1,3 +1,3 @@
-export interface IGetLettersByUserIdDto {
+export interface IGetLettersByUserId {
   userId: string;
 }
