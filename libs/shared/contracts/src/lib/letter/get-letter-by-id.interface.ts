@@ -1,3 +1,3 @@
-export interface IGetLetterByIdInterface {
+export interface IGetLetterById {
   id: string;
 }
