@@ -24,7 +24,7 @@ export class AuthController {
     status: HttpStatus.UNAUTHORIZED,
     description: 'Invalid credentials.',
   })
-  async login(@Body() dto: LoginDto): Promise<ILoginResponse> {
+  async login(@Body() dto: LoginDto): Promise<LoginResponseDto> {
 
     const loginResponse: ILoginResponse = await this.loginUseCase.execute({
       email: Email.create(dto.email),
