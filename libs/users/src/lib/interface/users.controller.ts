@@ -7,7 +7,6 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { CreateUserCommand } from '../application/create-user/create-user.command';
 import { GetUserByIdDto } from './dto/get-user-by-id.dto';
 import { User } from '../domain/user.entity';
-import { IUser } from '@amt-assistant/contracts';
 import { UserResponseDto } from './dto/user-response.dto';
 import { Email, RawPassword } from '@amt-assistant/domain';
 
@@ -32,7 +31,7 @@ export class UsersController {
     status: HttpStatus.BAD_REQUEST,
     description: 'Invalid input data.',
   })
-  async create(@Body() dto: CreateUserDto): Promise<IUser> {
+  async create(@Body() dto: CreateUserDto): Promise<UserResponseDto> {
     const command = new CreateUserCommand(
       Email.create(dto.email),
       RawPassword.create(dto.password),
@@ -48,7 +47,7 @@ export class UsersController {
     description: 'The users have been successfully retrieved.',
     type: [UserResponseDto],
   })
-  async findAll(): Promise<IUser[]> {
+  async findAll(): Promise<UserResponseDto[]> {
     const users: User[] = await this.getAllUsersUseCase.execute();
     return users.map(user => UserResponseDto.fromEntity(user));
   }
@@ -64,7 +63,7 @@ export class UsersController {
     status: HttpStatus.NOT_FOUND,
     description: 'User not found.',
   })
-  async findOne(@Param() dto: GetUserByIdDto): Promise<IUser> {
+  async findOne(@Param() dto: GetUserByIdDto): Promise<UserResponseDto> {
     const user = await this.getUserByIdUseCase.execute({ id : dto.id });
 
     if (!user) {
