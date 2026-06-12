@@ -9,7 +9,6 @@ import { GetLettersByUserIdDto } from './dto/get-letters-by-user-id.dto';
 import { GetLettersByUserIdUseCase } from '../application/get-letters-by-user-id/get-letters-by-user-id.use-case';
 import { Letter } from '../domain/letter.entity';
 import { LetterResponseDto } from './dto/letter-response.dto';
-import { ILetter } from '@amt-assistant/contracts';
 import { AuthenticatedUserId } from '@amt-assistant/util-decorators';
 
 @ApiTags('letters')
@@ -36,7 +35,7 @@ export class LettersController {
   async create(
     @Body() dto: CreateLetterDto,
     @AuthenticatedUserId() userId: string,
-  ): Promise<ILetter> {
+  ): Promise<LetterResponseDto> {
     const command = new CreateLetterCommand(
       dto.title,
       userId,
@@ -59,7 +58,7 @@ export class LettersController {
     status: HttpStatus.NOT_FOUND,
     description: 'Letter not found',
   })
-  async findOne(@Param() dto: GetLetterByIdDto): Promise<ILetter> {
+  async findOne(@Param() dto: GetLetterByIdDto): Promise<LetterResponseDto> {
     const letter: Letter = await this.getLetterByIdUseCase.execute({ id: dto.id });
 
     return LetterResponseDto.fromEntity(letter);
@@ -76,7 +75,7 @@ export class LettersController {
     status: HttpStatus.BAD_REQUEST,
     description: 'Invalid input data.',
   })
-  async findByUser(@Query() dto: GetLettersByUserIdDto): Promise<ILetter[]> {
+  async findByUser(@Query() dto: GetLettersByUserIdDto): Promise<LetterResponseDto[]> {
     const letters: Letter[] = await this.getLettersByUserIdUseCase.execute({ userId: dto.userId });
 
     return letters.map(letter => LetterResponseDto.fromEntity(letter));
