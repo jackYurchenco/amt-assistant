@@ -4,6 +4,7 @@ import { GetSessionsByUserIdUseCase } from '../application/get-sessions-by-user-
 import { GetSessionsByUserIdQuery } from '../application/get-sessions-by-user-id/get-sessions-by-user-id.query';
 import { SessionResponseDto } from './dto/session-response.dto';
 import { GetSessionsByUserIdDto } from './dto/get-sessions-by-user-id.dto';
+import { ISession } from '@amt-assistant/contracts';
 
 @ApiTags('sessions')
 @ApiBearerAuth()
@@ -18,7 +19,7 @@ export class SessionsController {
     description: 'The sessions have been successfully retrieved.',
     type: [SessionResponseDto],
   })
-  async getSessionsByUserId(@Param() dto: GetSessionsByUserIdDto): Promise<SessionResponseDto[]> {
+  async getSessionsByUserId(@Param() dto: GetSessionsByUserIdDto): Promise<ISession[]> {
     const query = new GetSessionsByUserIdQuery(dto.userId);
     const sessions = await this.getSessionsByUserIdUseCase.execute(query);
     return sessions.map(session => SessionResponseDto.fromEntity(session));
