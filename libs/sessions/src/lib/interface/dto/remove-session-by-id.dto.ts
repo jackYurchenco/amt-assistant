@@ -16,4 +16,17 @@ export class RemoveSessionByIdDto implements IRemoveSessionById {
   @IsString({ message: 'The id must be a string.' })
   @Trim()
   readonly id!: string;
+
+  @ApiProperty({
+    example: 'b2c3d4e5-f6a7-8901-2345-67890abcdef1',
+    description: 'The unique identifier of the user',
+    type: String,
+    required: true,
+    format: 'uuid',
+  })
+  @IsUUID(4, { message: 'The userId must be a valid UUID v4.' })
+  @IsNotEmpty({ message: 'The userId cannot be empty.' })
+  @IsString({ message: 'The userId must be a string.' })
+  @Trim()
+  readonly userId!: string;
 }
