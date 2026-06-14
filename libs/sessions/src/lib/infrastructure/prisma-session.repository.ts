@@ -33,7 +33,7 @@ export class PrismaSessionRepository implements SessionReader, SessionRemover {
     });
   }
 
-  async removeAllByUserId(id: UserId): Promise<void> {
+  async removeByUserId(id: UserId): Promise<void> {
     await this.prismaService.session.deleteMany({
       where: { userId: id.getValue() },
     });
