@@ -1,3 +1,3 @@
-export class RemoveAllSessionsByUserIdCommand {
+export class RemoveSessionsByUserIdCommand {
   constructor(public readonly userId: string) {}
 }
