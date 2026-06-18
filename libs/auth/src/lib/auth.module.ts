@@ -7,7 +7,7 @@ import { LoginUseCase } from './application/login.use-case';
 import { PrismaModule } from '@amt-assistant/prisma';
 import { JwtStrategy } from './infrastructure/jwt.strategy';
 import { JwtAuthGuard } from './infrastructure/guards/jwt-auth.guard';
-import { AuthUserReader } from './domain/ports/auth-user.reader';
+import { AuthUserReader } from './domain/ports/auth-user-reader.port';
 import { PrismaAuthUserRepository } from './infrastructure/prisma-auth-user.repository';
 
 @Module({

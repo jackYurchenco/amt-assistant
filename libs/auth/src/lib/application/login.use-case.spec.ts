@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { LoginUseCase } from './login.use-case';
-import { AuthUserReader } from '../domain/ports/auth-user.reader';
+import { AuthUserReader } from '../domain/ports/auth-user-reader.port';
 import { AuthUser } from '../domain/auth-user.entity';
 import { HasherService } from '@amt-assistant/util-crypto';
 import { TokenService } from '@amt-assistant/util-token';

@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '@amt-assistant/prisma';
-import { AuthUserReader } from '../domain/ports/auth-user.reader';
+import { AuthUserReader } from '../domain/ports/auth-user-reader.port';
 import { AuthUser } from '../domain/auth-user.entity';
 
 @Injectable()

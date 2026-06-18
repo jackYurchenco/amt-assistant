@@ -1,4 +1,4 @@
-import { AuthUserReader } from '../domain/ports/auth-user.reader';
+import { AuthUserReader } from '../domain/ports/auth-user-reader.port';
 import { LoginCommand } from './login.command';
 import { Injectable, InternalServerErrorException, UnauthorizedException, Logger } from '@nestjs/common';
 import { HasherService } from '@amt-assistant/util-crypto';
