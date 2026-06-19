@@ -8,7 +8,7 @@ import { PrismaModule } from '@amt-assistant/prisma';
 import { JwtStrategy } from './infrastructure/jwt.strategy';
 import { JwtAuthGuard } from './infrastructure/guards/jwt-auth.guard';
 import { AuthUserReader } from './domain/ports/auth-user-reader.port';
-import { PrismaAuthUserRepository } from './infrastructure/prisma-auth-user.repository';
+import { PrismaAuthUsersRepository } from './infrastructure/prisma-auth-users.repository';
 import { AuthSessionWriter } from './domain/ports/auth-session-writer.port';
 import { PrismaAuthSessionsRepository } from './infrastructure/prisma-auth-sessions.repository';
 
@@ -28,7 +28,7 @@ import { PrismaAuthSessionsRepository } from './infrastructure/prisma-auth-sessi
     JwtAuthGuard,
     {
       provide: AuthUserReader,
-      useClass: PrismaAuthUserRepository,
+      useClass: PrismaAuthUsersRepository,
     },
     {
       provide: AuthSessionWriter,

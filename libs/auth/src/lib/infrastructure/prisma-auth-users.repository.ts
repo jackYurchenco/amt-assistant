@@ -4,7 +4,7 @@ import { AuthUserReader } from '../domain/ports/auth-user-reader.port';
 import { AuthUser } from '../domain/auth-user.entity';
 
 @Injectable()
-export class PrismaAuthUserRepository implements AuthUserReader {
+export class PrismaAuthUsersRepository implements AuthUserReader {
   constructor(private readonly prismaService: PrismaService) {}
 
   async getUserByEmail(email: string): Promise<AuthUser | null> {
