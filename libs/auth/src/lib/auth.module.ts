@@ -9,6 +9,8 @@ import { JwtStrategy } from './infrastructure/jwt.strategy';
 import { JwtAuthGuard } from './infrastructure/guards/jwt-auth.guard';
 import { AuthUserReader } from './domain/ports/auth-user-reader.port';
 import { PrismaAuthUserRepository } from './infrastructure/prisma-auth-user.repository';
+import { AuthSessionWriter } from './domain/ports/auth-session-writer.port';
+import { PrismaAuthSessionsRepository } from './infrastructure/prisma-auth-sessions.repository';
 
 @Module({
   imports: [
@@ -27,6 +29,10 @@ import { PrismaAuthUserRepository } from './infrastructure/prisma-auth-user.repo
     {
       provide: AuthUserReader,
       useClass: PrismaAuthUserRepository,
+    },
+    {
+      provide: AuthSessionWriter,
+      useClass: PrismaAuthSessionsRepository,
     },
   ],
   exports: [
