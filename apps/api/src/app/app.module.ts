@@ -4,7 +4,8 @@ import { PrismaModule } from '@amt-assistant/prisma';
 import { LettersModule } from '@amt-assistant/letters';
 import { UsersModule } from '@amt-assistant/users';
 import { AuthModule, JwtAuthGuard } from '@amt-assistant/auth';
-import { APP_GUARD } from '@nestjs/core';
+import { APP_GUARD, APP_FILTER } from '@nestjs/core';
+import { AppExceptionFilter } from './filters/app-exception.filter';
 
 @Module({
   imports: [
@@ -21,6 +22,10 @@ import { APP_GUARD } from '@nestjs/core';
     {
       provide: APP_GUARD,
       useClass: JwtAuthGuard,
+    },
+    {
+      provide: APP_FILTER,
+      useClass: AppExceptionFilter,
     },
   ],
 })
