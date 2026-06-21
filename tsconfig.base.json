@@ -26,7 +26,8 @@
       "@amt-assistant/util-decorators": [
         "libs/shared/util-decorators/src/index.ts"
       ],
-      "@amt-assistant/sessions": ["libs/sessions/src/index.ts"]
+      "@amt-assistant/sessions": ["libs/sessions/src/index.ts"],
+      "@amt-assistant/exceptions": ["libs/shared/exceptions/src/index.ts"]
     },
     "strict": true,
     "noUnusedLocals": true,
