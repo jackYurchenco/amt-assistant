@@ -6,12 +6,14 @@ import { HasherService } from '@amt-assistant/util-crypto';
 import { TokenService } from '@amt-assistant/util-token';
 import { UnauthorizedException, InternalServerErrorException } from '@nestjs/common';
 import { Email, RawPassword } from '@amt-assistant/domain';
+import { AuthSessionWriter } from '../domain/ports/auth-session-writer.port';
 
 describe('LoginUseCase', () => {
   let useCase: LoginUseCase;
   let authUserReader: jest.Mocked<AuthUserReader>;
   let hasherService: jest.Mocked<HasherService>;
   let tokenService: jest.Mocked<TokenService>;
+  let authSessionWriter: jest.Mocked<AuthSessionWriter>;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -35,6 +37,12 @@ describe('LoginUseCase', () => {
             generateTokens: jest.fn(),
           },
         },
+        {
+          provide: AuthSessionWriter,
+          useValue: {
+            create: jest.fn(),
+          },
+        },
       ],
     }).compile();
 
@@ -42,6 +50,7 @@ describe('LoginUseCase', () => {
     authUserReader = module.get(AuthUserReader);
     hasherService = module.get(HasherService);
     tokenService = module.get(TokenService);
+    authSessionWriter = module.get(AuthSessionWriter);
   });
 
   it('should be defined', () => {
@@ -111,6 +120,8 @@ describe('LoginUseCase', () => {
       email: Email.create('test@example.com'),
       password: RawPassword.create('password'),
     });
+
+    expect(authSessionWriter.create).toHaveBeenCalled();
 
     expect(result).toEqual({
       ...tokens,
