@@ -1,4 +1,4 @@
-import { Body, Controller, Post, HttpStatus } from '@nestjs/common';
+import { Body, Controller, Post, HttpStatus, Headers } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { ILoginResponse } from '@amt-assistant/contracts';
 import { LoginDto } from './dto/login.dto';
@@ -24,11 +24,15 @@ export class AuthController {
     status: HttpStatus.UNAUTHORIZED,
     description: 'Invalid credentials.',
   })
-  async login(@Body() dto: LoginDto): Promise<LoginResponseDto> {
+  async login(
+    @Body() dto: LoginDto,
+    @Headers('user-agent') userAgent?: string,
+  ): Promise<LoginResponseDto> {
 
     const loginResponse: ILoginResponse = await this.loginUseCase.execute({
       email: Email.create(dto.email),
       password: RawPassword.create(dto.password),
+      userAgent,
     });
 
     return LoginResponseDto.fromResult(loginResponse);
