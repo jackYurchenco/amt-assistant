@@ -1,12 +1,13 @@
 import { AuthUserReader } from '../domain/ports/auth-user-reader.port';
 import { LoginCommand } from './login.command';
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { HasherService } from '@amt-assistant/util-crypto';
 import { IAuthTokens, TokenService } from '@amt-assistant/util-token';
 import { ILoginResponse } from '@amt-assistant/contracts';
 import { AuthSessionWriter } from '../domain/ports/auth-session-writer.port';
 import { AuthSession } from '../domain/auth-session.entity';
 import { SessionId } from '@amt-assistant/domain';
+import { InvalidCredentialsException } from './exceptions/invalid-credentials.exception';
 
 @Injectable()
 export class LoginUseCase {
@@ -21,7 +22,7 @@ export class LoginUseCase {
     const user = await this.authUserReader.getUserByEmail(command.email.getValue());
 
     if (!user) {
-      throw new UnauthorizedException('Invalid credentials');
+      throw new InvalidCredentialsException();
     }
 
     const isPasswordValid = await this.hasherService.compare(
@@ -30,7 +31,7 @@ export class LoginUseCase {
     );
 
     if (!isPasswordValid) {
-      throw new UnauthorizedException('Invalid credentials');
+      throw new InvalidCredentialsException();
     }
 
     const tokens: IAuthTokens = await this.tokenService.generateTokens({
