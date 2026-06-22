@@ -5,17 +5,24 @@ import { TokenService } from './token.service';
 import { ITokenPayload } from '../interfaces/token-payload.interface';
 import { IAuthTokens } from '../interfaces/auth-tokens.interface';
 
+import { TokenGenerationException } from '../exceptions/token-generation.exception';
+
 @Injectable()
 export class JwtTokenService implements TokenService {
   constructor(private readonly jwtService: JwtService) {}
 
   async generateTokens(payload: ITokenPayload): Promise<IAuthTokens> {
-    const [accessToken, refreshToken] = await Promise.all([
-      this.jwtService.signAsync(payload, { expiresIn: '15m' }),
-      this.jwtService.signAsync(payload, { expiresIn: '7d' }),
-    ]);
+    try {
+      const [accessToken, refreshToken] = await Promise.all([
+        this.jwtService.signAsync(payload, { expiresIn: '15m' }),
+        this.jwtService.signAsync(payload, { expiresIn: '7d' }),
+      ]);
 
-    return { accessToken, refreshToken };
+      return { accessToken, refreshToken };
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : String(error);
+      throw new TokenGenerationException(errorMessage);
+    }
   }
 
   async verifyToken<T extends object>(token: string): Promise<T> {
