@@ -1,4 +1,4 @@
-import { Body, Controller, Post, HttpStatus, Headers } from '@nestjs/common';
+import { Body, Controller, Post, HttpStatus, Headers, UseFilters } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { ILoginResponse } from '@amt-assistant/contracts';
 import { LoginDto } from './dto/login.dto';
@@ -6,8 +6,10 @@ import { LoginUseCase } from '../application/login.use-case';
 import { LoginResponseDto } from './dto/login-response.dto';
 import { Email, RawPassword } from '@amt-assistant/domain';
 import { Public } from '@amt-assistant/util-decorators';
+import { AuthExceptionFilter } from '../infrastructure/filters/auth-exception.filter';
 
 @Controller('auth')
+@UseFilters(AuthExceptionFilter)
 @ApiTags('auth')
 export class AuthController {
   constructor(private readonly loginUseCase: LoginUseCase) {}
