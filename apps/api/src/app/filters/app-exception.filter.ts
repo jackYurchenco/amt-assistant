@@ -24,9 +24,13 @@ export class AppExceptionFilter implements ExceptionFilter {
 
     if (exception instanceof DomainException) {
       status = HttpStatus.BAD_REQUEST;
-    } else if (exception instanceof ApplicationException) {
+    }
+
+    if (exception instanceof ApplicationException) {
       status = HttpStatus.BAD_REQUEST;
-    } else if (exception instanceof InfrastructureException) {
+    }
+
+    if (exception instanceof InfrastructureException) {
       status = HttpStatus.SERVICE_UNAVAILABLE;
     }
 
