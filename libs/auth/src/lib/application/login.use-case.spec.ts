@@ -3,7 +3,7 @@ import { LoginUseCase } from './login.use-case';
 import { AuthUserReader } from '../domain/ports/auth-user-reader.port';
 import { AuthUser } from '../domain/auth-user.entity';
 import { HasherService } from '@amt-assistant/util-crypto';
-import { TokenService } from '@amt-assistant/util-token';
+import { TokenService, TokenGenerationException } from '@amt-assistant/util-token';
 
 import { Email, RawPassword } from '@amt-assistant/domain';
 import { AuthSessionWriter } from '../domain/ports/auth-session-writer.port';
@@ -85,21 +85,21 @@ describe('LoginUseCase', () => {
     ).rejects.toThrow(InvalidCredentialsException);
   });
 
-  it('should throw InternalServerErrorException if tokens are not generated', async () => {
+  it('should throw TokenGenerationException if tokens are not generated', async () => {
     authUserReader.getUserByEmail.mockResolvedValue(AuthUser.restore({
       id: '550e8400-e29b-41d4-a716-446655440000',
       email: 'test@example.com',
       passwordHash: 'hashedPassword',
     }));
     hasherService.compare.mockResolvedValue(true);
-    tokenService.generateTokens.mockRejectedValue(new Error('JWT Service Down'));
+    tokenService.generateTokens.mockRejectedValue(new TokenGenerationException('JWT Service Down'));
 
     await expect(
       useCase.execute({
         email: Email.create('test@example.com'),
         password: RawPassword.create('password'),
       }),
-    ).rejects.toThrow(Error);
+    ).rejects.toThrow(TokenGenerationException);
   });
 
   it('should return login response on successful login', async () => {
