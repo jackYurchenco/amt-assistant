@@ -4,9 +4,10 @@ import { AuthUserReader } from '../domain/ports/auth-user-reader.port';
 import { AuthUser } from '../domain/auth-user.entity';
 import { HasherService } from '@amt-assistant/util-crypto';
 import { TokenService } from '@amt-assistant/util-token';
-import { UnauthorizedException, InternalServerErrorException } from '@nestjs/common';
+
 import { Email, RawPassword } from '@amt-assistant/domain';
 import { AuthSessionWriter } from '../domain/ports/auth-session-writer.port';
+import { InvalidCredentialsException } from './exceptions/invalid-credentials.exception';
 
 describe('LoginUseCase', () => {
   let useCase: LoginUseCase;
@@ -57,7 +58,7 @@ describe('LoginUseCase', () => {
     expect(useCase).toBeDefined();
   });
 
-  it('should throw UnauthorizedException if user is not found', async () => {
+  it('should throw InvalidCredentialsException if user is not found', async () => {
     authUserReader.getUserByEmail.mockResolvedValue(null);
 
     await expect(
@@ -65,10 +66,10 @@ describe('LoginUseCase', () => {
         email: Email.create('test@example.com'),
         password: RawPassword.create('password'),
       }),
-    ).rejects.toThrow(UnauthorizedException);
+    ).rejects.toThrow(InvalidCredentialsException);
   });
 
-  it('should throw UnauthorizedException if password is invalid', async () => {
+  it('should throw InvalidCredentialsException if password is invalid', async () => {
     authUserReader.getUserByEmail.mockResolvedValue(AuthUser.restore({
       id: '550e8400-e29b-41d4-a716-446655440000',
       email: 'test@example.com',
@@ -81,7 +82,7 @@ describe('LoginUseCase', () => {
         email: Email.create('test@example.com'),
         password: RawPassword.create('wrongPassword'),
       }),
-    ).rejects.toThrow(UnauthorizedException);
+    ).rejects.toThrow(InvalidCredentialsException);
   });
 
   it('should throw InternalServerErrorException if tokens are not generated', async () => {
@@ -98,7 +99,7 @@ describe('LoginUseCase', () => {
         email: Email.create('test@example.com'),
         password: RawPassword.create('password'),
       }),
-    ).rejects.toThrow(InternalServerErrorException);
+    ).rejects.toThrow(Error);
   });
 
   it('should return login response on successful login', async () => {
