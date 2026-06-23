@@ -8,6 +8,7 @@ import { AuthSessionWriter } from '../domain/ports/auth-session-writer.port';
 import { AuthSession } from '../domain/auth-session.entity';
 import { SessionId } from '@amt-assistant/domain';
 import { InvalidCredentialsException } from './exceptions/invalid-credentials.exception';
+import { AuthUser } from '../domain/auth-user.entity';
 
 @Injectable()
 export class LoginUseCase {
@@ -19,11 +20,7 @@ export class LoginUseCase {
   ) {}
 
   async execute(command: LoginCommand): Promise<ILoginResponse> {
-    const user = await this.authUserReader.getUserByEmail(command.email.getValue());
-
-    if (!user) {
-      throw new InvalidCredentialsException();
-    }
+    const user = await this.findUser(command.email.getValue());
 
     const isPasswordValid = await this.hasherService.compare(
       command.password.getValue(),
@@ -56,5 +53,15 @@ export class LoginUseCase {
         email: user.email.getValue(),
       },
     };
+  }
+
+  private async findUser(email: string): Promise<AuthUser> {
+    const user = await this.authUserReader.getUserByEmail(email);
+
+    if (!user) {
+      throw new InvalidCredentialsException();
+    }
+
+    return user;
   }
 }
