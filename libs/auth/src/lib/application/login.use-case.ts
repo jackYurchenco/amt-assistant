@@ -22,14 +22,10 @@ export class LoginUseCase {
   async execute(command: LoginCommand): Promise<ILoginResponse> {
     const user = await this.findUser(command.email.getValue());
 
-    const isPasswordValid = await this.hasherService.compare(
+    await this.validatePassword(
       command.password.getValue(),
       user.passwordHash.getValue(),
     );
-
-    if (!isPasswordValid) {
-      throw new InvalidCredentialsException();
-    }
 
     const tokens: IAuthTokens = await this.tokenService.generateTokens({
       userId: user.id.getValue(),
@@ -63,5 +59,13 @@ export class LoginUseCase {
     }
 
     return user;
+  }
+
+  private async validatePassword(password: string, hash: string): Promise<void> {
+    const isPasswordValid = await this.hasherService.compare(password, hash);
+
+    if (!isPasswordValid) {
+      throw new InvalidCredentialsException();
+    }
   }
 }
