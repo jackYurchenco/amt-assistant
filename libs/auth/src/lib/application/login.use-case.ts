@@ -32,15 +32,11 @@ export class LoginUseCase {
       email: user.email.getValue(),
     });
 
-    const session = AuthSession.create({
-      id: SessionId.generate().getValue(),
+    await this.createSession({
       userId: user.id.getValue(),
       refreshToken: tokens.refreshToken,
-      expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7 days
-      ...(command.userAgent ? { userAgent: command.userAgent } : {}),
+      userAgent: command.userAgent,
     });
-
-    await this.authSessionWriter.create(session);
 
     return {
       ...tokens,
@@ -67,5 +63,25 @@ export class LoginUseCase {
     if (!isPasswordValid) {
       throw new InvalidCredentialsException();
     }
+  }
+
+  private async createSession({
+    userId,
+    refreshToken,
+    userAgent,
+  }: {
+    userId: string;
+    refreshToken: string;
+    userAgent?: string | undefined;
+  }): Promise<void> {
+    const session = AuthSession.create({
+      id: SessionId.generate().getValue(),
+      userId,
+      refreshToken,
+      expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7 days
+      ...(userAgent ? { userAgent } : {}),
+    });
+
+    await this.authSessionWriter.create(session);
   }
 }
