@@ -1,9 +1,10 @@
-import { Injectable, ExecutionContext, UnauthorizedException } from '@nestjs/common';
+import { Injectable, ExecutionContext } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { Reflector } from '@nestjs/core';
 import { Observable } from 'rxjs';
 import { IS_PUBLIC_KEY } from '@amt-assistant/util-decorators';
 import { ITokenPayload } from '@amt-assistant/util-token';
+import { InvalidTokenException } from '../../application/exceptions/invalid-token.exception';
 
 @Injectable()
 export class JwtAuthGuard extends AuthGuard('jwt') {
@@ -27,7 +28,7 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   override handleRequest(err: any, user: any): any {
     if (err || !user) {
-      throw err || new UnauthorizedException('User is not authorized.');
+      throw err || new InvalidTokenException();
     }
 
     return user as ITokenPayload;
