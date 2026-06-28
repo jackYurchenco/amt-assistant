@@ -1,4 +1,5 @@
 import { UserId, SessionId, RefreshToken } from '@amt-assistant/domain';
+import { DomainValidationException } from '@amt-assistant/exceptions';
 
 export class AuthSession {
   private constructor(
@@ -16,6 +17,10 @@ export class AuthSession {
     expiresAt: Date;
     userAgent?: string;
   }): AuthSession {
+    if (props.expiresAt.getTime() <= Date.now()) {
+      throw new DomainValidationException('Session expiration date must be in the future.');
+    }
+
     return new AuthSession(
       SessionId.create(props.id),
       UserId.create(props.userId),
