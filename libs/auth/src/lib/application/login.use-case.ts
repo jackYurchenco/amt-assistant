@@ -1,6 +1,6 @@
 import { AuthUserReader } from '../domain/ports/auth-user-reader.port';
 import { LoginCommand } from './login.command';
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { HasherService } from '@amt-assistant/util-crypto';
 import { IAuthTokens, TokenService } from '@amt-assistant/util-token';
 import { ILoginResponse } from '@amt-assistant/contracts';
@@ -13,10 +13,10 @@ import { AuthUser } from '../domain/auth-user.entity';
 @Injectable()
 export class LoginUseCase {
   constructor(
-    private readonly authUserReader: AuthUserReader,
+    @Inject(AuthUserReader) private readonly authUserReader: AuthUserReader,
+    @Inject(AuthSessionWriter) private readonly authSessionWriter: AuthSessionWriter,
     private readonly hasherService: HasherService,
     private readonly tokenService: TokenService,
-    private readonly authSessionWriter: AuthSessionWriter,
   ) {}
 
   async execute(command: LoginCommand): Promise<ILoginResponse> {
