@@ -7,6 +7,8 @@ import { RemoveSessionByIdUseCase } from './application/remove-session-by-id/rem
 import { SessionReader } from './domain/ports/session-reader.port';
 import { SessionRemover } from './domain/ports/session-remover.port';
 import { PrismaSessionRepository } from './infrastructure/prisma-session.repository';
+import { CreateSessionUseCase } from './application/create-session/create-session.use-case';
+import { SessionWriter } from './domain/ports/session-writer.port';
 
 @Module({
   imports: [PrismaModule],
@@ -23,6 +25,14 @@ import { PrismaSessionRepository } from './infrastructure/prisma-session.reposit
       provide: SessionRemover,
       useClass: PrismaSessionRepository,
     },
+    {
+      provide: SessionWriter,
+      useClass: PrismaSessionRepository,
+    },
+    CreateSessionUseCase,
+  ],
+  exports: [
+    CreateSessionUseCase,
   ],
 })
 export class SessionsModule {}
