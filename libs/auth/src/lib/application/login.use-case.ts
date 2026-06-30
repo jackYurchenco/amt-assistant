@@ -1,29 +1,36 @@
-import { AuthUserReader } from '../domain/ports/auth-user-reader.port';
 import { LoginCommand } from './login.command';
-import { Inject, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { HasherService } from '@amt-assistant/util-crypto';
 import { IAuthTokens, TokenService } from '@amt-assistant/util-token';
 import { ILoginResponse } from '@amt-assistant/contracts';
 import { CreateSessionUseCase } from '@amt-assistant/sessions';
+import { GetUserByEmailUseCase } from '@amt-assistant/users';
 import { InvalidCredentialsException } from './exceptions/invalid-credentials.exception';
-import { AuthUser } from '../domain/auth-user.entity';
 
 @Injectable()
 export class LoginUseCase {
   constructor(
-    @Inject(AuthUserReader) private readonly authUserReader: AuthUserReader,
+    private readonly getUserByEmailUseCase: GetUserByEmailUseCase,
     private readonly createSessionUseCase: CreateSessionUseCase,
     private readonly hasherService: HasherService,
     private readonly tokenService: TokenService,
   ) {}
 
   async execute(command: LoginCommand): Promise<ILoginResponse> {
-    const user = await this.findUser(command.email.getValue());
+    const user = await this.getUserByEmailUseCase.execute({ email: command.email.getValue() });
 
-    await this.validatePassword(
+    if (!user) {
+      throw new InvalidCredentialsException();
+    }
+
+    const isPasswordValid = await this.hasherService.compare(
       command.password.getValue(),
       user.passwordHash.getValue(),
     );
+
+    if (!isPasswordValid) {
+      throw new InvalidCredentialsException();
+    }
 
     const tokens: IAuthTokens = await this.tokenService.generateTokens({
       userId: user.id.getValue(),
@@ -44,23 +51,4 @@ export class LoginUseCase {
       },
     };
   }
-
-  private async findUser(email: string): Promise<AuthUser> {
-    const user = await this.authUserReader.getUserByEmail(email);
-
-    if (!user) {
-      throw new InvalidCredentialsException();
-    }
-
-    return user;
-  }
-
-  private async validatePassword(password: string, hash: string): Promise<void> {
-    const isPasswordValid = await this.hasherService.compare(password, hash);
-
-    if (!isPasswordValid) {
-      throw new InvalidCredentialsException();
-    }
-  }
-
 }
