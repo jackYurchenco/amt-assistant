@@ -4,9 +4,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import { HasherService } from '@amt-assistant/util-crypto';
 import { IAuthTokens, TokenService } from '@amt-assistant/util-token';
 import { ILoginResponse } from '@amt-assistant/contracts';
-import { AuthSessionWriter } from '../domain/ports/auth-session-writer.port';
-import { AuthSession } from '../domain/auth-session.entity';
-import { SessionId } from '@amt-assistant/domain';
+import { CreateSessionUseCase } from '@amt-assistant/sessions';
 import { InvalidCredentialsException } from './exceptions/invalid-credentials.exception';
 import { AuthUser } from '../domain/auth-user.entity';
 
@@ -14,7 +12,7 @@ import { AuthUser } from '../domain/auth-user.entity';
 export class LoginUseCase {
   constructor(
     @Inject(AuthUserReader) private readonly authUserReader: AuthUserReader,
-    @Inject(AuthSessionWriter) private readonly authSessionWriter: AuthSessionWriter,
+    private readonly createSessionUseCase: CreateSessionUseCase,
     private readonly hasherService: HasherService,
     private readonly tokenService: TokenService,
   ) {}
@@ -32,7 +30,7 @@ export class LoginUseCase {
       email: user.email.getValue(),
     });
 
-    await this.createSession({
+    await this.createSessionUseCase.execute({
       userId: user.id.getValue(),
       refreshToken: tokens.refreshToken,
       userAgent: command.userAgent,
@@ -65,23 +63,4 @@ export class LoginUseCase {
     }
   }
 
-  private async createSession({
-    userId,
-    refreshToken,
-    userAgent,
-  }: {
-    userId: string;
-    refreshToken: string;
-    userAgent?: string | undefined;
-  }): Promise<void> {
-    const session = AuthSession.create({
-      id: SessionId.generate().getValue(),
-      userId,
-      refreshToken,
-      expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7 days
-      ...(userAgent ? { userAgent } : {}),
-    });
-
-    await this.authSessionWriter.create(session);
-  }
 }

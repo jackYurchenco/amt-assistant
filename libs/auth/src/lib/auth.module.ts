@@ -5,16 +5,16 @@ import { UtilCryptoModule } from '@amt-assistant/util-crypto';
 import { UtilTokenModule } from '@amt-assistant/util-token';
 import { LoginUseCase } from './application/login.use-case';
 import { PrismaModule } from '@amt-assistant/prisma';
+import { SessionsModule } from '@amt-assistant/sessions';
 import { JwtStrategy } from './infrastructure/jwt.strategy';
 import { JwtAuthGuard } from './infrastructure/guards/jwt-auth.guard';
 import { AuthUserReader } from './domain/ports/auth-user-reader.port';
 import { PrismaAuthUsersRepository } from './infrastructure/prisma-auth-users.repository';
-import { AuthSessionWriter } from './domain/ports/auth-session-writer.port';
-import { PrismaAuthSessionsRepository } from './infrastructure/prisma-auth-sessions.repository';
 
 @Module({
   imports: [
     PrismaModule,
+    SessionsModule,
     UtilCryptoModule,
     UtilTokenModule,
     PassportModule.register({ defaultStrategy: 'jwt' }),
@@ -29,10 +29,6 @@ import { PrismaAuthSessionsRepository } from './infrastructure/prisma-auth-sessi
     {
       provide: AuthUserReader,
       useClass: PrismaAuthUsersRepository,
-    },
-    {
-      provide: AuthSessionWriter,
-      useClass: PrismaAuthSessionsRepository,
     },
   ],
   exports: [
