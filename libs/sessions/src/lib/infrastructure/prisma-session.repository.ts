@@ -30,6 +30,14 @@ export class PrismaSessionRepository implements SessionReader, SessionRemover, S
     return raw.map(SessionMapper.toDomain);
   }
 
+  async findByToken(token: string): Promise<Session | null> {
+    const raw: PrismaSession | null = await this.prismaService.session.findFirst({
+      where: { refreshToken: token },
+    });
+
+    return raw ? SessionMapper.toDomain(raw) : null;
+  }
+
   async remove(id: SessionId): Promise<void> {
     await this.prismaService.session.delete({
       where: { id: id.getValue() },
