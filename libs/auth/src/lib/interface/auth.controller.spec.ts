@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { AuthController } from './auth.controller';
-import { LoginUseCase } from '../application/login.use-case';
+import { LoginUseCase } from '../application/login/login.use-case';
 import { LoginDto } from './dto/login.dto';
 import { LoginResponseDto } from './dto/login-response.dto';
 import { ILoginResponse } from '@amt-assistant/contracts';
