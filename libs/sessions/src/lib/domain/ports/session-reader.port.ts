@@ -4,4 +4,5 @@ import { Session } from '../session.entity';
 export abstract class SessionReader {
   abstract findById(id: SessionId): Promise<Session | null>;
   abstract findByUserId(id: UserId): Promise<Session[]>;
+  abstract findByToken(token: string): Promise<Session | null>;
 }
