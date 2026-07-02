@@ -6,6 +6,7 @@ import { ITokenPayload } from '../interfaces/token-payload.interface';
 import { IAuthTokens } from '../interfaces/auth-tokens.interface';
 
 import { TokenGenerationException } from '../exceptions/token-generation.exception';
+import { TokenVerificationException } from '../exceptions/token-verification.exception';
 
 @Injectable()
 export class JwtTokenService implements TokenService {
@@ -26,6 +27,11 @@ export class JwtTokenService implements TokenService {
   }
 
   async verifyToken<T extends object>(token: string): Promise<T> {
-    return this.jwtService.verifyAsync<T>(token);
+    try {
+      return await this.jwtService.verifyAsync<T>(token);
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : String(error);
+      throw new TokenVerificationException(errorMessage);
+    }
   }
 }
