@@ -1,4 +1,4 @@
-import { Controller, Get, Delete, Param, HttpStatus, HttpCode } from '@nestjs/common';
+import { Controller, Get, Delete, Param, HttpStatus, HttpCode, UseFilters } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
 import { GetSessionsByUserIdUseCase } from '../application/get-sessions-by-user-id/get-sessions-by-user-id.use-case';
 import { GetSessionsByUserIdQuery } from '../application/get-sessions-by-user-id/get-sessions-by-user-id.query';
@@ -10,8 +10,11 @@ import { SessionResponseDto } from './dto/session-response.dto';
 import { GetSessionsByUserIdDto } from './dto/get-sessions-by-user-id.dto';
 import { RemoveSessionByIdDto } from './dto/remove-session-by-id.dto';
 import { RemoveSessionsByUserIdDto } from './dto/remove-sessions-by-user-id.dto';
+import { SessionsExceptionFilter } from '../infrastructure/filters/sessions-exception.filter';
+
 @ApiTags('sessions')
 @ApiBearerAuth()
+@UseFilters(SessionsExceptionFilter)
 @Controller('sessions')
 export class SessionsController {
   constructor(
