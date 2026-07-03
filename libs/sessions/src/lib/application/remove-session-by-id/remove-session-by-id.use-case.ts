@@ -1,8 +1,10 @@
-import { Injectable, ForbiddenException, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { RemoveSessionByIdCommand } from './remove-session-by-id.command';
 import { SessionRemover } from '../../domain/ports/session-remover.port';
 import { SessionReader } from '../../domain/ports/session-reader.port';
 import { SessionId } from '@amt-assistant/domain';
+import { SessionNotFoundException } from '../exceptions/session-not-found.exception';
+import { SessionForbiddenException } from '../exceptions/session-forbidden.exception';
 
 @Injectable()
 export class RemoveSessionByIdUseCase {
@@ -16,11 +18,11 @@ export class RemoveSessionByIdUseCase {
     const session = await this.sessionReader.findById(sessionId);
 
     if (!session) {
-      throw new NotFoundException(`Session with ID ${command.sessionId} not found`);
+      throw new SessionNotFoundException(`Session with ID ${command.sessionId} not found`);
     }
 
     if (session.userId.getValue() !== command.userId) {
-      throw new ForbiddenException('You are not allowed to delete this session');
+      throw new SessionForbiddenException('You are not allowed to delete this session');
     }
 
     await this.sessionRemover.remove(sessionId);
