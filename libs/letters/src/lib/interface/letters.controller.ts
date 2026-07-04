@@ -1,4 +1,4 @@
-import { Body, Controller, Get, HttpStatus, Param, Post, Query } from '@nestjs/common';
+import { Body, Controller, Get, HttpStatus, Param, Post, Query, UseFilters } from '@nestjs/common';
 import { CreateLetterUseCase } from '../application/create-letter/create-letter.use-case';
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CreateLetterDto } from './dto/create-letter.dto';
@@ -10,9 +10,11 @@ import { GetLettersByUserIdUseCase } from '../application/get-letters-by-user-id
 import { Letter } from '../domain/letter.entity';
 import { LetterResponseDto } from './dto/letter-response.dto';
 import { AuthenticatedUserId } from '@amt-assistant/util-decorators';
+import { LettersExceptionFilter } from '../infrastructure/filters/letters-exception.filter';
 
 @ApiTags('letters')
 @ApiBearerAuth()
+@UseFilters(LettersExceptionFilter)
 @Controller('letters')
 export class LettersController {
   constructor(
