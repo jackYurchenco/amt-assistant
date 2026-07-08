@@ -1,4 +1,4 @@
-import { Body, Controller, Get, HttpStatus, NotFoundException, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, HttpStatus, Param, Post, UseFilters } from '@nestjs/common';
 import { CreateUserUseCase } from '../application/create-user/create-user.use-case';
 import { GetUserByIdUseCase } from '../application/get-user-by-id/get-user-by-id.use-case';
 import { GetAllUsersUseCase } from '../application/get-all-users/get-all-users.use-case';
@@ -9,9 +9,11 @@ import { GetUserByIdDto } from './dto/get-user-by-id.dto';
 import { User } from '../domain/user.entity';
 import { UserResponseDto } from './dto/user-response.dto';
 import { Email, RawPassword } from '@amt-assistant/domain';
+import { UsersExceptionFilter } from '../infrastructure/filters/users-exception.filter';
 
 @ApiTags('users')
 @ApiBearerAuth()
+@UseFilters(UsersExceptionFilter)
 @Controller('users')
 export class UsersController {
   constructor(
@@ -65,10 +67,6 @@ export class UsersController {
   })
   async findOne(@Param() dto: GetUserByIdDto): Promise<UserResponseDto> {
     const user = await this.getUserByIdUseCase.execute({ id : dto.id });
-
-    if (!user) {
-      throw new NotFoundException(`User with ID ${dto.id} not found`);
-    }
 
     return UserResponseDto.fromEntity(user);
   }
