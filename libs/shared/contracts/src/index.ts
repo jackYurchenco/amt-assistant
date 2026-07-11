@@ -15,3 +15,5 @@ export * from './lib/session/session.interface';
 export * from './lib/session/get-sessions-by-user-id.interface';
 export * from './lib/session/remove-session-by-id.interface';
 export * from './lib/session/remove-sessions-by-user-id.interface';
+
+export * from './lib/document/document.interface';
