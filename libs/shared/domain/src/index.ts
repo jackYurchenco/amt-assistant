@@ -6,3 +6,4 @@ export * from './lib/password-hash.value-object';
 export * from './lib/raw-password.value-object';
 export * from './lib/session-id.value-object';
 export * from './lib/refresh-token.value-object';
+export * from './lib/document-id.value-object';
