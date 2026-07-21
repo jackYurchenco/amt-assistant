@@ -1,16 +1,16 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { ConfigService } from '@nestjs/config';
 import { IJwtPayloadInterface } from '@amt-assistant/util-token';
-import { AuthUserReader } from '../domain/ports/auth-user-reader.port';
-import { InvalidTokenException } from '../application/exceptions/invalid-token.exception';
+import { GetUserByEmailUseCase } from '@amt-assistant/users';
+import { AuthenticationException } from '@amt-assistant/exceptions';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
   constructor(
     public readonly configService: ConfigService,
-    @Inject(AuthUserReader) private readonly authUserReader: AuthUserReader,
+    private readonly getUserByEmailUseCase: GetUserByEmailUseCase,
   ) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
@@ -20,10 +20,10 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
   }
 
   async validate(payload: IJwtPayloadInterface): Promise<{ userId: string, email: string }> {
-    const user = await this.authUserReader.getUserByEmail(payload.email);
+    const user = await this.getUserByEmailUseCase.execute({ email: payload.email });
 
     if (!user) {
-      throw new InvalidTokenException();
+      throw new AuthenticationException();
     }
 
     return { userId: payload.userId, email: payload.email };
