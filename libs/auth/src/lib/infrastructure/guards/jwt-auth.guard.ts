@@ -4,7 +4,7 @@ import { Reflector } from '@nestjs/core';
 import { Observable } from 'rxjs';
 import { IS_PUBLIC_KEY } from '@amt-assistant/util-decorators';
 import { ITokenPayload } from '@amt-assistant/util-token';
-import { InvalidTokenException } from '../../application/exceptions/invalid-token.exception';
+import { AuthenticationException } from '@amt-assistant/exceptions';
 
 @Injectable()
 export class JwtAuthGuard extends AuthGuard('jwt') {
@@ -28,7 +28,7 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   override handleRequest(err: any, user: any): any {
     if (err || !user) {
-      throw err || new InvalidTokenException();
+      throw err || new AuthenticationException();
     }
 
     return user as ITokenPayload;
