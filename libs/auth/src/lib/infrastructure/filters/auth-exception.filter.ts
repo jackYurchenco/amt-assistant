@@ -1,8 +1,6 @@
 import { ExceptionFilter, Catch, ArgumentsHost, HttpStatus } from '@nestjs/common';
 import { Response } from 'express';
-import { InvalidCredentialsException } from '../../application/exceptions/invalid-credentials.exception';
-import { InvalidTokenException } from '../../application/exceptions/invalid-token.exception';
-import { DomainException, InfrastructureException, ApplicationException } from '@amt-assistant/exceptions';
+import { DomainException, InfrastructureException, ApplicationException, UnauthorizedException, AuthenticationException } from '@amt-assistant/exceptions';
 import { TokenVerificationException } from '@amt-assistant/util-token';
 
 @Catch(ApplicationException, DomainException, InfrastructureException)
@@ -13,7 +11,7 @@ export class AuthExceptionFilter implements ExceptionFilter {
 
     let status = HttpStatus.INTERNAL_SERVER_ERROR;
 
-    if (exception instanceof InvalidCredentialsException || exception instanceof InvalidTokenException || exception instanceof TokenVerificationException) {
+    if (exception instanceof UnauthorizedException || exception instanceof TokenVerificationException || exception instanceof AuthenticationException) {
       status = HttpStatus.UNAUTHORIZED;
     } else if (exception instanceof DomainException) {
       status = HttpStatus.BAD_REQUEST;
