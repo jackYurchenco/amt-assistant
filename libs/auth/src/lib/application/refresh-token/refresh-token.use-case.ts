@@ -5,7 +5,7 @@ import { FindSessionByTokenUseCase, RemoveSessionByIdUseCase, CreateSessionUseCa
 import { GetUserByEmailUseCase } from '@amt-assistant/users';
 import { ILoginResponse } from '@amt-assistant/contracts';
 import { ITokenPayload } from '@amt-assistant/util-token';
-import { InvalidTokenException } from '../exceptions/invalid-token.exception';
+import { UnauthorizedException } from '@amt-assistant/exceptions';
 
 @Injectable()
 export class RefreshTokenUseCase {
@@ -22,12 +22,12 @@ export class RefreshTokenUseCase {
 
     const session = await this.findSessionByTokenUseCase.execute({ token: command.refreshToken });
     if (!session) {
-      throw new InvalidTokenException('Session not found');
+      throw new UnauthorizedException('Session not found');
     }
 
     const user = await this.getUserByEmailUseCase.execute({ email: payload.email });
     if (!user) {
-      throw new InvalidTokenException('User not found');
+      throw new UnauthorizedException('User not found');
     }
 
     const tokens: IAuthTokens = await this.tokenService.generateTokens({
