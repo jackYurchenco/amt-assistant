@@ -5,7 +5,7 @@ import { IAuthTokens, TokenService } from '@amt-assistant/util-token';
 import { ILoginResponse } from '@amt-assistant/contracts';
 import { CreateSessionUseCase } from '@amt-assistant/sessions';
 import { GetUserByEmailUseCase } from '@amt-assistant/users';
-import { InvalidCredentialsException } from './exceptions/invalid-credentials.exception';
+import { UnauthorizedException } from '@amt-assistant/exceptions';
 
 @Injectable()
 export class LoginUseCase {
@@ -20,7 +20,7 @@ export class LoginUseCase {
     const user = await this.getUserByEmailUseCase.execute({ email: command.email.getValue() });
 
     if (!user) {
-      throw new InvalidCredentialsException();
+      throw new UnauthorizedException('Invalid email or password');
     }
 
     const isPasswordValid = await this.hasherService.compare(
@@ -29,7 +29,7 @@ export class LoginUseCase {
     );
 
     if (!isPasswordValid) {
-      throw new InvalidCredentialsException();
+      throw new UnauthorizedException('Invalid email or password');
     }
 
     const tokens: IAuthTokens = await this.tokenService.generateTokens({
