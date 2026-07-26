@@ -1,29 +1,33 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { LoginUseCase } from './login.use-case';
-import { AuthUserReader } from '../domain/ports/auth-user-reader.port';
-import { AuthUser } from '../domain/auth-user.entity';
 import { HasherService } from '@amt-assistant/util-crypto';
 import { TokenService, TokenGenerationException } from '@amt-assistant/util-token';
-
 import { Email, RawPassword } from '@amt-assistant/domain';
-import { AuthSessionWriter } from '../domain/ports/auth-session-writer.port';
-import { InvalidCredentialsException } from './exceptions/invalid-credentials.exception';
+import { UnauthorizedException } from '@amt-assistant/exceptions';
+import { GetUserByEmailUseCase } from '@amt-assistant/users';
+import { CreateSessionUseCase } from '@amt-assistant/sessions';
 
 describe('LoginUseCase', () => {
   let useCase: LoginUseCase;
-  let authUserReader: jest.Mocked<AuthUserReader>;
+  let getUserByEmailUseCase: jest.Mocked<GetUserByEmailUseCase>;
+  let createSessionUseCase: jest.Mocked<CreateSessionUseCase>;
   let hasherService: jest.Mocked<HasherService>;
   let tokenService: jest.Mocked<TokenService>;
-  let authSessionWriter: jest.Mocked<AuthSessionWriter>;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         LoginUseCase,
         {
-          provide: AuthUserReader,
+          provide: GetUserByEmailUseCase,
           useValue: {
-            getUserByEmail: jest.fn(),
+            execute: jest.fn(),
+          },
+        },
+        {
+          provide: CreateSessionUseCase,
+          useValue: {
+            execute: jest.fn(),
           },
         },
         {
@@ -38,43 +42,37 @@ describe('LoginUseCase', () => {
             generateTokens: jest.fn(),
           },
         },
-        {
-          provide: AuthSessionWriter,
-          useValue: {
-            create: jest.fn(),
-          },
-        },
       ],
     }).compile();
 
     useCase = module.get<LoginUseCase>(LoginUseCase);
-    authUserReader = module.get(AuthUserReader);
+    getUserByEmailUseCase = module.get(GetUserByEmailUseCase);
+    createSessionUseCase = module.get(CreateSessionUseCase);
     hasherService = module.get(HasherService);
     tokenService = module.get(TokenService);
-    authSessionWriter = module.get(AuthSessionWriter);
   });
 
   it('should be defined', () => {
     expect(useCase).toBeDefined();
   });
 
-  it('should throw InvalidCredentialsException if user is not found', async () => {
-    authUserReader.getUserByEmail.mockResolvedValue(null);
+  it('should throw UnauthorizedException if user is not found', async () => {
+    getUserByEmailUseCase.execute.mockResolvedValue(null);
 
     await expect(
       useCase.execute({
         email: Email.create('test@example.com'),
         password: RawPassword.create('password'),
       }),
-    ).rejects.toThrow(InvalidCredentialsException);
+    ).rejects.toThrow(UnauthorizedException);
   });
 
-  it('should throw InvalidCredentialsException if password is invalid', async () => {
-    authUserReader.getUserByEmail.mockResolvedValue(AuthUser.restore({
-      id: '550e8400-e29b-41d4-a716-446655440000',
-      email: 'test@example.com',
-      passwordHash: 'hashedPassword',
-    }));
+  it('should throw UnauthorizedException if password is invalid', async () => {
+    getUserByEmailUseCase.execute.mockResolvedValue({
+      id: { getValue: (): string => '550e8400-e29b-41d4-a716-446655440000' },
+      email: { getValue: (): string => 'test@example.com' },
+      passwordHash: { getValue: (): string => 'hashedPassword' },
+    } as unknown as Awaited<ReturnType<GetUserByEmailUseCase['execute']>>);
     hasherService.compare.mockResolvedValue(false);
 
     await expect(
@@ -82,15 +80,15 @@ describe('LoginUseCase', () => {
         email: Email.create('test@example.com'),
         password: RawPassword.create('wrongPassword'),
       }),
-    ).rejects.toThrow(InvalidCredentialsException);
+    ).rejects.toThrow(UnauthorizedException);
   });
 
   it('should throw TokenGenerationException if tokens are not generated', async () => {
-    authUserReader.getUserByEmail.mockResolvedValue(AuthUser.restore({
-      id: '550e8400-e29b-41d4-a716-446655440000',
-      email: 'test@example.com',
-      passwordHash: 'hashedPassword',
-    }));
+    getUserByEmailUseCase.execute.mockResolvedValue({
+      id: { getValue: (): string => '550e8400-e29b-41d4-a716-446655440000' },
+      email: { getValue: (): string => 'test@example.com' },
+      passwordHash: { getValue: (): string => 'hashedPassword' },
+    } as unknown as Awaited<ReturnType<GetUserByEmailUseCase['execute']>>);
     hasherService.compare.mockResolvedValue(true);
     tokenService.generateTokens.mockRejectedValue(new TokenGenerationException('JWT Service Down'));
 
@@ -103,32 +101,37 @@ describe('LoginUseCase', () => {
   });
 
   it('should return login response on successful login', async () => {
-    const user = AuthUser.restore({
-      id: '550e8400-e29b-41d4-a716-446655440000',
-      email: 'test@example.com',
-      passwordHash: 'hashedPassword',
-    });
+    const mockUser = {
+      id: { getValue: (): string => '550e8400-e29b-41d4-a716-446655440000' },
+      email: { getValue: (): string => 'test@example.com' },
+      passwordHash: { getValue: (): string => 'hashedPassword' },
+    };
     const tokens = {
       accessToken: 'access',
       refreshToken: 'refresh',
     };
 
-    authUserReader.getUserByEmail.mockResolvedValue(user);
+    getUserByEmailUseCase.execute.mockResolvedValue(mockUser as unknown as Awaited<ReturnType<GetUserByEmailUseCase['execute']>>);
     hasherService.compare.mockResolvedValue(true);
     tokenService.generateTokens.mockResolvedValue(tokens);
+    createSessionUseCase.execute.mockResolvedValue(undefined);
 
     const result = await useCase.execute({
       email: Email.create('test@example.com'),
       password: RawPassword.create('password'),
     });
 
-    expect(authSessionWriter.create).toHaveBeenCalled();
+    expect(createSessionUseCase.execute).toHaveBeenCalledWith({
+      userId: '550e8400-e29b-41d4-a716-446655440000',
+      refreshToken: 'refresh',
+      userAgent: undefined,
+    });
 
     expect(result).toEqual({
       ...tokens,
       user: {
-        id: user.id.getValue(),
-        email: user.email.getValue(),
+        id: '550e8400-e29b-41d4-a716-446655440000',
+        email: 'test@example.com',
       },
     });
   });
