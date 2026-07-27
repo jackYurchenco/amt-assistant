@@ -1,6 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { AuthController } from './auth.controller';
 import { LoginUseCase } from '../application/login/login.use-case';
+import { RefreshTokenUseCase } from '../application/refresh-token/refresh-token.use-case';
 import { LoginDto } from './dto/login.dto';
 import { LoginResponseDto } from './dto/login-response.dto';
 import { ILoginResponse } from '@amt-assistant/contracts';
@@ -16,6 +17,12 @@ describe('AuthController', () => {
       providers: [
         {
           provide: LoginUseCase,
+          useValue: {
+            execute: jest.fn(),
+          },
+        },
+        {
+          provide: RefreshTokenUseCase,
           useValue: {
             execute: jest.fn(),
           },
