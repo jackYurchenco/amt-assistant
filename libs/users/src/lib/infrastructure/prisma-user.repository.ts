@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { DatabaseOperationException } from '@amt-assistant/exceptions';
 import { PrismaService } from '@amt-assistant/prisma';
 import { User } from '../domain/user.entity';
 import { User as PrismaUser } from '@prisma/client';
@@ -16,44 +17,68 @@ export class PrismaUserRepository implements UserReader, UserWriter, UserSearche
   async create(user: User): Promise<void> {
     const data: PrismaUser = UserMapper.toPersistence(user);
 
-    await this.prismaService.user.create({ data });
+    try {
+      await this.prismaService.user.create({ data });
+    } catch {
+      throw new DatabaseOperationException('Failed to create user in the database');
+    }
   }
 
   async update(user: User): Promise<void> {
     const data: PrismaUser = UserMapper.toPersistence(user);
 
-    await this.prismaService.user.update({
-      where: { id: user.id.getValue() },
-      data,
-    });
+    try {
+      await this.prismaService.user.update({
+        where: { id: user.id.getValue() },
+        data,
+      });
+    } catch {
+      throw new DatabaseOperationException('Failed to update user in the database');
+    }
   }
 
   async findById(id: UserId): Promise<User | null> {
-    const raw: PrismaUser | null = await this.prismaService.user.findUnique({
-      where: { id: id.getValue() },
-    });
+    try {
+      const raw: PrismaUser | null = await this.prismaService.user.findUnique({
+        where: { id: id.getValue() },
+      });
 
-    return raw ? UserMapper.toDomain(raw) : null;
+      return raw ? UserMapper.toDomain(raw) : null;
+    } catch {
+      throw new DatabaseOperationException('Failed to find user by ID in the database');
+    }
   }
 
   async findByEmail(email: Email): Promise<User | null> {
-    const raw: PrismaUser | null = await this.prismaService.user.findUnique({
-      where: { email: email.getValue() },
-    });
+    try {
+      const raw: PrismaUser | null = await this.prismaService.user.findUnique({
+        where: { email: email.getValue() },
+      });
 
-    return raw ? UserMapper.toDomain(raw) : null;
+      return raw ? UserMapper.toDomain(raw) : null;
+    } catch {
+      throw new DatabaseOperationException('Failed to find user by email in the database');
+    }
   }
 
   async findAll(): Promise<Array<User>> {
-    const records: Array<PrismaUser> = await this.prismaService.user.findMany();
+    try {
+      const records: Array<PrismaUser> = await this.prismaService.user.findMany();
 
-    return records.map((raw: PrismaUser) => UserMapper.toDomain(raw));
+      return records.map((raw: PrismaUser) => UserMapper.toDomain(raw));
+    } catch {
+      throw new DatabaseOperationException('Failed to find all users in the database');
+    }
   }
 
   async existsByEmail(email: Email): Promise<boolean> {
-    const count: number = await this.prismaService.user.count({
-      where: { email: email.getValue() },
-    });
-    return Boolean(count);
+    try {
+      const count: number = await this.prismaService.user.count({
+        where: { email: email.getValue() },
+      });
+      return Boolean(count);
+    } catch {
+      throw new DatabaseOperationException('Failed to check if user exists by email in the database');
+    }
   }
 }
