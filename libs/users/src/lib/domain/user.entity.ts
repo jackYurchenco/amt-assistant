@@ -1,4 +1,5 @@
 import { Email, PasswordHash, UserId } from '@amt-assistant/domain';
+import { DomainValidationException } from '@amt-assistant/exceptions';
 
 export class User {
   private constructor(
@@ -10,6 +11,9 @@ export class User {
     public readonly firstName: string | null,
     public readonly lastName: string | null,
   ) {
+    if (!email || !passwordHash) {
+      throw new DomainValidationException('Email and passwordHash are required');
+    }
   }
   static create(props: {
     email: Email,
