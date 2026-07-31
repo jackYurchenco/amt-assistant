@@ -3,7 +3,7 @@ import { GetUserByIdQuery } from './get-user-by-id.query';
 import { User } from '../../domain/user.entity';
 import { UserId } from '@amt-assistant/domain';
 import { UserReader } from '../../domain/ports/user-reader.port';
-import { UserNotFoundException } from '../exceptions/user-not-found.exception';
+import { NotFoundException } from '@amt-assistant/exceptions';
 
 @Injectable()
 export class GetUserByIdUseCase {
@@ -13,7 +13,7 @@ export class GetUserByIdUseCase {
     const user = await this.userReader.findById(UserId.create(query.id));
 
     if (!user) {
-      throw new UserNotFoundException(`User with ID ${query.id} not found`);
+      throw new NotFoundException(`User with ID ${query.id} not found`);
     }
 
     return user;
