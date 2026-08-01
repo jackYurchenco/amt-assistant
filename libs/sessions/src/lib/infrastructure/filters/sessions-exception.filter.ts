@@ -1,8 +1,6 @@
 import { ExceptionFilter, Catch, ArgumentsHost, HttpStatus } from '@nestjs/common';
 import { Response } from 'express';
-import { SessionNotFoundException } from '../../application/exceptions/session-not-found.exception';
-import { SessionForbiddenException } from '../../application/exceptions/session-forbidden.exception';
-import { ApplicationException, DomainException, InfrastructureException } from '@amt-assistant/exceptions';
+import { ApplicationException, DomainException, InfrastructureException, NotFoundException, ForbiddenException } from '@amt-assistant/exceptions';
 
 @Catch(ApplicationException, DomainException, InfrastructureException)
 export class SessionsExceptionFilter implements ExceptionFilter {
@@ -12,9 +10,9 @@ export class SessionsExceptionFilter implements ExceptionFilter {
 
     let status = HttpStatus.INTERNAL_SERVER_ERROR;
 
-    if (exception instanceof SessionNotFoundException) {
+    if (exception instanceof NotFoundException) {
       status = HttpStatus.NOT_FOUND;
-    } else if (exception instanceof SessionForbiddenException) {
+    } else if (exception instanceof ForbiddenException) {
       status = HttpStatus.FORBIDDEN;
     } else if (exception instanceof DomainException) {
       status = HttpStatus.BAD_REQUEST;
