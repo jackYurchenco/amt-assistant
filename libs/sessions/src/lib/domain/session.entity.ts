@@ -1,4 +1,5 @@
 import { RefreshToken, SessionId, UserId } from '@amt-assistant/domain';
+import { DomainValidationException } from '@amt-assistant/exceptions';
 
 export class Session {
   private constructor(
@@ -7,7 +8,11 @@ export class Session {
     public readonly refreshToken: RefreshToken,
     public readonly expiresAt: Date,
     public readonly userAgent: string | null,
-  ) {}
+  ) {
+    if (!expiresAt) {
+      throw new DomainValidationException('Session expiration date is required');
+    }
+  }
 
   static create(props: {
     userId: string;
@@ -15,6 +20,10 @@ export class Session {
     expiresAt: Date;
     userAgent?: string | null;
   }): Session {
+    if (props.expiresAt <= new Date()) {
+      throw new DomainValidationException('Cannot create a session with an expiration date in the past');
+    }
+
     return new Session(
       SessionId.create(crypto.randomUUID()),
       UserId.create(props.userId),
