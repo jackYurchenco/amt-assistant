@@ -1,5 +1,6 @@
 import { LetterStatus } from '@amt-assistant/contracts';
 import { LetterId, UserId } from '@amt-assistant/domain';
+import { DomainValidationException } from '@amt-assistant/exceptions';
 
 export class Letter {
   private constructor(
@@ -13,7 +14,7 @@ export class Letter {
     public readonly analysisResult?: string | null,
     public readonly content?: string | null,
   ) {
-    if (!title) {throw new Error('Letter title cannot be empty');}
+    if (!title) {throw new DomainValidationException('Letter title cannot be empty');}
   }
 
   static create(props: {
