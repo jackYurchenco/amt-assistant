@@ -2,7 +2,7 @@ import { GetLetterByIdUseCase } from './get-letter-by-id.use-case';
 import { mock, MockProxy } from 'jest-mock-extended';
 import { LetterReader } from '../../domain/ports/letter-reader.port';
 import { Letter } from '../../domain/letter.entity';
-import { LetterNotFoundException } from '../exceptions/letter-not-found.exception';
+import { NotFoundException } from '@amt-assistant/exceptions';
 import { LetterStatus } from '@amt-assistant/contracts';
 import { GetLetterByIdQuery } from './get-letter-by-id.query';
 
@@ -34,13 +34,13 @@ describe('GetLetterByIdUseCase', () => {
     expect(mockReader.findById).toHaveBeenCalled();
   });
 
-  it('should throw a LetterNotFoundException when letter is not found', async () => {
+  it('should throw a NotFoundException when letter is not found', async () => {
     mockReader.findById.mockResolvedValue(null);
 
     const query = new GetLetterByIdQuery('550e8400-e29b-41d4-a716-446655440002');
 
     await expect(useCase.execute(query)).rejects.toThrow(
-      new LetterNotFoundException('Letter with ID 550e8400-e29b-41d4-a716-446655440002 not found'),
+      new NotFoundException('Letter with ID 550e8400-e29b-41d4-a716-446655440002 not found'),
     );
     expect(mockReader.findById).toHaveBeenCalled();
   });
