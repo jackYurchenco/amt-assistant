@@ -1,7 +1,6 @@
 import { ExceptionFilter, Catch, ArgumentsHost, HttpStatus } from '@nestjs/common';
 import { Response } from 'express';
-import { LetterNotFoundException } from '../../application/exceptions/letter-not-found.exception';
-import { ApplicationException, DomainException, InfrastructureException } from '@amt-assistant/exceptions';
+import { ApplicationException, DomainException, InfrastructureException, NotFoundException } from '@amt-assistant/exceptions';
 
 @Catch(ApplicationException, DomainException, InfrastructureException)
 export class LettersExceptionFilter implements ExceptionFilter {
@@ -11,7 +10,7 @@ export class LettersExceptionFilter implements ExceptionFilter {
 
     let status = HttpStatus.INTERNAL_SERVER_ERROR;
 
-    if (exception instanceof LetterNotFoundException) {
+    if (exception instanceof NotFoundException) {
       status = HttpStatus.NOT_FOUND;
     } else if (exception instanceof DomainException) {
       status = HttpStatus.BAD_REQUEST;
