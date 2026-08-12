@@ -1,4 +1,5 @@
-import { Body, Controller, Get, HttpStatus, Param, Post, Query, UseFilters } from '@nestjs/common';
+import { Body, Controller, Get, HttpStatus, Param, Post, Query, UseFilters, UseGuards } from '@nestjs/common';
+import { JwtAuthGuard } from '@amt-assistant/auth';
 import { CreateLetterUseCase } from '../application/create-letter/create-letter.use-case';
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CreateLetterDto } from './dto/create-letter.dto';
@@ -14,6 +15,7 @@ import { LettersExceptionFilter } from '../infrastructure/filters/letters-except
 
 @ApiTags('letters')
 @ApiBearerAuth()
+@UseGuards(JwtAuthGuard)
 @UseFilters(LettersExceptionFilter)
 @Controller('letters')
 export class LettersController {
