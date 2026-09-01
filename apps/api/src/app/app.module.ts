@@ -8,6 +8,8 @@ import { SessionsModule } from '@amt-assistant/sessions';
 import { APP_GUARD, APP_FILTER } from '@nestjs/core';
 import { AppExceptionFilter } from './filters/app-exception.filter';
 
+import { DocumentsModule } from '@amt-assistant/documents';
+
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -18,6 +20,7 @@ import { AppExceptionFilter } from './filters/app-exception.filter';
     LettersModule,
     UsersModule,
     SessionsModule,
+    DocumentsModule,
   ],
   controllers: [],
   providers: [
