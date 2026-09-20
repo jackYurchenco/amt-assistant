@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '@amt-assistant/prisma';
-import { DocumentId } from '@amt-assistant/domain';
+import { DocumentId, UserId } from '@amt-assistant/domain';
 import { DocumentWriter } from '../domain/ports/document-writer.port';
 import { DocumentReader } from '../domain/ports/document-reader.port';
 import { Document } from '../domain/document.entity';
@@ -37,6 +37,19 @@ export class PrismaDocumentRepository implements DocumentWriter, DocumentReader 
       return raw ? DocumentMapper.toDomain(raw) : null;
     } catch {
       throw new DatabaseOperationException('Failed to find document by ID in the database');
+    }
+  }
+
+  async findByUserId(userId: UserId): Promise<Document[]> {
+    try {
+      const records: Array<PrismaDocument> = await this.prisma.document.findMany({
+        where: { userId: userId.getValue() },
+        orderBy: { createdAt: 'desc' },
+      });
+
+      return records.map((raw) => DocumentMapper.toDomain(raw));
+    } catch {
+      throw new DatabaseOperationException('Failed to find documents by user ID in the database');
     }
   }
 }
