@@ -20,6 +20,8 @@ import { UploadDocumentUseCase } from '../application/upload-document/upload-doc
 import { UploadDocumentCommand } from '../application/upload-document/upload-document.command';
 import { GetDocumentByIdUseCase } from '../application/get-document-by-id/get-document-by-id.use-case';
 import { GetDocumentByIdQuery } from '../application/get-document-by-id/get-document-by-id.query';
+import { GetDocumentsByUserIdUseCase } from '../application/get-documents-by-user-id/get-documents-by-user-id.use-case';
+import { GetDocumentsByUserIdQuery } from '../application/get-documents-by-user-id/get-documents-by-user-id.query';
 import { GetDocumentByIdDto } from './dto/get-document-by-id.dto';
 import { DocumentResponseDto } from './dto/document-response.dto';
 import { DocumentsExceptionFilter } from '../infrastructure/filters/documents-exception.filter';
@@ -34,6 +36,7 @@ export class DocumentsController {
   constructor(
     private readonly uploadDocumentUseCase: UploadDocumentUseCase,
     private readonly getDocumentByIdUseCase: GetDocumentByIdUseCase,
+    private readonly getDocumentsByUserIdUseCase: GetDocumentsByUserIdUseCase,
   ) {}
 
   @Post('upload')
@@ -70,6 +73,22 @@ export class DocumentsController {
 
     const document = await this.uploadDocumentUseCase.execute(command);
     return DocumentResponseDto.fromEntity(document);
+  }
+
+  @Get()
+  @ApiOperation({ summary: 'Get all documents for the current user' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'List of documents retrieved successfully',
+    type: [DocumentResponseDto],
+  })
+  async findAllByUser(
+    @AuthenticatedUserId() userId: string,
+  ): Promise<DocumentResponseDto[]> {
+    const documents = await this.getDocumentsByUserIdUseCase.execute(
+      new GetDocumentsByUserIdQuery(userId),
+    );
+    return documents.map((document) => DocumentResponseDto.fromEntity(document));
   }
 
   @Get(':id')
