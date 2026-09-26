@@ -12,7 +12,7 @@ export class GetDocumentByIdUseCase {
   async execute(query: GetDocumentByIdQuery): Promise<Document> {
     const document = await this.documentReader.findById(DocumentId.create(query.id));
 
-    if (!document) {
+    if (!document || document.userId.getValue() !== query.userId) {
       throw new NotFoundException(`Document with ID ${query.id} not found`);
     }
 
