@@ -102,9 +102,12 @@ export class DocumentsController {
     status: HttpStatus.NOT_FOUND,
     description: 'Document not found',
   })
-  async findOne(@Param() dto: GetDocumentByIdDto): Promise<DocumentResponseDto> {
+  async findOne(
+    @Param() dto: GetDocumentByIdDto,
+    @AuthenticatedUserId() userId: string,
+  ): Promise<DocumentResponseDto> {
     const document = await this.getDocumentByIdUseCase.execute(
-      new GetDocumentByIdQuery(dto.id),
+      new GetDocumentByIdQuery(dto.id, userId),
     );
     return DocumentResponseDto.fromEntity(document);
   }
