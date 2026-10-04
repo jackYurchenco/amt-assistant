@@ -2,10 +2,11 @@ import { Injectable, Logger } from '@nestjs/common';
 import * as fs from 'fs/promises';
 import * as path from 'path';
 import { StorageWriter } from '../domain/ports/storage-writer.port';
+import { StorageReader } from '../domain/ports/storage-reader.port';
 import { StorageOperationException } from '@amt-assistant/exceptions';
 
 @Injectable()
-export class LocalStorageService implements StorageWriter {
+export class LocalStorageService implements StorageWriter, StorageReader {
   private readonly uploadDir = path.join(process.cwd(), 'uploads');
   private readonly logger = new Logger(LocalStorageService.name);
 
@@ -35,6 +36,15 @@ export class LocalStorageService implements StorageWriter {
       return `uploads/${filename}`;
     } catch {
       throw new StorageOperationException('Failed to save file to local storage');
+    }
+  }
+
+  async getFile(filePath: string): Promise<Buffer> {
+    const absolutePath = path.join(process.cwd(), filePath);
+    try {
+      return await fs.readFile(absolutePath);
+    } catch {
+      throw new StorageOperationException('Failed to read file from local storage');
     }
   }
 }
