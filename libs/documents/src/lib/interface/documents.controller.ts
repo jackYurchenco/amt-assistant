@@ -11,7 +11,10 @@ import {
   ParseFilePipe,
   MaxFileSizeValidator,
   FileTypeValidator,
+  StreamableFile,
+  Res,
 } from '@nestjs/common';
+import type { Response } from 'express';
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { JwtAuthGuard } from '@amt-assistant/auth';
@@ -22,6 +25,8 @@ import { GetDocumentByIdUseCase } from '../application/get-document-by-id/get-do
 import { GetDocumentByIdQuery } from '../application/get-document-by-id/get-document-by-id.query';
 import { GetDocumentsByUserIdUseCase } from '../application/get-documents-by-user-id/get-documents-by-user-id.use-case';
 import { GetDocumentsByUserIdQuery } from '../application/get-documents-by-user-id/get-documents-by-user-id.query';
+import { DownloadDocumentUseCase } from '../application/download-document/download-document.use-case';
+import { DownloadDocumentCommand } from '../application/download-document/download-document.command';
 import { GetDocumentByIdDto } from './dto/get-document-by-id.dto';
 import { DocumentResponseDto } from './dto/document-response.dto';
 import { DocumentsExceptionFilter } from '../infrastructure/filters/documents-exception.filter';
@@ -37,6 +42,7 @@ export class DocumentsController {
     private readonly uploadDocumentUseCase: UploadDocumentUseCase,
     private readonly getDocumentByIdUseCase: GetDocumentByIdUseCase,
     private readonly getDocumentsByUserIdUseCase: GetDocumentsByUserIdUseCase,
+    private readonly downloadDocumentUseCase: DownloadDocumentUseCase,
   ) {}
 
   @Post('upload')
@@ -110,5 +116,33 @@ export class DocumentsController {
       new GetDocumentByIdQuery(dto.id, userId),
     );
     return DocumentResponseDto.fromEntity(document);
+  }
+
+  @Get(':id/download')
+  @ApiOperation({ summary: 'Download a specific document' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'Document file stream',
+  })
+  @ApiResponse({
+    status: HttpStatus.NOT_FOUND,
+    description: 'Document not found',
+  })
+  async download(
+    @Param() dto: GetDocumentByIdDto,
+    @AuthenticatedUserId() userId: string,
+    @Res({ passthrough: true }) res: Response,
+  ): Promise<StreamableFile> {
+    const { document, buffer } = await this.downloadDocumentUseCase.execute(
+      new DownloadDocumentCommand(dto.id, userId),
+    );
+
+    res.set({
+      'Content-Type': document.mimeType,
+      'Content-Disposition': `attachment; filename="${document.originalName}"`,
+      'Content-Length': document.size,
+    });
+
+    return new StreamableFile(buffer);
   }
 }
