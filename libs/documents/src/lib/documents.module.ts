@@ -9,6 +9,8 @@ import { LocalStorageService } from './infrastructure/local-storage.service';
 import { DocumentWriter } from './domain/ports/document-writer.port';
 import { DocumentReader } from './domain/ports/document-reader.port';
 import { StorageWriter } from './domain/ports/storage-writer.port';
+import { StorageReader } from './domain/ports/storage-reader.port';
+import { DownloadDocumentUseCase } from './application/download-document/download-document.use-case';
 
 @Module({
   imports: [PrismaModule],
@@ -17,6 +19,7 @@ import { StorageWriter } from './domain/ports/storage-writer.port';
     UploadDocumentUseCase,
     GetDocumentByIdUseCase,
     GetDocumentsByUserIdUseCase,
+    DownloadDocumentUseCase,
     {
       provide: DocumentWriter,
       useClass: PrismaDocumentRepository,
@@ -29,11 +32,16 @@ import { StorageWriter } from './domain/ports/storage-writer.port';
       provide: StorageWriter,
       useClass: LocalStorageService,
     },
+    {
+      provide: StorageReader,
+      useClass: LocalStorageService,
+    },
   ],
   exports: [
     UploadDocumentUseCase,
     GetDocumentByIdUseCase,
     GetDocumentsByUserIdUseCase,
+    DownloadDocumentUseCase,
   ],
 })
 export class DocumentsModule {}
