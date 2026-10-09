@@ -6,17 +6,25 @@ export class Document {
   private constructor(
     public readonly id: DocumentId,
     public readonly userId: UserId,
-    public readonly originalName: string,
+    public originalName: string,
     public readonly filename: string,
     public readonly path: string,
     public readonly mimeType: string,
     public readonly size: number,
     public readonly status: DocumentStatus,
     public readonly createdAt: Date,
-    public readonly updatedAt: Date,
+    public updatedAt: Date,
   ) {
     if (!originalName) { throw new DomainValidationException('Document originalName cannot be empty'); }
     if (!filename) { throw new DomainValidationException('Document filename cannot be empty'); }
+  }
+
+  rename(newName: string): void {
+    if (!newName) {
+      throw new DomainValidationException('Document new name cannot be empty');
+    }
+    this.originalName = newName;
+    this.updatedAt = new Date();
   }
 
   static create(props: {
