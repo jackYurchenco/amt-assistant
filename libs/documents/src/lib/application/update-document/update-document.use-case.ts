@@ -22,7 +22,7 @@ export class UpdateDocumentUseCase {
     }
 
     document.rename(command.originalName);
-    
+
     return this.documentWriter.save(document);
   }
 }
