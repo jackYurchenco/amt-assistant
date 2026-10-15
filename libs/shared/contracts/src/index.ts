@@ -18,3 +18,4 @@ export * from './lib/session/remove-sessions-by-user-id.interface';
 
 export * from './lib/document/document.interface';
 export * from './lib/document/get-document-by-id.interface';
+export * from './lib/document/update-document.interface';
