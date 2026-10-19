@@ -1,9 +1,11 @@
 import {
   Controller,
   Get,
+  Patch,
   HttpStatus,
   Param,
   Post,
+  Body,
   UseFilters,
   UseGuards,
   UseInterceptors,
@@ -29,6 +31,9 @@ import { DownloadDocumentUseCase } from '../application/download-document/downlo
 import { DownloadDocumentCommand } from '../application/download-document/download-document.command';
 import { GetDocumentByIdDto } from './dto/get-document-by-id.dto';
 import { DocumentResponseDto } from './dto/document-response.dto';
+import { UpdateDocumentDto } from './dto/update-document.dto';
+import { UpdateDocumentUseCase } from '../application/update-document/update-document.use-case';
+import { UpdateDocumentCommand } from '../application/update-document/update-document.command';
 import { DocumentsExceptionFilter } from '../infrastructure/filters/documents-exception.filter';
 import 'multer'; // Ensure Express.Multer.File is available
 
@@ -43,6 +48,7 @@ export class DocumentsController {
     private readonly getDocumentByIdUseCase: GetDocumentByIdUseCase,
     private readonly getDocumentsByUserIdUseCase: GetDocumentsByUserIdUseCase,
     private readonly downloadDocumentUseCase: DownloadDocumentUseCase,
+    private readonly updateDocumentUseCase: UpdateDocumentUseCase,
   ) {}
 
   @Post('upload')
@@ -144,5 +150,27 @@ export class DocumentsController {
     });
 
     return new StreamableFile(buffer);
+  }
+
+  @Patch(':id')
+  @ApiOperation({ summary: 'Update a specific document metadata' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'Document updated successfully',
+    type: DocumentResponseDto,
+  })
+  @ApiResponse({
+    status: HttpStatus.NOT_FOUND,
+    description: 'Document not found',
+  })
+  async update(
+    @Param('id') id: string,
+    @Body() dto: UpdateDocumentDto,
+    @AuthenticatedUserId() userId: string,
+  ): Promise<DocumentResponseDto> {
+    const document = await this.updateDocumentUseCase.execute(
+      new UpdateDocumentCommand(id, userId, dto.originalName),
+    );
+    return DocumentResponseDto.fromEntity(document);
   }
 }
