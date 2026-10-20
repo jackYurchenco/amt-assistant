@@ -11,6 +11,7 @@ import { DocumentReader } from './domain/ports/document-reader.port';
 import { StorageWriter } from './domain/ports/storage-writer.port';
 import { StorageReader } from './domain/ports/storage-reader.port';
 import { DownloadDocumentUseCase } from './application/download-document/download-document.use-case';
+import { UpdateDocumentUseCase } from './application/update-document/update-document.use-case';
 
 @Module({
   imports: [PrismaModule],
@@ -20,6 +21,7 @@ import { DownloadDocumentUseCase } from './application/download-document/downloa
     GetDocumentByIdUseCase,
     GetDocumentsByUserIdUseCase,
     DownloadDocumentUseCase,
+    UpdateDocumentUseCase,
     {
       provide: DocumentWriter,
       useClass: PrismaDocumentRepository,
@@ -42,6 +44,7 @@ import { DownloadDocumentUseCase } from './application/download-document/downloa
     GetDocumentByIdUseCase,
     GetDocumentsByUserIdUseCase,
     DownloadDocumentUseCase,
+    UpdateDocumentUseCase,
   ],
 })
 export class DocumentsModule {}
