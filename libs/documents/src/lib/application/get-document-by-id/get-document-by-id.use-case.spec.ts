@@ -30,7 +30,7 @@ describe('GetDocumentByIdUseCase', () => {
     });
     mockReader.findById.mockResolvedValue(document);
 
-    const query = new GetDocumentByIdQuery('550e8400-e29b-41d4-a716-446655440000');
+    const query = new GetDocumentByIdQuery('550e8400-e29b-41d4-a716-446655440000', '550e8400-e29b-41d4-a716-446655440001');
     const result = await useCase.execute(query);
 
     expect(result).toBeDefined();
@@ -41,7 +41,7 @@ describe('GetDocumentByIdUseCase', () => {
   it('should throw a NotFoundException when document is not found', async () => {
     mockReader.findById.mockResolvedValue(null);
 
-    const query = new GetDocumentByIdQuery('550e8400-e29b-41d4-a716-446655440002');
+    const query = new GetDocumentByIdQuery('550e8400-e29b-41d4-a716-446655440002', '550e8400-e29b-41d4-a716-446655440001');
 
     await expect(useCase.execute(query)).rejects.toThrow(
       new NotFoundException('Document with ID 550e8400-e29b-41d4-a716-446655440002 not found'),
